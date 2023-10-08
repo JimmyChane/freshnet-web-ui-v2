@@ -1,0 +1,189 @@
+<script setup lang="ts">
+  import { onMounted, ref } from "vue";
+  import ContactVue from "./Footer-Contact.vue";
+  import Contact from "@/data/Contact";
+  import { type MyContact } from "./MyContact";
+
+  const contacts = ref<MyContact[]>([]);
+
+  onMounted(() => {
+    contacts.value = [
+      new Contact().fromData({
+        title: "Beh Aik Keong",
+        links: [
+          { category: "call", id: "0167959444" },
+          { category: "whatsapp", id: "0167959444" },
+        ],
+      }),
+      new Contact().fromData({
+        title: "Office (Mobile)",
+        links: [
+          { category: "call", id: "0146315353" },
+          { category: "whatsapp", id: "0146315353" },
+          { category: "telegram", id: "FreshnetEnterprise" },
+        ],
+      }),
+      new Contact().fromData({
+        title: "Office",
+        links: [{ category: "telephone", id: "0332897297" }],
+      }),
+    ].map((contact) => {
+      const links = contact.links.map((link) => {
+        return {
+          icon: link.category?.icon ?? "",
+          href: link.toHtmlHref(),
+          target: link.toHtmlTarget(),
+        };
+      });
+
+      return {
+        title: contact.title,
+        subtitle: contact.links[0].id,
+        links,
+      };
+    });
+  });
+</script>
+
+<template>
+  <div class="Footer">
+    <div class="Footer-main">
+      <div class="Footer-rows">
+        <div class="Footer-columns">
+          <div class="Footer-section">
+            <span class="Footer-section-title">Service</span>
+            <router-link class="Footer-section-item" :to="{ path: '/print' }"
+              >Photostat &amp; Printing</router-link
+            >
+          </div>
+        </div>
+
+        <div class="Footer-columns">
+          <div class="Footer-section">
+            <span class="Footer-section-title">Contacts</span>
+            <ContactVue
+              v-for="contact of contacts"
+              :key="contact.subtitle"
+              :contact="contact"
+            />
+          </div>
+        </div>
+
+        <div class="Footer-columns">
+          <div class="Footer-section">
+            <span class="Footer-section-title">Location</span>
+            <a
+              :class="['Footer-section-item', 'Footer-section-item-link']"
+              href="https://www.google.com/maps/dir//No.+14,+Ground+Floor,+Freshnet+Enterprise,+Jalan+Melati+3%2F3,+Bandar+Melawati,+45000+Kuala+Selangor,+Selangor/@3.329664,101.256548,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x31ccf49e980c2d07:0xadf4850c7c433d0a!2m2!1d101.2565481!2d3.3296638"
+              target="_blank"
+            >
+              <p>
+                No. 14, Ground Floor, Jalan Melati 3/3,<br />
+                Bandar Melawati, 45000,<br />
+                Kuala Selangor, Selangor Darul Ehsan
+              </p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <span class="Footer-credit">Created by Jimmy & Rory</span>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+  .Footer {
+    --primary-color: hsl(0, 0%, 20%);
+
+    width: 100%;
+    margin-top: 4rem;
+    padding: 2rem;
+    padding-bottom: 10rem;
+    gap: 4rem;
+    position: relative;
+
+    text-decoration: none;
+    background: black;
+    background: var(--primary-color);
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .Footer-main {
+      max-width: var(--default-max-width);
+      width: 100%;
+      gap: 4rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .Footer-rows {
+        width: 100%;
+        row-gap: 2.5rem;
+        row-gap: 3rem;
+        row-gap: 2.5rem;
+        column-gap: 5rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .Footer-columns {
+          row-gap: 2.5rem;
+          column-gap: 5rem;
+          width: max-content;
+          display: flex;
+          flex-direction: column;
+          .Footer-section {
+            width: 100%;
+            gap: 0.1rem;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            .Footer-section-title {
+              width: 100%;
+              height: 2rem;
+              font-weight: 600;
+              font-size: 1.2rem;
+              text-align: start;
+            }
+            .Footer-section-item {
+              width: 100%;
+              height: 2rem;
+              font-weight: 400;
+              text-align: start;
+              opacity: 1;
+
+              color: inherit;
+              text-decoration: none;
+            }
+            .Footer-section-item-link {
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .Footer-credit {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 0.4rem;
+
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: white;
+      opacity: 0.7;
+
+      text-align: center;
+      width: 100%;
+    }
+  }
+</style>
