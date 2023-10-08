@@ -47,6 +47,7 @@
     const external = refExternal.value as HTMLLinkElement;
     const link = refLink.value as typeof RouterLink;
 
+    // @ts-ignore
     if (link) listenElement(link.$el);
     if (external) listenElement(external);
   });
