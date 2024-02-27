@@ -87,8 +87,6 @@
         </div>
       </div>
     </div>
-
-    <span class="Footer-credit">Created by Jimmy & Rory</span>
   </div>
 </template>
 
@@ -169,21 +167,6 @@
           }
         }
       }
-    }
-
-    .Footer-credit {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      padding: 0.4rem;
-
-      font-weight: 400;
-      font-size: 0.8rem;
-      color: white;
-      opacity: 0.7;
-
-      text-align: center;
-      width: 100%;
     }
   }
 </style>
