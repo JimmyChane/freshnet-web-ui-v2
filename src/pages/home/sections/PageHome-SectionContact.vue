@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import Section from "./PageHome-Section.vue";
-  import Link from "./PageHome-Link.vue";
+  import Link from "@/pages/home/components/PageHome-Link.vue";
   import Contact from "@/data/Contact";
   import { onMounted, ref } from "vue";
 

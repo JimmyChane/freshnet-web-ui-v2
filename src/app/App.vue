@@ -1,25 +1,4 @@
-<script setup lang="ts">
-  import { defineComponent, ref, onMounted } from "vue";
-  import { useStore } from "@/stores/index";
-
-  const store = useStore();
-
-  const appWindow = ref<{ innerWidth: number; innerHeight: number }>({
-    innerHeight: 0,
-    innerWidth: 0,
-  });
-  const invalidateWindow = () => {
-    store.window.innerWidth = window.innerWidth;
-    store.window.innerHeight = window.innerHeight;
-  };
-  window.addEventListener("resize", invalidateWindow);
-
-  onMounted(() => {
-    invalidateWindow();
-  });
-
-  defineComponent({ name: "App", window: appWindow });
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="App">

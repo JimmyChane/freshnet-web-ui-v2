@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Link from "./PageHome-Link.vue";
+  import Link from "@/pages/home/components/PageHome-Link.vue";
 
   defineProps({
     isThin: { type: Boolean, default: false },

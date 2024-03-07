@@ -1,22 +1,22 @@
 <script setup lang="ts">
   import { defineComponent, ref, computed, onMounted } from "vue";
-  import { useStore } from "@/stores/index";
   import Footer from "@/app/AppFooter.vue";
 
-  import Actionbar from "./PageHome-Actionbar.vue";
-  import SectionTitle from "./PageHome-Section-Title.vue";
-  import SectionContact from "./PageHome-SectionContact.vue";
-  import SectionLocation from "./PageHome-SectionLocation.vue";
-  import SectionHour from "./PageHome-SectionHour.vue";
-  import SectionService from "./PageHome-SectionService.vue";
+  import Actionbar from "./components/PageHome-Actionbar.vue";
+  import SectionTitle from "./sections/PageHome-Section-Title.vue";
+  import SectionContact from "./sections/PageHome-SectionContact.vue";
+  import SectionLocation from "./sections/PageHome-SectionLocation.vue";
+  import SectionHour from "./sections/PageHome-SectionHour.vue";
+  import SectionService from "./sections/PageHome-SectionService.vue";
+  import { useWindowStore } from "@/stores/window.store";
 
   defineComponent({ key: "home", name: "PageHome", title: "Home" });
 
-  const store = useStore();
+  const windowStore = useWindowStore();
 
   const scrollTop = ref(0);
 
-  const innerWidth = computed(() => store.window.innerWidth);
+  const innerWidth = computed(() => windowStore.innerWidth);
   const isWide = computed(() => innerWidth.value > 800);
   const isDrawer = computed(() => false);
   const isThin = computed(() => isWide.value || isDrawer.value);
