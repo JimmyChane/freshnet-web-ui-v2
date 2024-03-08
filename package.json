@@ -1,6 +1,6 @@
 {
   "name": "freshnet-web-ui-v2",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",

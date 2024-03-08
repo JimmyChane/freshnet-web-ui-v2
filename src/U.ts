@@ -1,3 +1,4 @@
+import chroma from "chroma-js";
 import type { IconPack } from "./data/icon-pack/IconPack";
 import { Icon } from "./data/icon/Icon";
 import { serverIcon } from "./data/server/Server";
@@ -55,6 +56,10 @@ export function replaceStringAll(str = "", regex = "", replace = ""): string {
   }
 
   return str;
+}
+
+export function isColorDark(color: any, threshold = 60): boolean {
+  return chroma.deltaE(color, "000000") < threshold;
 }
 
 export function copyText(text: string) {
