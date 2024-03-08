@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import { computed, useSlots } from "vue";
 
-  defineProps({
-    title: { type: String, default: "" },
-  });
+  withDefaults(defineProps<{ title?: string }>(), { title: "" });
 
   const slots = useSlots();
   const hasSlot = computed(() => !slots.footer);

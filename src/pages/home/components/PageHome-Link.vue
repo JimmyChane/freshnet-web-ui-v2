@@ -1,47 +1,44 @@
 <script setup lang="ts">
   import { computed, onMounted, ref } from "vue";
   import { RouterLink, type RouteLocationRaw } from "vue-router";
-  import IconLinkWhite from "@/assets/icon/link-FFFFFF.svg";
   import IconLinkColor from "@/assets/icon/link-1673E1.svg";
   import IconExternalColor from "@/assets/icon/external-1673E1.svg";
   import IconExternalWhite from "@/assets/icon/external-FFFFFF.svg";
 
-  const props = defineProps({
-    to: { type: [String, Object as () => RouteLocationRaw], default: "" },
-    href: { type: String, default: "" },
-    target: { type: String, default: "" },
-    icon: { type: String },
-  });
+  const props = withDefaults(
+    defineProps<{
+      to?: string | RouteLocationRaw;
+      href?: string;
+      target?: string;
+      icon?: string;
+    }>(),
+    {
+      to: "",
+      href: "",
+      target: "",
+    },
+  );
 
   const isHover = ref(false);
   const refExternal = ref<HTMLLinkElement>();
   const refLink = ref<typeof RouterLink>();
 
-  const iconLinkWhite = computed(() => {
-    return props.icon ?? IconLinkWhite;
-  });
-  const iconLinkColor = computed(() => {
-    return props.icon ?? IconLinkColor;
-  });
-  const iconExternalWhite = computed(() => {
-    return props.icon ?? IconExternalWhite;
-  });
-  const iconExternalColor = computed(() => {
-    return props.icon ?? IconExternalColor;
-  });
+  const iconLinkColor = computed(() => props.icon ?? IconLinkColor);
+  const iconExternalWhite = computed(() => props.icon ?? IconExternalWhite);
+  const iconExternalColor = computed(() => props.icon ?? IconExternalColor);
 
-  const mouseEnter = () => {
+  function mouseEnter() {
     isHover.value = true;
-  };
-  const mouseLeave = () => {
+  }
+  function mouseLeave() {
     isHover.value = false;
-  };
-  const listenElement = (element: HTMLElement) => {
+  }
+  function listenElement(element: HTMLElement) {
     element.addEventListener("mouseenter", mouseEnter);
     element.addEventListener("mouseleave", mouseLeave);
     element.addEventListener("touchstart", mouseEnter);
     element.addEventListener("touchend", mouseLeave);
-  };
+  }
 
   onMounted(() => {
     const external = refExternal.value as HTMLLinkElement;
@@ -62,7 +59,10 @@
     :target="target"
   >
     <slot />
-    <img :src="isHover ? iconExternalWhite : iconExternalColor" />
+
+    <div class="SectionWhatElse-Item-image">
+      <img :src="isHover ? iconExternalWhite : iconExternalColor" />
+    </div>
   </a>
 
   <RouterLink
@@ -72,7 +72,10 @@
     :to="to"
   >
     <slot />
-    <img :src="isHover ? iconLinkWhite : iconLinkColor" />
+
+    <div class="SectionWhatElse-Item-image">
+      <img :src="iconLinkColor" />
+    </div>
   </RouterLink>
 
   <span class="SectionWhatElse-Item" v-else>
@@ -84,7 +87,7 @@
   .SectionWhatElse-Item {
     width: 100%;
     height: 100%;
-    min-height: 3.5em;
+    min-height: 4.5em;
     color: var(--primary-color);
 
     font-size: 0.9em;
@@ -100,21 +103,35 @@
     transition: all 400ms ease;
   }
   a.SectionWhatElse-Item {
-    border: 2px solid var(--primary-color);
-    border-radius: 1em;
+    background-color: var(--primary-color);
+    color: white;
+
+    border-radius: 1.2em;
     text-decoration: none;
 
     &:hover {
       background: var(--primary-color);
-      color: white;
+      color: rgba(255, 255, 255, 0.8);
     }
-    img {
+
+    .SectionWhatElse-Item-image {
+      width: 2em;
+      height: 2em;
+
       position: absolute;
-      pointer-events: none;
       right: 0.8em;
 
-      width: 0.8em;
-      height: 0.8em;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+
+      background-color: #ffffffe6;
+      color: var(--primary-color);
+
+      & > img {
+        width: 1.1em;
+        height: 1.1em;
+      }
     }
   }
 </style>

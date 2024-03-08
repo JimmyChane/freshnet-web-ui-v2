@@ -1,19 +1,15 @@
 <script setup lang="ts">
-  import { ref } from "vue";
   import Actionbar from "@/app/AppActionbar.vue";
+  import {
+    companyAddressLink,
+    companyCategory,
+    companyName,
+    logoLink,
+  } from "@/Variable";
 
-  defineProps({
-    isThin: { type: Boolean, default: false },
-    isParentScrolledUp: { type: Boolean, default: false },
-  });
-
-  const companyTitle = ref("Freshnet Enterprise");
-  const companyCategory = ref("Computer Store");
-  const addressHref = ref(
-    "https://www.google.com/maps/dir//No.+14,+Ground+Floor,+Freshnet+Enterprise,+Jalan+Melati+3%2F3,+Bandar+Melawati,+45000+Kuala+Selangor,+Selangor/@3.329664,101.256548,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x31ccf49e980c2d07:0xadf4850c7c433d0a!2m2!1d101.2565481!2d3.3296638",
-  );
-  const logo = ref(
-    "https://res.cloudinary.com/freshnet/image/upload/resource/logo/svg/freshnet-enterprise-logo.svg",
+  withDefaults(
+    defineProps<{ isThin?: boolean; isParentScrolledUp?: boolean }>(),
+    { isThin: false, isParentScrolledUp: false },
   );
 </script>
 
@@ -30,25 +26,27 @@
         <img
           class="HomeActionbar-logo"
           :style="{ 'grid-area': 'logo' }"
-          :src="logo"
-          :alt="`${companyTitle} Logo`"
+          :src="logoLink"
+          :alt="`${companyName} Logo`"
         />
 
-        <span class="HomeActionbar-name" :style="{ 'grid-area': 'name' }">{{
-          companyTitle
-        }}</span>
+        <span class="HomeActionbar-name" :style="{ 'grid-area': 'name' }">
+          {{ companyName }}
+        </span>
+
         <a
+          v-if="companyAddressLink.length"
           class="HomeActionbar-classification"
           :style="{ 'grid-area': 'category' }"
-          v-if="addressHref.length"
-          :href="addressHref"
+          :href="companyAddressLink"
           target="_blank"
-          >{{ companyCategory }}</a
         >
+          {{ companyCategory }}
+        </a>
         <p
+          v-else
           class="HomeActionbar-classification"
           :style="{ 'grid-area': 'category' }"
-          v-else
         >
           {{ companyCategory }}
         </p>

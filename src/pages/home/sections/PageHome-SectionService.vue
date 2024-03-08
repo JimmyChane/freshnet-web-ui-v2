@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import Link from "@/pages/home/components/PageHome-Link.vue";
 
-  defineProps({
-    isThin: { type: Boolean, default: false },
-  });
+  withDefaults(defineProps<{ isThin?: boolean }>(), { isThin: false });
 </script>
 
 <template>

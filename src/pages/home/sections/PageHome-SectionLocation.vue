@@ -1,7 +1,5 @@
 <script setup lang="ts">
-  defineProps({
-    isThin: { type: Boolean, default: false },
-  });
+  withDefaults(defineProps<{ isThin?: boolean }>(), { isThin: false });
 </script>
 
 <template>

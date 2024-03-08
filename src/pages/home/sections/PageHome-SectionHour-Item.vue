@@ -2,9 +2,7 @@
   import { WorkingDay } from "@/data/working-day/WorkingDay";
   import { computed } from "vue";
 
-  const props = defineProps({
-    item: { type: WorkingDay, required: true },
-  });
+  const props = defineProps<{ item: WorkingDay }>();
 
   const isToday = computed(() => props.item.isToday());
   const title = computed(() => props.item.title);
