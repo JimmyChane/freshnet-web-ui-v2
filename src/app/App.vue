@@ -15,6 +15,7 @@
 </template>
 
 <style lang="scss">
+  // initiate
   :root {
     font-size: 16px;
   }
@@ -109,6 +110,8 @@
     overflow-x: hidden;
     overflow: hidden;
 
+    --navigation-bottom-height: 4rem;
+
     .App-background {
       position: fixed;
       width: 100dvw;
@@ -138,13 +141,50 @@
       grid-template-areas:
         "left body"
         "bottom bottom";
-      grid-template-rows: minmax(100%, 1fr);
+      grid-template-rows: minmax(
+        calc(100% - var(--navigation-bottom-height)),
+        1fr
+      );
       grid-template-columns: max-content 1fr;
 
       .App-routerView {
         background: #f1f1f1;
       }
     }
+    .App-body[isDrawer="true"] {
+      .App-NavigationDrawer {
+        z-index: 3;
+      }
+      .App-routerView {
+        z-index: 2;
+      }
+    }
+    .App-body[isDrawer="false"] {
+      .App-NavigationDrawer {
+        z-index: 2;
+      }
+      .App-routerView {
+        z-index: 3;
+        border-radius: 1.2rem 0 0 1.2rem;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  .App[isNormal="true"] {
+    @media (min-width: 1600px) {
+      .App-body {
+        width: calc(100% - 8vw);
+        height: calc(100% - 2vh);
+        max-width: calc(1800px - 8vw);
+        max-height: calc(2000px - 2vh);
+
+        margin: auto;
+        overflow: hidden;
+        display: initial;
+
+        box-shadow: 1px 1px 50px 0px hsla(0, 0%, 0%, 0.3);
+        border-radius: 1.5rem;
+      }
+    }
   }
 </style>
-@/stores
