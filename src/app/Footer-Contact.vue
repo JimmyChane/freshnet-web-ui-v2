@@ -1,10 +1,8 @@
 <script setup lang="ts">
   import { computed } from "vue";
-  import { type MyContact } from "./MyContact";
+  import type { Contact } from "@/data/contact/Contact";
 
-  const props = defineProps({
-    contact: { type: Object as () => MyContact, required: true },
-  });
+  const props = defineProps<{ contact: Contact }>();
 
   const title = computed(() => props.contact.title);
   const subtitle = computed(() => props.contact.subtitle);
@@ -13,9 +11,9 @@
   const parsedLinks = computed(() => {
     return links.value.map((link) => {
       return {
-        icon: link.icon,
-        href: link.href,
-        target: link?.target ?? "",
+        icon: link.socialMedia?.icon,
+        href: link.toHtmlHref(),
+        target: link.toHtmlTarget(),
       };
     });
   });
@@ -44,11 +42,11 @@
       <a
         class="Footer-Contact-link"
         v-for="link of links"
-        :key="link.href"
-        :href="link.href"
-        :target="link.target"
+        :key="link.toHtmlHref()"
+        :href="link.toHtmlHref()"
+        :target="link.toHtmlTarget()"
       >
-        <img class="Footer-Contact-icon" :src="link.icon" />
+        <img class="Footer-Contact-icon" :src="link.socialMedia?.icon" />
       </a>
     </div>
   </div>

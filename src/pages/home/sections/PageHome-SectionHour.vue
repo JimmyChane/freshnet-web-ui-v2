@@ -1,56 +1,34 @@
 <script setup lang="ts">
   import Section from "./PageHome-Section.vue";
   import Item from "./PageHome-SectionHour-Item.vue";
-  import WorkingDay from "@/data/WorkingDay";
+  import {
+    WorkingDay,
+    type WorkingDayData,
+  } from "@/data/working-day/WorkingDay";
   import { onMounted, ref } from "vue";
 
-  defineProps({
-    isThin: { type: Boolean, default: false },
-  });
+  withDefaults(defineProps<{ isThin?: boolean }>(), { isThin: false });
 
   const items = ref<WorkingDay[]>();
   const todayWorkingDay = ref<WorkingDay>();
 
   onMounted(() => {
-    const workingDays: WorkingDay[] = [];
-    workingDays.push(
-      ...[
-        new WorkingDay(workingDays).fromData({
-          title: "Monday",
-          timeStart: "0900",
-          timeEnd: "1900",
-        }),
-        new WorkingDay(workingDays).fromData({
-          title: "Tuesday",
-          timeStart: "0900",
-          timeEnd: "1900",
-        }),
-        new WorkingDay(workingDays).fromData({
-          title: "Wednesday",
-          timeStart: "0900",
-          timeEnd: "1900",
-        }),
-        new WorkingDay(workingDays).fromData({
-          title: "Thursday",
-          timeStart: "0900",
-          timeEnd: "1900",
-        }),
-        new WorkingDay(workingDays).fromData({
-          title: "Friday",
-          timeStart: "0900",
-          timeEnd: "1900",
-        }),
-        new WorkingDay(workingDays).fromData({
-          title: "Saturday",
-          timeStart: "0900",
-          timeEnd: "1900",
-        }),
-        new WorkingDay(workingDays).fromData({
-          title: "Sunday",
-          timeStart: "1000",
-          timeEnd: "1830",
-        }),
-      ],
+    const workingDayDatas: WorkingDayData[] = [
+      { title: "Monday", timeStart: "0900", timeEnd: "1900" },
+      { title: "Tuesday", timeStart: "0900", timeEnd: "1900" },
+      { title: "Wednesday", timeStart: "0900", timeEnd: "1900" },
+      { title: "Thursday", timeStart: "0900", timeEnd: "1900" },
+      { title: "Friday", timeStart: "0900", timeEnd: "1900" },
+      { title: "Saturday", timeStart: "0900", timeEnd: "1900" },
+      { title: "Sunday", timeStart: "1000", timeEnd: "1830" },
+    ];
+
+    const workingDays = workingDayDatas.reduce(
+      (workingDays: WorkingDay[], data) => {
+        workingDays.push(new WorkingDay(data, workingDays));
+        return workingDays;
+      },
+      [],
     );
 
     todayWorkingDay.value = workingDays.find((workingDay) => {

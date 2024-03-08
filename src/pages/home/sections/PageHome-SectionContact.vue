@@ -1,12 +1,10 @@
 <script setup lang="ts">
   import Section from "./PageHome-Section.vue";
   import Link from "@/pages/home/components/PageHome-Link.vue";
-  import Contact from "@/data/Contact";
+  import { Contact } from "@/data/contact/Contact";
   import { onMounted, ref } from "vue";
 
-  defineProps({
-    isThin: { type: Boolean, default: false },
-  });
+  withDefaults(defineProps<{ isThin?: boolean }>(), { isThin: false });
 
   const callContacts = ref<
     {
@@ -29,14 +27,14 @@
 
   onMounted(() => {
     const contacts = [
-      new Contact().fromData({
+      new Contact({
         title: "Beh Aik Keong",
         links: [
           { category: "call", id: "0167959444" },
           { category: "whatsapp", id: "0167959444" },
         ],
       }),
-      new Contact().fromData({
+      new Contact({
         title: "Office (Mobile)",
         links: [
           { category: "call", id: "0146315353" },
@@ -44,7 +42,7 @@
           { category: "telegram", id: "FreshnetEnterprise" },
         ],
       }),
-      new Contact().fromData({
+      new Contact({
         title: "Office",
         links: [{ category: "telephone", id: "0332897297" }],
       }),
@@ -54,8 +52,8 @@
     chatContacts.value = [];
     for (const contact of contacts) {
       for (const link of contact.links) {
-        const categoryKey = link.category?.key ?? "";
-        const categoryIcon = link.category?.icon ?? "";
+        const categoryKey = link.socialMedia?.key ?? "";
+        const categoryIcon = link.socialMedia?.icon ?? "";
         if (categoryKey === "call" || categoryKey === "telephone") {
           callContacts.value.push({
             title: contact.title,
@@ -64,7 +62,7 @@
             icon: categoryIcon,
           });
         } else {
-          const categoryTitle = link.category?.title ?? "";
+          const categoryTitle = link.socialMedia?.title ?? "";
           chatContacts.value.push({
             title: contact.title,
             title1: categoryTitle,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import WorkingDay from "@/data/WorkingDay";
+  import { WorkingDay } from "@/data/working-day/WorkingDay";
   import { computed } from "vue";
 
   const props = defineProps({

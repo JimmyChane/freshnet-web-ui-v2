@@ -1,48 +1,29 @@
 <script setup lang="ts">
-  import { onMounted, ref } from "vue";
+  import { ref } from "vue";
   import ContactVue from "./Footer-Contact.vue";
-  import Contact from "@/data/Contact";
-  import { type MyContact } from "./MyContact";
+  import { Contact } from "@/data/contact/Contact";
 
-  const contacts = ref<MyContact[]>([]);
-
-  onMounted(() => {
-    contacts.value = [
-      new Contact().fromData({
-        title: "Beh Aik Keong",
-        links: [
-          { category: "call", id: "0167959444" },
-          { category: "whatsapp", id: "0167959444" },
-        ],
-      }),
-      new Contact().fromData({
-        title: "Office (Mobile)",
-        links: [
-          { category: "call", id: "0146315353" },
-          { category: "whatsapp", id: "0146315353" },
-          { category: "telegram", id: "FreshnetEnterprise" },
-        ],
-      }),
-      new Contact().fromData({
-        title: "Office",
-        links: [{ category: "telephone", id: "0332897297" }],
-      }),
-    ].map((contact) => {
-      const links = contact.links.map((link) => {
-        return {
-          icon: link.category?.icon ?? "",
-          href: link.toHtmlHref(),
-          target: link.toHtmlTarget(),
-        };
-      });
-
-      return {
-        title: contact.title,
-        subtitle: contact.links[0].id,
-        links,
-      };
-    });
-  });
+  const contacts = ref([
+    new Contact({
+      title: "Beh Aik Keong",
+      links: [
+        { category: "call", id: "0167959444" },
+        { category: "whatsapp", id: "0167959444" },
+      ],
+    }),
+    new Contact({
+      title: "Office (Mobile)",
+      links: [
+        { category: "call", id: "0146315353" },
+        { category: "whatsapp", id: "0146315353" },
+        { category: "telegram", id: "FreshnetEnterprise" },
+      ],
+    }),
+    new Contact({
+      title: "Office",
+      links: [{ category: "telephone", id: "0332897297" }],
+    }),
+  ]);
 </script>
 
 <template>
@@ -52,9 +33,9 @@
         <div class="Footer-columns">
           <div class="Footer-section">
             <span class="Footer-section-title">Service</span>
-            <router-link class="Footer-section-item" :to="{ path: '/print' }"
-              >Photostat &amp; Printing</router-link
-            >
+            <router-link class="Footer-section-item" :to="{ path: '/print' }">
+              Photostat &amp; Printing
+            </router-link>
           </div>
         </div>
 
