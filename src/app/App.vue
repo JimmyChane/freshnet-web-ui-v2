@@ -32,14 +32,13 @@
     padding: 0;
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    font-family: "Roboto", sans-serif;
+    font-family: system-ui, sans-serif;
     word-break: break-word;
   }
   html {
     overscroll-behavior-x: none;
   }
   body {
-    @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
     width: 100dvw;
     height: 100dvh;
     overscroll-behavior-x: none;
