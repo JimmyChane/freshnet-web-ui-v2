@@ -1,6 +1,6 @@
 import { serverRequest } from "@/data/server/Server";
 
-export default class SettingRequest {
+export class SettingRequest {
   static list(): Promise<any> {
     return serverRequest().path("settingv3").sendJson();
   }

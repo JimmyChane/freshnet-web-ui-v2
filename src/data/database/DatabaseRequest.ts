@@ -1,6 +1,6 @@
 import { serverRequest } from "@/data/server/Server";
 
-export default class DatabaseRequest {
+export class DatabaseRequest {
   static info(): Promise<any> {
     return serverRequest().POST().path("database/info").sendJson();
   }

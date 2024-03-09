@@ -246,7 +246,7 @@
       <LeftNavLogin
         style="z-index: 2"
         v-if="pageStore.currentPageKey !== 'login'"
-        @click-logout="$emit('click-logout')"
+        @click-logout="emits('clickLogout')"
         :isWide="isWide"
       />
     </div>

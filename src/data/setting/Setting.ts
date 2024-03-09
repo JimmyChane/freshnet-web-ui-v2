@@ -7,7 +7,7 @@ interface SettingData {
   value: any;
 }
 
-export default class Setting extends Item {
+export class Setting extends Item {
   static Visibility = { Protected: "protected", Private: "private" };
   static Key = {
     PublicShowPrice: "public-showPrice",
