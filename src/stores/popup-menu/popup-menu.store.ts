@@ -6,8 +6,8 @@ import { type Menu, type PopupMenu, Width, Corner } from "./PopupMenu";
 export const usePopupMenuStore = defineStore("popupMenu", () => {
   const keyGetter = new TimeNowGetter();
 
-  const popupMenus = ref<any[]>([]);
-  function popupMenuShow(
+  const items = ref<any[]>([]);
+  function show(
     arg: {
       anchor: any;
       menus: Menu[];
@@ -44,20 +44,17 @@ export const usePopupMenuStore = defineStore("popupMenu", () => {
         setTimeout(() => {
           popupMenu.isShowing = false;
           setTimeout(() => {
-            const index = popupMenus.value.indexOf(popupMenu);
-            popupMenus.value.splice(index, 1);
+            const index = items.value.indexOf(popupMenu);
+            items.value.splice(index, 1);
           }, 300);
         }, 300);
       },
     };
 
-    popupMenus.value.push(popupMenu);
+    items.value.push(popupMenu);
 
     return popupMenu;
   }
 
-  return {
-    popupMenus,
-    popupMenuShow,
-  };
+  return { items, show };
 });
