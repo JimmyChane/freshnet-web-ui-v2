@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Actionbar from "@/app/AppActionbar.vue";
+  import Actionbar from "@/app/actionbar/AppActionbar.vue";
   import {
     companyAddressLink,
     companyCategory,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { defineComponent, ref, computed, onMounted } from "vue";
-  import Footer from "@/app/AppFooter.vue";
+  import Footer from "@/app/footer/AppFooter.vue";
 
   import Actionbar from "./components/PageHome-Actionbar.vue";
   import SectionTitle from "./sections/PageHome-Section-Title.vue";

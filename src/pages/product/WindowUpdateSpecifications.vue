@@ -1,0 +1,68 @@
+<script setup lang="ts">
+  import PanelAction from "@/components/panel/PanelAction.vue";
+  import SpecificationInputs from "@/pages/customer/SpecificationInputs.vue";
+  import CustomerDeviceSpecification from "@/data/CustomerDeviceSpecification";
+  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import { computed, onMounted, ref } from "vue";
+  import Specification from "@/data/specification/Specification";
+  import { optArray } from "@/U";
+
+  const props = defineProps<{ popupWindow: PopupWindow }>();
+
+  const data = ref<{ specifications: Specification[] }>({ specifications: [] });
+
+  const isShowing = computed(() => props.popupWindow.isShowing);
+  const input = computed(() => props.popupWindow.input);
+  const product = computed(() => input.value?.product ?? null);
+  const inputSpecifications = computed(() => {
+    return optArray(input.value?.specifications);
+  });
+  const specifications = computed(() => data.value?.specifications ?? []);
+
+  function clickConfirm() {
+    props.popupWindow.onConfirm({
+      product: product.value,
+      specifications: specifications.value,
+    });
+  }
+
+  onMounted(() => {
+    data.value.specifications = inputSpecifications.value
+      .map((specification) => {
+        specification.typeKey = specification.type
+          ? specification.type.key
+          : "";
+        return specification;
+      })
+      .map((specification) => {
+        return new CustomerDeviceSpecification()
+          .fromData(specification)
+          .toData();
+      });
+  });
+</script>
+
+<template>
+  <PanelAction
+    class="WindowUpdateSpecifications"
+    title="Update Specifications"
+    :isShowing="isShowing"
+    @click-dismiss="() => popupWindow.close()"
+    @click-cancel="() => popupWindow.close()"
+    @click-ok="() => clickConfirm()"
+  >
+    <div class="WindowUpdateSpecifications-body">
+      <SpecificationInputs :items="specifications" />
+    </div>
+  </PanelAction>
+</template>
+
+<style lang="scss" scoped>
+  .WindowUpdateSpecifications-body {
+    width: 40rem;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+</style>
