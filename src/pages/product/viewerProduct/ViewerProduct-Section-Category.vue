@@ -1,39 +1,36 @@
-<script>
+<script setup lang="ts">
+  import { computed, onMounted, ref, watch } from "vue";
+  import type { Category } from "@/data/category/Category";
   import Section from "./ViewerProduct-Section.vue";
   import IconEdit from "@/assets/icon/edit-000000.svg";
+  import type { Color } from "chroma-js";
+  import type { Product } from "@/data/product/Product";
 
-  export default {
-    components: { Section },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
-    },
-    data: (c) => ({ IconEdit, category: null }),
-    computed: {
-      categoryId: (c) => c.product?.categoryId ?? "",
-      categoryTitle: (c) => c.category?.title ?? "",
-      categoryIconUrl: (c) => c.category?.icon?.toUrl() ?? "",
-    },
-    watch: {
-      product() {
-        this.invalidate();
-      },
-      categoryId() {
-        this.invalidate();
-      },
-    },
-    mounted() {
-      this.invalidate();
-    },
-    methods: {
-      async invalidate() {
-        this.category = null;
-        if (!this.product) return;
-        this.category = await this.product.fetchCategory();
-      },
-    },
-  };
+  const props = withDefaults(
+    defineProps<{
+      primaryColor: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    { allowEdit: false },
+  );
+
+  const category = ref<Category>();
+
+  const categoryId = computed(() => props.product?.categoryId ?? "");
+  const categoryTitle = computed(() => category.value?.title ?? "");
+  const categoryIconUrl = computed(() => category.value?.icon?.toUrl() ?? "");
+
+  watch(() => props.product, invalidate);
+  watch(() => categoryId.value, invalidate);
+
+  async function invalidate() {
+    category.value = undefined;
+    if (!props.product) return;
+    category.value = await props.product.fetchCategory();
+  }
+
+  onMounted(() => invalidate());
 </script>
 
 <template>

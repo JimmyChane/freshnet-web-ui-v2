@@ -1,41 +1,37 @@
-<script>
+<script setup lang="ts">
+  import { computed, onMounted, ref, watch } from "vue";
   import Section from "./ViewerProduct-Section.vue";
   import IconEdit from "@/assets/icon/edit-000000.svg";
+  import type { Brand } from "@/data/brand/Brand";
+  import type { Product } from "@/data/product/Product";
+  import type { Color } from "chroma-js";
 
-  export default {
-    components: { Section },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
-    },
-    data: (c) => ({ IconEdit, brand: null }),
-    computed: {
-      title: (c) => (c.product ? c.product.title : ""),
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    { allowEdit: false },
+  );
 
-      brandId: (c) => c.product?.brandId ?? "",
-      brandTitle: (c) => c.brand?.title ?? "",
-      brandIconUrl: (c) => c.brand?.icon?.toUrl() ?? "",
-    },
-    watch: {
-      product() {
-        this.invalidate();
-      },
-      brandId() {
-        this.invalidate();
-      },
-    },
-    mounted() {
-      this.invalidate();
-    },
-    methods: {
-      async invalidate() {
-        this.brand = null;
-        if (!this.product) return;
-        this.brand = await this.product.fetchBrand();
-      },
-    },
-  };
+  const brand = ref<Brand>();
+
+  const title = computed(() => props.product?.title ?? "");
+  const brandId = computed(() => props.product?.brandId ?? "");
+  const brandTitle = computed(() => brand.value?.title ?? "");
+  const brandIconUrl = computed(() => brand.value?.icon?.toUrl() ?? "");
+
+  watch(() => props.product, invalidate);
+  watch(() => brandId.value, invalidate);
+
+  async function invalidate() {
+    brand.value = undefined;
+    if (!props.product) return;
+    brand.value = await props.product.fetchBrand();
+  }
+
+  onMounted(() => invalidate());
 </script>
 
 <template>

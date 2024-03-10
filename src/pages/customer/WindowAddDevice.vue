@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
-  import Customer from "@/data/customer/Customer";
+  import { Customer } from "@/data/customer/Customer";
   import Selector3 from "@/components/selector/Selector3.vue";
   import WindowSection from "./WindowSection.vue";
   import SpecificationInputs from "./SpecificationInputs.vue";
-  import TextArea from "@/components/InputTextArea.vue";
-  import { PopupWindow, useStore } from "@/stores/store";
+  import TextArea from "@/components/input/InputTextArea.vue";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { useCategoryStore } from "@/data-stores/category.store";
   import { useSpecificationStore } from "@/data-stores/specification.store";
-  import Specification from "@/data/specification/Specification";
-  import { Menu } from "@/components/selector/Selector3/Menu";
+  import { Specification } from "@/data/specification/Specification";
+  import type { Menu } from "@/components/selector/Selector3/Menu";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import { computed } from "vue";
-  import { WindowRemoveOption } from "./WindowRemove";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { WindowRemoveOption } from "./WindowRemove";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
 
   const props = defineProps<{ popupWindow: PopupWindow<WindowRemoveOption> }>();
 

@@ -371,8 +371,8 @@ export class Product implements Item {
     if (brandTitle) return brandTitle;
     return "";
   }
-  async fetchCategory(): Promise<Category | null | undefined> {
-    if (!this.categoryId) return null;
+  async fetchCategory(): Promise<Category | undefined> {
+    if (!this.categoryId) return undefined;
     const categories: Category[] = await useCategoryStore().getItems();
     return categories.find((category) => category.id === this.categoryId);
   }

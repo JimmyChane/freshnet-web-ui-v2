@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import SettingModule from "@/data/setting/Setting";
+  import { Setting } from "@/data/setting/Setting";
   import ItemSettingHeader from "./ItemSetting-Header.vue";
   import ContactItem from "./ItemSettingContacts-Item.vue";
   import { onMounted, ref, watch } from "vue";
   import { useSettingStore } from "@/data-stores/setting.store";
-  import { Contact } from "@/data/Contact";
+  import { Contact } from "@/data/contact/Contact";
 
   const title = ref("Contacts (Readonly)");
   const values = ref<Contact[]>([]);
@@ -13,7 +13,7 @@
 
   async function invalidate() {
     values.value = await useSettingStore().findValueOfKey({
-      key: SettingModule.Key.Contacts,
+      key: Setting.Key.Contacts,
       default: [],
     });
   }

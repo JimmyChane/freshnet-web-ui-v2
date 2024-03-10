@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Loading from "@/components/Loading.vue";
+  import Loading from "@/components/loading/Loading.vue";
   import WindowRemove from "@/components/window/WindowRemove.vue";
   import PanelServices from "./PanelServices.vue";
   import PanelService from "./PanelService.vue";
@@ -16,17 +16,17 @@
   import { useLoginStore } from "@/stores/login.store";
   import { useServiceStore } from "@/data-stores/service.store";
   import { useRoute } from "vue-router";
-  import Service from "@/data/service/Service";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
-  import { Action } from "./PanelService";
+  import { Service } from "@/data/service/Service";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
+  import type { Action } from "./PanelService";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
   import { useRouteStore } from "@/stores/route.store";
   import { useImageViewerStore } from "@/stores/image-viewer.store";
-  import ServiceCustomer from "@/data/service/ServiceCustomer";
-  import ServiceBelonging from "@/data/service/ServiceBelonging";
-  import ServiceImage from "@/data/service/ServiceImage";
-  import ServiceEvent from "@/data/service/ServiceEvent";
+  import { ServiceCustomer } from "@/data/service/ServiceCustomer";
+  import { ServiceBelonging } from "@/data/service/ServiceBelonging";
+  import { ServiceImage } from "@/data/service/ServiceImage";
+  import { ServiceEvent } from "@/data/service/ServiceEvent";
 
   const route = useRoute();
 

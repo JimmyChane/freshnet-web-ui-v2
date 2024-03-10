@@ -1,43 +1,45 @@
-<script>
-  export default {
-    props: {
-      productSpecification: { type: Object, default: () => null },
-      isVertical: { type: Boolean, default: false },
-    },
-    data: (c) => ({ title: "", icon: "", content: "" }),
-    watch: {
-      productSpecification() {
-        this.invalidate();
-      },
-    },
-    mounted() {
-      this.invalidate();
-    },
-    methods: {
-      async invalidate() {
-        this.title = "";
-        this.icon = "";
-        this.content = "";
+<script setup lang="ts">
+  import { ref, watch, onMounted } from "vue";
+  import type { Specification } from "@/data/specification/Specification";
 
-        const type = (await this.productSpecification?.fetchType()) ?? null;
+  const props = withDefaults(
+    defineProps<{
+      productSpecification: Specification;
+      isVertical?: boolean;
+    }>(),
+    { isVertical: false },
+  );
 
-        this.title = type
-          ? type.title
-          : this.parseKeyToTitle(this.productSpecification.typeKey);
-        this.icon = type?.icon?.toUrl() ?? "";
-        this.content = this.productSpecification.content;
-      },
-      parseKeyToTitle(key = "") {
-        if (typeof key !== "string") key = "none";
-        if (key === "none") return "";
+  const title = ref("");
+  const icon = ref("");
+  const content = ref("");
 
-        return key.split(" ").reduce((title, text) => {
-          let result = text.charAt(0).toUpperCase() + text.slice(1);
-          return title === "" ? result : `${title} ${result}`;
-        }, "");
-      },
-    },
-  };
+  watch(() => props.productSpecification, invalidate);
+
+  async function invalidate() {
+    title.value = "";
+    icon.value = "";
+    content.value = "";
+
+    const type = (await props.productSpecification?.fetchType()) ?? null;
+
+    title.value = type
+      ? type.title
+      : parseKeyToTitle(props.productSpecification.typeKey);
+    icon.value = type?.icon?.toUrl() ?? "";
+    content.value = props.productSpecification.content;
+  }
+  function parseKeyToTitle(key = "") {
+    if (typeof key !== "string") key = "none";
+    if (key === "none") return "";
+
+    return key.split(" ").reduce((title, text) => {
+      let result = text.charAt(0).toUpperCase() + text.slice(1);
+      return title === "" ? result : `${title} ${result}`;
+    }, "");
+  }
+
+  onMounted(() => invalidate());
 </script>
 
 <template>

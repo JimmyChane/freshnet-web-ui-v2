@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { serverCloudinary } from "@/data/server/Server";
-  import Ps2Disc from "@/data/ps2/Ps2Disc";
+  import { Ps2Disc } from "@/data/ps2/Ps2Disc";
   import { computed } from "vue";
 
   const props = defineProps<{ item: Ps2Disc }>();

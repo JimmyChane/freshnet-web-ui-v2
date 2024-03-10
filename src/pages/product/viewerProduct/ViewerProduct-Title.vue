@@ -1,47 +1,49 @@
-<script>
+<script setup lang="ts">
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
   import IconEdit from "@/assets/icon/edit-000000.svg";
   import { isColorDark } from "@/U";
+  import type { Color } from "chroma-js";
+  import type { Product } from "@/data/product/Product";
+  import { computed, onMounted, ref, watch } from "vue";
 
-  export default {
-    components: { ButtonIcon },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    {
+      allowEdit: false,
     },
-    data: (c) => ({ IconEdit, fullTitle: "" }),
-    computed: {
-      titleColor: (c) =>
-        isColorDark(c.primaryColor)
-          ? "white"
-          : c.primaryColor.mix("000000", 0.98),
+  );
 
-      title: (c) => c.product?.title ?? "",
-      brandId: (c) => c.product?.brandId ?? "",
-    },
-    watch: {
-      product() {
-        this.invalidateProduct();
-      },
-    },
-    mounted() {
-      this.invalidateProduct();
-    },
-    methods: {
-      async invalidateProduct() {
-        this.fullTitle = "";
-        if (this.product) {
-          this.fullTitle = await this.product.fetchFullTitle();
-        }
-      },
-    },
-  };
+  const fullTitle = ref("");
+
+  const titleColor = computed(() => {
+    if (props.primaryColor && isColorDark(props.primaryColor)) {
+      return props.primaryColor.mix("000000", 0.98);
+    }
+
+    return "white";
+  });
+  const title = computed(() => props.product?.title ?? "");
+  const brandId = computed(() => props.product?.brandId ?? "");
+
+  watch(() => props.product, invalidateProduct);
+
+  async function invalidateProduct() {
+    fullTitle.value = "";
+    if (props.product) {
+      fullTitle.value = await props.product.fetchFullTitle();
+    }
+  }
+
+  onMounted(() => invalidateProduct());
 </script>
 
 <template>
   <div class="ViewerProduct-Title">
-    <span :style="{ color: titleColor }">{{ fullTitle }}</span>
+    <span :style="{ color: titleColor.toString() }">{{ fullTitle }}</span>
     <ButtonIcon
       class="ViewerProduct-button"
       v-if="allowEdit"

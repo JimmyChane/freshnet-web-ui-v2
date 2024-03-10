@@ -1,44 +1,41 @@
-<script>
-  export default {
-    name: "ItemObject",
-    props: {
-      item: { default: () => null },
-    },
-    computed: {
-      itemKeys: (c) => c.keys(c.item),
-    },
-    methods: {
-      shouldIncludeNextLine(item, key) {
-        return (
-          (this.isArray(item) && key < this.itemKeys.length - 1) ||
-          (this.isObject(item) &&
-            this.itemKeys.indexOf(key) !== this.itemKeys.length - 1)
-        );
-      },
+<script setup lang="ts">
+  import { computed } from "vue";
 
-      keys(value) {
-        return value !== undefined && value !== null ? Object.keys(value) : [];
-      },
-      isNull(value) {
-        return value === null;
-      },
-      isArray(value) {
-        return Array.isArray(value);
-      },
-      isObject(value) {
-        return typeof value === "object";
-      },
-      isBoolean(value) {
-        return typeof value === "boolean";
-      },
-      isNumber(value) {
-        return typeof value === "number";
-      },
-      isString(value) {
-        return typeof value === "string";
-      },
-    },
-  };
+  const props = defineProps<{ item: Record<string, any> }>();
+
+  const itemKeys = computed(() => {
+    return keys(props.item);
+  });
+
+  function shouldIncludeNextLine(item: Record<string, any>, key: string) {
+    return (
+      (isArray(item) && key < itemKeys.value.length - 1) ||
+      (isObject(item) &&
+        itemKeys.value.indexOf(key) !== itemKeys.value.length - 1)
+    );
+  }
+
+  function keys(value: Record<string, any>): string[] {
+    return value !== undefined && value !== null ? Object.keys(value) : [];
+  }
+  function isNull(value: any): boolean {
+    return value === null;
+  }
+  function isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+  function isObject(value: any): boolean {
+    return typeof value === "object";
+  }
+  function isBoolean(value: any): boolean {
+    return typeof value === "boolean";
+  }
+  function isNumber(value: any): boolean {
+    return typeof value === "number";
+  }
+  function isString(value: any): boolean {
+    return typeof value === "string";
+  }
 </script>
 
 <template>
@@ -62,8 +59,9 @@
       <span
         class="ItemObject-value"
         v-else-if="isBoolean(item[key]) || isNumber(item[key])"
-        >{{ item[key] }}</span
       >
+        {{ item[key] }}
+      </span>
       <span class="ItemObject-value" v-else>{{ `"${item[key]}"` }}</span>
 
       <span class="ItemObject-nextLine">{{

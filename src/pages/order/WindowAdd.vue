@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import Input from "@/components/Input.vue";
+  import Input from "@/components/input/Input.vue";
   import { useOrderStore } from "@/data-stores/order.store";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { ref } from "vue";
 

@@ -1,19 +1,16 @@
 <script setup lang="ts">
   import { format, formatDistanceToNow } from "date-fns";
-  import Method from "@/data/service/ServiceEventMethod";
   import MenuOption from "@/components/button/MenuOption.vue";
   import ImageView from "./ServiceEvent-Image.vue";
   import WindowUpdateEventDescription from "./WindowUpdateEventDescription.vue";
-
-  import Service from "@/data/service/Service";
-  import ServiceEvent from "@/data/service/ServiceEvent";
-  import ServiceEventMethod from "@/data/service/ServiceEventMethod";
-
+  import { Service } from "@/data/service/Service";
+  import { ServiceEvent } from "@/data/service/ServiceEvent";
+  import { ServiceEventMethod } from "@/data/service/ServiceEventMethod";
   import IconTrash from "@/assets/icon/trash-000000.svg";
   import { computed, onMounted, ref, watch } from "vue";
   import { useServiceStore } from "@/data-stores/service.store";
-  import ServiceImage from "@/data/service/ServiceImage";
-  import { Action } from "./PanelService";
+  import { ServiceImage } from "@/data/service/ServiceImage";
+  import type { Action } from "./PanelService";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
   import { useImageViewerStore } from "@/stores/image-viewer.store";
@@ -175,11 +172,11 @@
 
   function methodContext(property: string) {
     if (props.event.isInfo())
-      return (Method.INFO as Record<string, any>)[property];
+      return (ServiceEventMethod.INFO as Record<string, any>)[property];
     if (props.event.isQuotation())
-      return (Method.QUOTATION as Record<string, any>)[property];
+      return (ServiceEventMethod.QUOTATION as Record<string, any>)[property];
     if (props.event.isPurchase())
-      return (Method.PURCHASE as Record<string, any>)[property];
+      return (ServiceEventMethod.PURCHASE as Record<string, any>)[property];
     return null;
   }
 
@@ -230,9 +227,8 @@
             eventTime: time.value,
             image,
           };
-          const service = await useServiceStore().removeEventImage(
-            requestOption,
-          );
+          const service =
+            await useServiceStore().removeEventImage(requestOption);
           useImageViewerStore().close();
           accept();
         } catch (error) {
@@ -272,8 +268,10 @@
         <div class="ItemEvent-infos">
           <span v-for="(info, index) in infoTexts" :key="info">
             {{ info }}
-            <div class="ItemService-dot" v-if="index < infoTexts.length - 1">
-            </div>
+            <div
+              class="ItemService-dot"
+              v-if="index < infoTexts.length - 1"
+            ></div>
           </span>
         </div>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
-  import Input from "@/components/Input.vue";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import Input from "@/components/input/Input.vue";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref } from "vue";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();

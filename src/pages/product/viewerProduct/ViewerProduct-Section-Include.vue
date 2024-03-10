@@ -1,30 +1,34 @@
-<script>
+<script setup lang="ts">
+  import type { Color } from "chroma-js";
   import Section from "./ViewerProduct-Section.vue";
+  import type { Product } from "@/data/product/Product";
+  import { computed } from "vue";
+  import { isObjectOnly, optString } from "@/U";
 
-  export default {
-    components: { Section },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    {
+      allowEdit: false,
     },
-    computed: {
-      gifts: (c) => c.product?.gifts ?? [],
-      bundles: (c) => c.product?.bundles ?? [],
+  );
 
-      items: (c) => {
-        return [
-          ...c.gifts
-            .map((gift) => optString(gift).trim())
-            .filter((gift) => gift.length),
-          ...c.bundles
-            .filter((bundle) => isObjectOnly(bundle))
-            .map((bundle) => optString(bundle.title).trim())
-            .filter((bundle) => bundle.length),
-        ];
-      },
-    },
-  };
+  const gifts = computed(() => props.product?.gifts ?? []);
+  const bundles = computed(() => props.product?.bundles ?? []);
+  const items = computed(() => {
+    return [
+      ...gifts.value
+        .map((gift) => optString(gift).trim())
+        .filter((gift) => gift.length),
+      ...bundles.value
+        .filter((bundle) => isObjectOnly(bundle))
+        .map((bundle) => optString(bundle.title).trim())
+        .filter((bundle) => bundle.length),
+    ];
+  });
 </script>
 
 <template>

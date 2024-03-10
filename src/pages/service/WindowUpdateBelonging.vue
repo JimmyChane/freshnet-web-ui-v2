@@ -2,9 +2,9 @@
   import PanelAction from "@/components/panel/PanelAction.vue";
   import BelongingListEditVue from "./BelongingListEdit.vue";
   import { computed, onMounted, ref } from "vue";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { useServiceStore } from "@/data-stores/service.store";
-  import { ServiceBelongingData } from "@/data/service/ServiceBelonging";
+  import type { ServiceBelongingData } from "@/data/service/ServiceBelonging";
 
   const props = defineProps<{
     popupWindow: PopupWindow<ServiceBelongingData[]>;

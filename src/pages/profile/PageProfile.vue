@@ -1,71 +1,60 @@
-<script>
+<script setup lang="ts">
+  import { ref, computed, onMounted } from "vue";
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import Loading from "@/components/Loading.vue";
+  import Loading from "@/components/loading/Loading.vue";
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
-  import Input from "@/components/Input.vue";
   import Section from "./PageProfile-Section.vue";
   import SectionTitle from "./PageProfile-Section-Title.vue";
   import SectionMain from "./PageProfile-Section-Main.vue";
-
   import WindowChangePassword from "./WindowChangePassword.vue";
-
   import IconArrowDown from "@/assets/icon/arrowDown-000000.svg";
+  import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
+  import { useLoginStore } from "@/stores/login.store";
+  import type { User } from "@/data/user/User";
+  import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
 
-  export default {
-    components: {
-      NavigationBar,
-      Loading,
-      ButtonIcon,
-      Input,
-      Section,
-      SectionTitle,
-      SectionMain,
-    },
-    data: (c) => ({
-      IconArrowDown,
-      user: null,
-      isLoading: false,
-      scrollTop: 0,
-    }),
-    computed: {
-      name: (c) => c.user.name,
-      username: (c) => c.user.username,
-      typeDisplay() {
-        if (this.user.isTypeAdmin()) return "Admin";
-        if (this.user.isTypeStaff()) return "Staff";
-        if (this.user.isTypeCustomer()) return "Customer";
-        return "Other";
-      },
-    },
-    methods: {
-      openWindowChangePassword() {
-        const popupWindow = this.$store.dispatch("openPopupWindow", {
-          component: WindowChangePassword,
-        });
-      },
-    },
-    async mounted() {
-      this.isLoading = true;
-      await this.$store.state.stores.login
-        .dispatch("getUser")
-        .then((user) => {
-          this.isLoading = false;
-          this.user = user;
-        })
-        .catch((error) => {
-          this.$store.dispatch("snackbarShow", "Failed to validate");
-          this.isLoading = false;
-          this.user = null;
-        });
-    },
-  };
+  const user = ref<User>();
+  const isLoading = ref(false);
+  const scrollTop = ref(0);
+
+  const name = computed(() => user.value?.name);
+  const username = computed(() => user.value?.username);
+  const typeDisplay = computed(() => {
+    if (user.value?.isTypeAdmin()) return "Admin";
+    if (user.value?.isTypeStaff()) return "Staff";
+    if (user.value?.isTypeCustomer()) return "Customer";
+    return "Other";
+  });
+
+  function openWindowChangePassword() {
+    const popupWindow = usePopupWindowStore().open({
+      component: WindowChangePassword,
+    });
+  }
+
+  onMounted(async () => {
+    isLoading.value = true;
+    await useLoginStore()
+      .getUser()
+      .then((xUser) => {
+        isLoading.value = false;
+        user.value = xUser;
+      })
+      .catch((error) => {
+        useSnackbarStore().show("Failed to validate");
+        isLoading.value = false;
+        user.value = undefined;
+      });
+  });
 </script>
 
 <template>
   <div class="PageProfile">
     <div
       class="PageProfile-scroll"
-      @scroll="(event) => (scrollTop = event.target.scrollTop)"
+      @scroll="
+        (event) => (scrollTop = (event.target as HTMLDivElement).scrollTop)
+      "
     >
       <NavigationBar style="z-index: 2" :title="$options.title" />
 

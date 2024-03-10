@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import Selector3 from "@/components/selector/Selector3.vue";
-  import Input from "@/components/Input.vue";
+  import Input from "@/components/input/Input.vue";
   import { computed, onMounted, ref } from "vue";
   import { useBrandStore } from "@/data-stores/brand.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

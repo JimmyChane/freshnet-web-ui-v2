@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import ItemProduct from "./ItemProduct.vue";
   import { computed } from "vue";
   import { Mode } from "./ItemProduct";

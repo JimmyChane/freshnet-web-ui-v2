@@ -2,11 +2,11 @@
   import Actionbar from "./PanelService-Actionbar.vue";
   import AddEvent from "./PanelService-AddEvent.vue";
   import Events from "./PanelEvents.vue";
-  import State from "@/data/service/ServiceState";
-  import chroma, { Color } from "chroma-js";
-  import Service from "@/data/service/Service";
+  import { ServiceState } from "@/data/service/ServiceState";
+  import chroma, { type Color } from "chroma-js";
+  import { Service } from "@/data/service/Service";
   import { computed, onMounted, ref, watch } from "vue";
-  import { Action } from "./PanelService";
+  import type { Action } from "./PanelService";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { useWindowStore } from "@/stores/window.store";
 
@@ -35,8 +35,8 @@
   const isPhoneNumber = computed(() => !!phoneNumberStr.value);
 
   const description = computed(() => props.service?.description);
-  const belongings = computed(() =>
-    props.service?.belongings.map((belonging) => belonging),
+  const belongings = computed(
+    () => props.service?.belongings.map((belonging) => belonging),
   );
   const imageFiles = computed(() => props.service?.imageFiles);
 
@@ -44,7 +44,7 @@
   const stateColor = computed<Color>((c) => {
     if (!props.service) return chroma("white");
 
-    const state = State.findByKey(props.service.state);
+    const state = ServiceState.findByKey(props.service.state);
     return chroma(state?.primaryColor ?? "white");
   });
   const backgroundColor = computed(() => {
@@ -111,8 +111,7 @@
       :style="{ 'z-index': '2', 'grid-area': 'block' }"
       :isActionbarExpand="`${isActionbarExpand}`"
       @click="() => (isActionbarExpand = !isActionbarExpand)"
-    >
-    </div>
+    ></div>
 
     <div
       ref="scroll"

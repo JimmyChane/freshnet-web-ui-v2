@@ -1,7 +1,5 @@
-<script>
-  export default {
-    emits: ["click-file"],
-  };
+<script setup lang="ts">
+  const emits = defineEmits<{ clickFile: [FileList] }>();
 </script>
 
 <template>
@@ -18,7 +16,10 @@
         class="ProductViewerImageSelector-input"
         type="file"
         accept=".jpeg, .jpg, .png, .webp"
-        @change="(event) => $emit('click-file', event.target.files)"
+        @change="
+          (event) =>
+            emits('clickFile', (event.target as HTMLInputElement).files)
+        "
         multiple
       />
     </div>

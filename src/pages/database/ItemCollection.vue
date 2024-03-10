@@ -1,20 +1,12 @@
-<script>
+<script setup lang="ts">
   import ButtonIconText from "@/components/button/ButtonIconText.vue";
   import ItemObject from "./ItemObject.vue";
-
   import IconMinus from "@/assets/icon/minus-black.svg";
   import IconPlus from "@/assets/icon/plus-black.svg";
 
-  export default {
-    components: { ButtonIconText, ItemObject },
-    props: {
-      collection: { type: Object, default: () => null },
-      isExpand: { type: Boolean, default: false },
-    },
-    data() {
-      return { IconMinus, IconPlus };
-    },
-  };
+  withDefaults(defineProps<{ collection?: Object; isExpand?: boolean }>(), {
+    isExpand: false,
+  });
 </script>
 
 <template>

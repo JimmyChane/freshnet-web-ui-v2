@@ -1,33 +1,25 @@
-<script>
+<script setup lang="ts">
   import Section from "./ViewerProduct-Section.vue";
-  import Item from "./ViewerProduct-PriceEditor-item.vue";
-  import ProductPrice from "@/data/product/ProductPrice";
-
+  import Item from "./ViewerProduct-PriceEditor-Item.vue";
+  import { ProductPrice } from "@/data/product/ProductPrice";
   import IconEdit from "@/assets/icon/edit-000000.svg";
+  import { Product } from "@/data/product/Product";
+  import { computed } from "vue";
+  import type { Color } from "chroma-js";
 
-  export default {
-    components: { Section, Item },
-    props: {
-      product: { type: Object, default: () => null },
-      primaryColor: { type: Object },
-    },
-    data() {
-      return { IconEdit };
-    },
-    computed: {
-      price: (context) => context.product?.price ?? null,
-      priceNormal() {
-        const normal = this.product?.getPriceNormal() ?? null;
-        if (normal && normal.value >= 0) return normal;
-        return new ProductPrice().fromData({});
-      },
-      pricePromotion() {
-        const promotion = this.product?.getPricePromotion() ?? null;
-        if (promotion && promotion.value >= 0) return promotion;
-        return new ProductPrice().fromData({});
-      },
-    },
-  };
+  const props = defineProps<{ product?: Product; primaryColor?: Color }>();
+
+  const price = computed(() => props.product?.price ?? null);
+  const priceNormal = computed(() => {
+    const normal = props.product?.getPriceNormal() ?? null;
+    if (normal && normal.value >= 0) return normal;
+    return new ProductPrice().fromData();
+  });
+  const pricePromotion = computed(() => {
+    const promotion = props.product?.getPricePromotion() ?? null;
+    if (promotion && promotion.value >= 0) return promotion;
+    return new ProductPrice().fromData();
+  });
 </script>
 
 <template>

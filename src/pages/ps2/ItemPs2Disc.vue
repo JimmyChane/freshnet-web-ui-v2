@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import ImageView from "@/components/ImageView.vue";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
   import { serverCloudinary } from "@/data/server/Server";
-  import Ps2Disc from "@/data/ps2/Ps2Disc";
+  import { Ps2Disc } from "@/data/ps2/Ps2Disc";
   import { computed } from "vue";
 
   const props = defineProps<{ ps2Disc: Ps2Disc }>();

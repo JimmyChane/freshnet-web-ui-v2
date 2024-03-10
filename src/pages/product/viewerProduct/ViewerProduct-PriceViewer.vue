@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  import ProductPrice from "@/data/product/ProductPrice";
-  import SettingModule from "@/data/setting/Setting";
-
+  import { ProductPrice } from "@/data/product/ProductPrice";
+  import { Setting } from "@/data/setting/Setting";
   import Section from "./ViewerProduct-Section.vue";
-  import Product from "@/data/product/Product";
-  import { Color } from "chroma-js";
+  import { Product } from "@/data/product/Product";
+  import type { Color } from "chroma-js";
   import { computed, onMounted, ref, watch } from "vue";
   import { useSettingStore } from "@/data-stores/setting.store";
 
@@ -67,7 +66,7 @@
 
   async function invalidate() {
     settingShowPrice.value = await useSettingStore().findValueOfKey({
-      key: SettingModule.Key.PublicShowPrice,
+      key: Setting.Key.PublicShowPrice,
       default: false,
     });
   }

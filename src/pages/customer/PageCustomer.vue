@@ -1,8 +1,5 @@
 <script setup lang="ts">
-  import Loading from "@/components/Loading.vue";
-  import PopupWindow from "@/components/window/PopupWindow.vue";
-  import Input from "@/components/Input.vue";
-
+  import Loading from "@/components/loading/Loading.vue";
   import WindowAddCustomer from "./WindowAddCustomer.vue";
   import WindowRemoveCustomer from "./WindowRemoveCustomer.vue";
   import WindowUpdateCustomer from "./WindowUpdateCustomer.vue";
@@ -11,15 +8,13 @@
   import WindowRemoveDevice from "./WindowRemoveDevice.vue";
   import WindowUpdateDeviceSpecifications from "./WindowUpdateDeviceSpecifications.vue";
   import WindowUpdateDeviceDescription from "./WindowUpdateDeviceDescription.vue";
-
   import PanelCustomers from "./PanelCustomers.vue";
   import PanelCustomer from "./PanelCustomer.vue";
   import PanelRight from "@/components/panel/PanelRight.vue";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { useRoute } from "vue-router";
-  import Customer from "@/data/customer/Customer";
-  import { useStore } from "@/stores/store";
+  import { Customer } from "@/data/customer/Customer";
 
   const panelListened = ref({ isWide: false });
   const items = ref<Customer[]>([]);

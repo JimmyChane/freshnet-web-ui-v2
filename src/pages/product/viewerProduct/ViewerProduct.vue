@@ -6,25 +6,22 @@
   import SectionStock from "./ViewerProduct-Section-Stock.vue";
   import SectionCategory from "./ViewerProduct-Section-Category.vue";
   import SectionPlaylist from "./ViewerProduct-Section-Playlist.vue";
-
   import Tabs from "./ViewerProduct-Tabs.vue";
   import Title from "./ViewerProduct-Title.vue";
   import ProductViewerImagePreview from "./ViewerProduct-ImagePreview.vue";
   import ProductViewerImages from "./ViewerProduct-Images.vue";
   import BottomActionbar from "./ViewerProduct-BottomActionbar.vue";
-
   import { Type } from "@/data/specification/Specification";
-  import SettingModule from "@/data/setting/Setting";
+  import { Setting } from "@/data/setting/Setting";
   import Actionbar from "@/components/actionbar/Actionbar.vue";
   import chroma from "chroma-js";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, onUnmounted, ref, watch } from "vue";
   import { useSettingStore } from "@/data-stores/setting.store";
-  import { useStore } from "@/stores/store";
   import { useProductStore } from "@/data-stores/product.store";
   import { isObjectOnly, optString, trimText } from "@/U";
   import { useImageViewerStore } from "@/stores/image-viewer.store";
-  import { Tab } from "./Tab";
+  import type { Tab } from "./Tab";
 
   const emits = defineEmits<{
     "click-product-imageRemove": [void];
@@ -208,7 +205,7 @@
 
   async function invalidateSettings() {
     settingShowPrice.value = await useSettingStore().findValueOfKey({
-      key: SettingModule.Key.PublicShowPrice,
+      key: Setting.Key.PublicShowPrice,
       default: false,
     });
   }

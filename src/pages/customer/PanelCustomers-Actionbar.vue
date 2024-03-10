@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import SearchInput from "@/components/SearchInput.vue";
+  import SearchInput from "@/components/search/SearchInput.vue";
   import ItemCustomerSearch from "./ItemCustomerSearch.vue";
   import Searcher from "@/data/Searcher";
   import TabLayout from "@/components/tabLayout/TabLayout.vue";
@@ -9,9 +9,8 @@
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
   import { computed, ref } from "vue";
   import { useRoute } from "vue-router";
-  import Customer from "@/data/customer/Customer";
-  import { useStore } from "@/stores/store";
-  import { Tab } from "@/components/tabLayout/TabLayout";
+  import { Customer } from "@/data/customer/Customer";
+  import type { Tab } from "@/components/tabLayout/TabLayout";
   import { optString } from "@/U";
 
   const emits = defineEmits<{ clickItemAdd: [void]; clickRefresh: [void] }>();

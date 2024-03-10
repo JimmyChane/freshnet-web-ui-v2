@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Customer from "@/data/customer/Customer";
+  import { Customer } from "@/data/customer/Customer";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { onMounted, ref, watch } from "vue";
 

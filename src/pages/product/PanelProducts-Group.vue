@@ -2,7 +2,7 @@
   import Arrow from "./PanelProducts-Group-Arrow.vue";
   import ItemProduct from "./ItemProduct.vue";
   import { computed, ref } from "vue";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
 
   const props = withDefaults(
     defineProps<{

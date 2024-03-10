@@ -1,14 +1,12 @@
 <script setup lang="ts">
   import { Mode } from "./ItemProduct";
-
-  import Setting from "@/data/setting/Setting";
-  import ProductPrice from "@/data/product/ProductPrice";
-  import ProductPreset from "@/data/ProductPreset";
-
-  import ImageView from "@/components/ImageView.vue";
+  import { Setting } from "@/data/setting/Setting";
+  import { ProductPrice } from "@/data/product/ProductPrice";
+  import { ProductPreset } from "@/data/ProductPreset";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
   import Label from "./ItemProduct-Label.vue";
   import chroma from "chroma-js";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { useSettingStore } from "@/data-stores/setting.store";

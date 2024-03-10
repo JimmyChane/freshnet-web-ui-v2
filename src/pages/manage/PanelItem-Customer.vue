@@ -2,7 +2,7 @@
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
   import IconHamburgerMenu from "@/assets/icon/hamburgerMenu-000000.svg";
   import { computed } from "vue";
-  import ServiceCustomer from "@/data/service/ServiceCustomer";
+  import { ServiceCustomer } from "@/data/service/ServiceCustomer";
 
   const emits = defineEmits<{ clickEdit: [void] }>();
   const props = withDefaults(

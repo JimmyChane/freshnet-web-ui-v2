@@ -1,22 +1,21 @@
-<script>
+<script setup lang="ts">
+  import { computed } from "vue";
+  import type { Product } from "@/data/product/Product";
   import Section from "./ViewerProduct-Section.vue";
   import IconEdit from "@/assets/icon/edit-000000.svg";
+  import type { Color } from "chroma-js";
 
-  export default {
-    components: { Section },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
-    },
-    data() {
-      return { IconEdit };
-    },
-    computed: {
-      title: (c) => c.product?.title ?? "",
-      brandId: (c) => c.product?.brandId ?? "",
-    },
-  };
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    { allowEdit: false },
+  );
+
+  const title = computed(() => props.product?.title ?? "");
+  const brandId = computed(() => props.product?.brandId ?? "");
 </script>
 
 <template>

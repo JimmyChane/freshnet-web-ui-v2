@@ -2,7 +2,7 @@
   import PanelAction from "@/components/panel/PanelAction.vue";
   import Selector4 from "@/components/selector/Selector4.vue";
   import { useCategoryStore } from "@/data-stores/category.store";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { computed, onMounted, ref } from "vue";
 

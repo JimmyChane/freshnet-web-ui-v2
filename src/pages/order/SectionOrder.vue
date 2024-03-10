@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Order from "@/data/order/Order";
+  import { Order } from "@/data/order/Order";
   import ItemOrder from "./ItemOrder.vue";
 
   const emits = defineEmits<{

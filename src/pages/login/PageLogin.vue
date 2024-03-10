@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import Loading from "@/components/Loading.vue";
-  import Input from "@/components/Input.vue";
+  import Loading from "@/components/loading/Loading.vue";
+  import Input from "@/components/input/Input.vue";
   import Actionbar from "@/components/actionbar/Actionbar.vue";
-  import Footer from "@/app/footer/Footer.vue";
+  import Footer from "@/app/footer/AppFooter.vue";
 
   import ButtonLogin from "./ButtonLogin.vue";
   import Logo from "@/assets/logo/freshnet-enterprise-logo.svg";
@@ -10,7 +10,6 @@
   import { computed, onMounted, ref } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { useRoute, useRouter } from "vue-router";
-  import { useStore } from "@/stores/store";
   import { useNavigationStore } from "@/stores/navigation/navigation.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
@@ -61,7 +60,9 @@
 <template>
   <div
     class="PageLogin"
-    @scroll="(event) => (top.shadow = (event.target as HTMLDivElement).scrollTop > 0)"
+    @scroll="
+      (event) => (top.shadow = (event.target as HTMLDivElement).scrollTop > 0)
+    "
   >
     <Loading class="PageLogin-Loading" :isShowing="isLoading" />
 

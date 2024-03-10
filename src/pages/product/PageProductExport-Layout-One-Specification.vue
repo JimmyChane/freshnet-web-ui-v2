@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Specification from "@/data/specification/Specification";
+  import { Specification } from "@/data/specification/Specification";
   import { onMounted, ref, watch } from "vue";
 
   const props = defineProps<{ item: Specification }>();

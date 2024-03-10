@@ -1,16 +1,13 @@
 <script setup lang="ts">
   import chroma from "chroma-js";
-  import MenuVue from "@/components/Menu.vue";
+  import MenuVue from "@/components/menu/Menu.vue";
   import AddImage from "./PanelService-AddEvent-AddImage.vue";
-  import Method from "@/data/service/ServiceEventMethod";
-
-  import { Width, Corner, Alignment } from "@/app/popupMenu/PopupMenuOption";
+  import { ServiceEventMethod } from "@/data/service/ServiceEventMethod";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
-  import { useStore } from "@/stores/store";
   import { useServiceStore } from "@/data-stores/service.store";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
-  import ServiceEvent, { ServiceEventData } from "@/data/service/ServiceEvent";
+  import { Width, type Menu, Alignment } from "@/stores/popup-menu/PopupMenu";
+  import { type ServiceEventData } from "@/data/service/ServiceEvent";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
   const emits = defineEmits<{ clickSubmit: [ServiceEventData] }>();
@@ -21,7 +18,7 @@
   const eventImagePreviews = ref([]);
 
   const nameOfUser = ref("unknown");
-  const eventMethod = ref(Method.QUOTATION.key);
+  const eventMethod = ref(ServiceEventMethod.QUOTATION.key);
   const eventDescription = ref("");
   const eventStatus = ref("");
   const eventAmount = ref(0);
@@ -44,12 +41,14 @@
   const primaryColor1 = computed(() => primaryColor.value?.mix("ffffff", 0.45));
   const primaryColor2 = computed(() => primaryColor.value?.mix("ffffff", 0.6));
 
-  const isMethodInfo = computed(() => eventMethod.value === Method.INFO.key);
+  const isMethodInfo = computed(
+    () => eventMethod.value === ServiceEventMethod.INFO.key,
+  );
   const isMethodQuotation = computed(
-    () => eventMethod.value === Method.QUOTATION.key,
+    () => eventMethod.value === ServiceEventMethod.QUOTATION.key,
   );
   const isMethodPurchase = computed(
-    () => eventMethod.value === Method.PURCHASE.key,
+    () => eventMethod.value === ServiceEventMethod.PURCHASE.key,
   );
 
   const methodMenu = computed(() =>
@@ -58,7 +57,7 @@
   const methodMenus = computed(() => {
     return [
       {
-        key: Method.QUOTATION.key,
+        key: ServiceEventMethod.QUOTATION.key,
         title: "Quotation",
         color: chroma("961d96").toString(),
         click: (menu) => {
@@ -67,7 +66,7 @@
         },
       },
       {
-        key: Method.PURCHASE.key,
+        key: ServiceEventMethod.PURCHASE.key,
         title: "Purchase",
         color: chroma("258915").toString(),
         click: (menu) => {
@@ -263,11 +262,12 @@
         class="transition"
         :style="{ 'grid-area': 'enter' }"
         @click="() => submit()"
-        >Enter</button
       >
-      <button :style="{ 'grid-area': 'clear' }" @click="() => clear()"
-        >Discard</button
-      >
+        Enter
+      </button>
+      <button :style="{ 'grid-area': 'clear' }" @click="() => clear()">
+        Discard
+      </button>
     </div>
 
     <div class="AddEvent-status" :style="{ 'grid-area': 'status' }">
@@ -280,14 +280,18 @@
           placeholder="0.00"
           @input="
             (event) => {
-              let amount = Number.parseFloat((event.target as HTMLInputElement).value);
+              let amount = Number.parseFloat(
+                (event.target as HTMLInputElement).value,
+              );
               if (Number.isNaN(amount)) amount = 0;
               eventAmount = amount;
             }
           "
           @change="
             (event) => {
-              let amount = Number.parseFloat((event.target as HTMLInputElement).value);
+              let amount = Number.parseFloat(
+                (event.target as HTMLInputElement).value,
+              );
               if (Number.isNaN(amount)) amount = 0;
               eventAmount = amount;
             }

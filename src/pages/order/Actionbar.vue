@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import SearchInput from "@/components/SearchInput.vue";
+  import SearchInput from "@/components/search/SearchInput.vue";
   import ItemSearch from "./ItemOrderSearch.vue";
-  import Searcher, { Countable } from "@/data/Searcher";
+  import Searcher, { type Countable } from "@/data/Searcher";
   import IconAdd from "@/assets/icon/add-000000.svg";
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
   import { ref } from "vue";

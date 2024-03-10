@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ImageView from "@/components/ImageView.vue";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
   import MenuOption from "@/components/button/MenuOption.vue";
 
   const emits = defineEmits<{ click: [string]; clickRemove: [string] }>();

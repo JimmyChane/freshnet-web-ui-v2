@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { Type } from "@/data/specification/Specification";
   import ItemSpecification from "./PageProductExport-Layout-Two-Specification.vue";
-  import ProductPrice from "@/data/product/ProductPrice";
-  import Product from "@/data/product/Product";
+  import { ProductPrice } from "@/data/product/ProductPrice";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { isObjectOnly, optString } from "@/U";

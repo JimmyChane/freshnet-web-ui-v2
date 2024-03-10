@@ -1,14 +1,11 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
-  import LoadingDots from "@/components/LoadingDots.vue";
+  import LoadingDots from "@/components/loading/LoadingDots.vue";
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
   import Empty from "@/components/Empty.vue";
-  import PopupWindow from "@/components/window/PopupWindow.vue";
-  import Footer from "@/app/footer/Footer.vue";
-
+  import Footer from "@/app/footer/AppFooter.vue";
   import WindowItemPs2Disc from "./WindowItemPs2Disc.vue";
   import ItemPs2Disc from "./ItemPs2Disc.vue";
-
   import IconHamburgerMenu from "@/assets/icon/hamburgerMenu-000000.svg";
   import IconClose from "@/assets/icon/close-2A4858.svg";
   import IconSearch from "@/assets/icon/search-2A4858.svg";
@@ -16,10 +13,10 @@
   import { computed, onMounted, ref } from "vue";
   import { usePs2Store } from "@/data-stores/ps2.store";
   import { useRoute } from "vue-router";
-  import { useStore } from "@/stores/store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { useRouteStore } from "@/stores/route.store";
   import { useNavigationStore } from "@/stores/navigation/navigation.store";
+  import PopupWindow from "@/stores/popup-window/components/PopupWindow.vue";
 
   const route = useRoute();
 

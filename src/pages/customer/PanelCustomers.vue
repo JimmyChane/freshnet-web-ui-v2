@@ -1,14 +1,11 @@
 <script setup lang="ts">
   import Actionbar from "./PanelCustomers-Actionbar.vue";
   import ItemCustomer from "./ItemCustomer.vue";
-
   import Empty from "@/components/Empty.vue";
-
   import PageCustomer from "@/pages/customer/PageCustomer.vue";
-
   import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
   import { computed, ref } from "vue";
-  import Customer from "@/data/customer/Customer";
+  import { Customer } from "@/data/customer/Customer";
   import { useRoute } from "vue-router";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { optString } from "@/U";

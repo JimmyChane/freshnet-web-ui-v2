@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ServiceBelonging from "@/data/service/ServiceBelonging";
+  import { ServiceBelonging } from "@/data/service/ServiceBelonging";
   import { computed } from "vue";
 
   const props = defineProps<{ belonging: ServiceBelonging }>();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Label from "@/data/ServiceLabel";
+  import { Label } from "@/data/service/ServiceLabel";
   import { computed } from "vue";
 
   const props = withDefaults(

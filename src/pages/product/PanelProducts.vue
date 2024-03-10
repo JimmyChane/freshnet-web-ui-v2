@@ -1,30 +1,25 @@
 <script setup lang="ts">
   import Empty from "@/components/Empty.vue";
-  import LoadingDots from "@/components/LoadingDots.vue";
-  import Footer from "@/app/footer/Footer.vue";
-
+  import LoadingDots from "@/components/loading/LoadingDots.vue";
+  import Footer from "@/app/footer/AppFooter.vue";
   import TabLayout from "./PanelProducts-TabLayout.vue";
   import CategoryTab from "./PanelProducts-CategoryTab.vue";
   import BrandTab from "./PanelProducts-BrandTab.vue";
-
   import ActionbarProduct from "./ActionBarProduct.vue";
   import ItemProduct from "./ItemProduct.vue";
   import ProductGroup from "./PanelProducts-Group.vue";
   import chroma from "chroma-js";
-
   import IconAdd from "@/assets/icon/add-000000.svg";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, ref, watch } from "vue";
   import { useProductStore } from "@/data-stores/product.store";
-  import { useStore } from "@/stores/store";
-  import { useRoute } from "vue-router";
   import { useLoginStore } from "@/stores/login.store";
   import { useCategoryStore } from "@/data-stores/category.store";
-  import Image from "@/data/Image";
-
+  import { Image } from "@/data/Image";
   import ProductIcon from "@/assets/icon/products-2A4858.svg";
   import { useRouteStore } from "@/stores/route.store";
   import { useWindowStore } from "@/stores/window.store";
+  import { useRoute } from "vue-router";
 
   const route = useRoute();
 

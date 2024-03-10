@@ -1,84 +1,70 @@
-<script>
-  import Loading from "@/components/Loading.vue";
+<script setup lang="ts">
+  import { ref, watch } from "vue";
+  import Loading from "@/components/loading/Loading.vue";
   import Empty from "@/components/Empty.vue";
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import ItemDatabase from "./ItemDatabase.vue";
-
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
+  import { useLoginStore } from "@/stores/login.store";
+  import { useDatabaseStore } from "@/data-stores/database.store";
+  import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
-  export default {
-    components: { Loading, Empty, NavigationBar, ItemDatabase },
-    data: (c) => ({
-      IconRefresh,
-      scrollTop: 0,
-      imports: { data: null },
-      addDatabase: { isShowing: false },
-    }),
-    computed: {
-      isLoading: (c) => {
-        const loginStore = c.$store.state.stores.login;
-        const databaseStore = c.$store.state.stores.database;
-        return loginStore.getters.isLoading || databaseStore.getters.isLoading;
-      },
-      user: (c) => c.$store.state.stores.login.getters.user,
-      baseInfo: (c) => c.$store.state.stores.database.getters.baseInfo,
-      databases: (c) => c.$store.state.stores.database.getters.items,
-    },
-    mounted() {
-      this.$store.state.stores.login
-        .dispatch("refresh")
-        .then(() => {
-          this.actionRefresh();
-        })
-        .catch((error) => {
-          this.$store.dispatch(
-            "snackbarShow",
-            "Your login credential could be invalid",
-          );
-          throw error;
-        });
-    },
-    watch: {
-      user() {
-        this.actionRefresh();
-      },
-    },
-    methods: {
-      importDataFile(file) {
-        if (!file) {
-          this.imports.data = null;
-          return;
+  const loginStore = useLoginStore();
+  const databaseStore = useDatabaseStore();
+  const snackbarStore = useSnackbarStore();
+
+  const scrollTop = ref(0);
+  const imports = ref({ data: null });
+  const addDatabase = ref({ isShowing: false });
+
+  const isLoading = () => loginStore.isLoading || databaseStore.isLoading;
+  const user = () => loginStore.user;
+  const baseInfo = () => databaseStore.baseInfo;
+  const databases = () => databaseStore.items;
+
+  watch(() => user.value, actionRefresh);
+
+  function importDataFile(file) {
+    if (!file) {
+      imports.value.data = null;
+      return;
+    }
+    let reader = new FileReader();
+    reader.onload = (event) => {
+      imports.value.data = reader.result;
+
+      databaseStore.imports({ json: reader.result });
+    };
+    reader.readAsText(file);
+  }
+  function actionAddDatabase() {
+    addDatabase.value.isShowing = true;
+  }
+  function actionRefresh() {
+    return Promise.resolve()
+      .then(() => {
+        if (user.value === null || !user.value.isTypeAdmin()) {
+          throw new Error();
         }
-        let reader = new FileReader();
-        reader.onload = (event) => {
-          this.imports.data = reader.result;
+        return databaseStore.loadBaseInfo();
+      })
+      .catch((error) => {
+        snackbarStore.show("Error Loading Databases");
+        throw error;
+      });
+  }
 
-          this.$store.state.stores.database.dispatch("imports", {
-            json: reader.result,
-          });
-        };
-        reader.readAsText(file);
-      },
-
-      actionAddDatabase() {
-        this.addDatabase.isShowing = true;
-      },
-
-      actionRefresh() {
-        return Promise.resolve()
-          .then(() => {
-            if (this.user === null || !this.user.isTypeAdmin()) {
-              throw new Error();
-            }
-            return this.$store.state.stores.database.dispatch("loadBaseInfo");
-          })
-          .catch((error) => {
-            this.$store.dispatch("snackbarShow", "Error Loading Databases");
-            throw error;
-          });
-      },
-    },
-  };
+  onMounted(() => {
+    loginStore
+      .refresh()
+      .then(() => {
+        actionRefresh();
+      })
+      .catch((error) => {
+        snackbarStore.show("Your login credential could be invalid");
+        throw error;
+      });
+  });
 </script>
 
 <template>

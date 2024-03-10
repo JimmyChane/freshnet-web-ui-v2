@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import MenuOption from "@/components/button/MenuOption.vue";
-  import ImageView from "@/components/ImageView.vue";
-  import ServiceEvent from "@/data/service/ServiceEvent";
-  import ServiceEventMethod from "@/data/service/ServiceEventMethod";
-  import ServiceImage from "@/data/service/ServiceImage";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
+  import { ServiceEvent } from "@/data/service/ServiceEvent";
+  import { ServiceEventMethod } from "@/data/service/ServiceEventMethod";
+  import { ServiceImage } from "@/data/service/ServiceImage";
   import { computed } from "vue";
 
   const emits = defineEmits<{

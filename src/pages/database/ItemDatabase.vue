@@ -6,8 +6,9 @@
   import IconMinus from "@/assets/icon/minus-black.svg";
   import IconPlus from "@/assets/icon/plus-black.svg";
   import { computed, ref } from "vue";
-  import { useStore } from "@/stores/store";
-  import { useDatabaseStore } from "@/stores/database.store";
+  import { pushDownload } from "@/U";
+  import { useDatabaseStore } from "@/data-stores/database.store";
+  import { useWindowStore } from "@/stores/window.store";
 
   const props = defineProps<{
     database?: Object;
@@ -43,7 +44,7 @@
       .then((databaseContext) => {
         let { filename, data } = databaseContext;
         let dataString = JSON.stringify(data, null, 0);
-        useStore().pushDownload(filename, dataString);
+        pushDownload(filename, dataString);
       });
   }
 </script>

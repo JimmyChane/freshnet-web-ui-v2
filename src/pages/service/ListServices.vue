@@ -1,13 +1,11 @@
 <script setup lang="ts">
   import ItemService from "./item-service/ItemService.vue";
   import FloatingTimestamp from "./FloatingTimestamp.vue";
-
   import { format } from "date-fns";
   import { Mode } from "./item-service/ItemServiceMode";
   import { SortMode, GroupMode } from "./ListServicesOption";
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
   import { computed, ref, watch } from "vue";
-  import { useStore } from "@/stores/store";
   import { useWindowStore } from "@/stores/window.store";
 
   const emits = defineEmits<{ clickItem: [Service] }>();

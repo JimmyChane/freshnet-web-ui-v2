@@ -1,80 +1,83 @@
-<script>
-   import Section from "./ViewerProduct-Section.vue";
-   import ItemProductSuggest from "./ViewerProduct-Section-Playlist-Item.vue";
+<script setup lang="ts">
+  import { ref, computed } from "vue";
+  import Section from "./ViewerProduct-Section.vue";
+  import ItemProductSuggest from "./ViewerProduct-Section-Playlist-Item.vue";
+  import type { Product } from "@/data/product/Product";
+  import type { Color } from "chroma-js";
 
-   export default {
-      components: { Section, ItemProductSuggest },
-      props: {
-         primaryColor: { type: Object },
-         allowEdit: { type: Boolean, default: false },
-         product: { type: Object, default: () => null },
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+      previousProduct?: Product;
+      nextProduct?: Product;
+    }>(),
+    { allowEdit: false },
+  );
 
-         previousProduct: { type: Object, default: () => null },
-         nextProduct: { type: Object, default: () => null },
-      },
-      computed: {
-         previousProductId: (c) => c.previousProduct?.id ?? "",
-         nextProductId: (c) => c.nextProduct?.id ?? "",
-      },
-      methods: {
-         clickPreviousProduct() {
-            const ref = this.$refs.keyprevious;
-            if (!ref) return;
-            ref.$el.click();
-         },
-         clickNextProduct() {
-            const ref = this.$refs.keynext;
-            if (!ref) return;
-            ref.$el.click();
-         },
-      },
-   };
+  const keyprevious = ref();
+  const keynext = ref();
+
+  const previousProductId = computed(() => props.previousProduct?.id ?? "");
+  const nextProductId = computed(() => props.nextProduct?.id ?? "");
+
+  function clickPreviousProduct() {
+    const ref = keyprevious.value;
+    if (!ref) return;
+    ref.$el.click();
+  }
+  function clickNextProduct() {
+    const ref = keynext.value;
+    if (!ref) return;
+    ref.$el.click();
+  }
 </script>
 
 <template>
-   <Section
-      class="SectionPlaylist"
-      v-if="nextProduct || previousProduct"
-      :primaryColor="primaryColor"
-   >
-      <div class="SectionPlaylist-playlist">
-         <ItemProductSuggest
-            v-if="previousProduct"
-            ref="keyprevious"
-            title="Previous"
-            :item="previousProduct"
-            :to="{ query: { productId: previousProductId } }"
-         />
-         <ItemProductSuggest
-            v-if="nextProduct"
-            ref="keynext"
-            title="Next"
-            :item="nextProduct"
-            :to="{ query: { productId: nextProductId } }"
-         />
-      </div>
-   </Section>
+  <Section
+    class="SectionPlaylist"
+    v-if="nextProduct || previousProduct"
+    :primaryColor="primaryColor"
+  >
+    <div class="SectionPlaylist-playlist">
+      <ItemProductSuggest
+        v-if="previousProduct"
+        ref="keyprevious"
+        title="Previous"
+        :item="previousProduct"
+        :to="{ query: { productId: previousProductId } }"
+      />
+      <ItemProductSuggest
+        v-if="nextProduct"
+        ref="keynext"
+        title="Next"
+        :item="nextProduct"
+        :to="{ query: { productId: nextProductId } }"
+      />
+    </div>
+  </Section>
 </template>
 
 <style lang="scss" scoped>
-   .SectionPlaylist {
-      grid-area: playlist;
+  .SectionPlaylist {
+    grid-area: playlist;
+    width: 100%;
+    max-width: 50rem;
+    margin-top: 4rem;
+
+    display: flex;
+    flex-direction: column;
+
+    .SectionPlaylist-playlist {
       width: 100%;
-      max-width: 50rem;
-      margin-top: 4rem;
+      overflow: hidden;
 
       display: flex;
-      flex-direction: column;
-
-      .SectionPlaylist-playlist {
-         width: 100%;
-         overflow: hidden;
-
-         display: flex;
-         flex-direction: row;
-         flex-wrap: wrap;
-         justify-content: space-between;
-         gap: 3px;
-      }
-   }
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 3px;
+    }
+  }
 </style>

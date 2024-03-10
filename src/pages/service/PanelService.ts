@@ -1,8 +1,11 @@
-import ServiceEvent, { ServiceEventData } from "@/data/service/ServiceEvent";
-import ServiceImage from "@/data/service/ServiceImage";
-import ServiceCustomer from "@/data/service/ServiceCustomer";
-import ServiceBelonging from "@/data/service/ServiceBelonging";
-import Service from "@/data/service/Service";
+import type {
+  ServiceEvent,
+  ServiceEventData,
+} from "@/data/service/ServiceEvent";
+import { ServiceImage } from "@/data/service/ServiceImage";
+import { ServiceCustomer } from "@/data/service/ServiceCustomer";
+import { ServiceBelonging } from "@/data/service/ServiceBelonging";
+import { Service } from "@/data/service/Service";
 
 export interface Action {
   onClickClose: () => void;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, ref, watch } from "vue";
   import TabVue from "./ViewerProduct-Tabs-Tab.vue";
-  import { Tab } from "./Tab";
+  import type { Tab } from "./Tab";
 
   const emits = defineEmits<{ clickItem: [Tab] }>();
   const props = defineProps<{ items: Tab[] }>();

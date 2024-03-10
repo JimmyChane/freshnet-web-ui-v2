@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { optArray } from "@/U";
   import BelongingListEditItem from "./BelongingListEdit-Item.vue";
-  import ServiceBelonging, {
-    ServiceBelongingData,
+  import {
+    ServiceBelonging,
+    type ServiceBelongingData,
   } from "@/data/service/ServiceBelonging";
   import { onMounted, ref, watch } from "vue";
 

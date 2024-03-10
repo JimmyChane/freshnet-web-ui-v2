@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Customer from "@/data/customer/Customer";
+  import { Customer } from "@/data/customer/Customer";
   import { computed } from "vue";
 
   const props = defineProps<{ item?: Customer }>();

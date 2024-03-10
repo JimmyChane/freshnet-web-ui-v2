@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import BelongingListEditVue from "./BelongingListEdit.vue";
-  import { ServiceBelongingData } from "@/data/service/ServiceBelonging";
+  import type { ServiceBelongingData } from "@/data/service/ServiceBelonging";
 
   withDefaults(defineProps<{ belongings?: ServiceBelongingData[] }>(), {
     belongings: () => [],

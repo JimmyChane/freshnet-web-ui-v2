@@ -1,31 +1,35 @@
-<script>
+<script setup lang="ts">
+  import { computed } from "vue";
+  import type { Color } from "chroma-js";
   import Section from "./ViewerProduct-Section.vue";
   import IconEdit from "@/assets/icon/edit-000000.svg";
+  import type { Product } from "@/data/product/Product";
 
-  export default {
-    components: { Section },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
-    },
-    computed: {
-      description: (c) => c.product?.description ?? "",
+  const emits = defineEmits<{
+    clickEdit: [{ product?: Product; description: string }];
+  }>();
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    { allowEdit: false },
+  );
 
-      menu() {
-        if (!this.allowEdit) return null;
-        return {
-          title: "Edit",
-          icon: IconEdit,
-          click: () =>
-            this.$emit("click-edit", {
-              product: this.product,
-              description: this.description,
-            }),
-        };
-      },
-    },
-  };
+  const description = computed(() => props.product?.description ?? "");
+  const menu = computed(() => {
+    if (!props.allowEdit) return undefined;
+    return {
+      title: "Edit",
+      icon: IconEdit,
+      click: () =>
+        emits("clickEdit", {
+          product: props.product,
+          description: description.value,
+        }),
+    };
+  });
 </script>
 
 <template>

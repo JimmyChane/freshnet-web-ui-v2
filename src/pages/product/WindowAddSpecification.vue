@@ -2,7 +2,7 @@
   import WindowAction from "@/components/window/WindowAction.vue";
   import Spinner from "@/components/selector/Spinner.vue";
   import { Type } from "@/data/specification/Specification";
-  import Input from "@/components/Input.vue";
+  import Input from "@/components/input/Input.vue";
   import { computed, ref } from "vue";
   import { useSpecificationStore } from "@/data-stores/specification.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";

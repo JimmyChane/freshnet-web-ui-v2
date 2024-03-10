@@ -1,79 +1,79 @@
-<script>
+<script setup lang="ts">
   import WindowAdd from "./WindowAdd.vue";
-  import Loading from "@/components/Loading.vue";
-  import Input from "@/components/Input.vue";
-
+  import Loading from "@/components/loading/Loading.vue";
   import Actionbar from "./Actionbar.vue";
   import SectionOrder from "./SectionOrder.vue";
+  import { Order } from "@/data/order/Order";
+  import { useRoute } from "vue-router";
+  import { computed, onMounted, ref, watch } from "vue";
+  import { useOrderStore } from "@/data-stores/order.store";
+  import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
+  import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
+  import { optArray } from "@/U";
+  import { useRouteStore } from "@/stores/route.store";
 
-  import Order from "@/data/order/Order";
+  const route = useRoute();
 
-  export default {
-    name: "ViewOrder",
-    components: { Loading, Actionbar, SectionOrder, Input },
-    data: (c) => ({
-      display: { showDialogAppendOrder: false },
+  const display = ref({ showDialogAppendOrder: false });
 
-      scrollTop: 0,
+  const scrollTop = ref(0);
+  const pendingItems = ref<Order[]>([]);
+  const completedItems = ref<Order[]>([]);
 
-      pendingItems: [],
-      completedItems: [],
-    }),
-    computed: {
-      isLoading: (c) => c.$store.state.stores.order.getters.isLoading,
-      items: (c) => optArray(c.$store.state.stores.order.getters.items),
-      currentExpandedOrderid: (c) => c.$route.query.order,
-    },
-    watch: {
-      "$store.state.stores.order.getters.lastModified"() {
-        this.invalidate();
-      },
-    },
-    mounted() {
-      this.invalidate();
-    },
-    methods: {
-      async invalidate() {
-        this.pendingItems = [];
-        this.completedItems = [];
+  const isLoading = computed(() => () => useOrderStore().isLoading);
+  const items = computed(() => () => optArray(useOrderStore().items));
+  const currentExpandedOrderid = computed<string>(() => {
+    const { order } = route.query;
 
-        const groups = await this.$store.state.stores.order.dispatch(
-          "getGroupsByStatus",
-        );
-        const groupPending = groups.find((group) => {
-          return group.status === Order.Status.Pending;
-        });
-        const groupCompleted = groups.find((group) => {
-          return group.status === Order.Status.Completed;
-        });
+    if (typeof order === "string") return order;
+    return "";
+  });
 
-        this.pendingItems = groupPending?.items ?? [];
-        this.completedItems = groupCompleted?.items ?? [];
-      },
-      refresh() {
-        this.$store.state.stores.order.dispatch("refresh").catch((error) => {
-          this.$store.dispatch("snackbarShow", "Error While Refreshing Order");
-          console.error(error);
-        });
-      },
-      toAdd() {
-        this.$store.dispatch("openPopupWindow", { component: WindowAdd });
-      },
-    },
-  };
+  watch(() => useOrderStore().lastModified, invalidate);
+
+  onMounted(() => invalidate());
+
+  async function invalidate() {
+    pendingItems.value = [];
+    completedItems.value = [];
+
+    const groups = await useOrderStore().getGroupsByStatus();
+    const groupPending = groups.find((group) => {
+      return group.status === Order.Status.Pending;
+    });
+    const groupCompleted = groups.find((group) => {
+      return group.status === Order.Status.Completed;
+    });
+
+    pendingItems.value = groupPending?.items ?? [];
+    completedItems.value = groupCompleted?.items ?? [];
+  }
+  function refresh() {
+    useOrderStore()
+      .refresh()
+      .catch((error) => {
+        useSnackbarStore().show("Error While Refreshing Order");
+        console.error(error);
+      });
+  }
+  function toAdd() {
+    usePopupWindowStore().open({ component: WindowAdd });
+  }
 </script>
 
 <template>
   <div
     class="PageOrder transition"
-    @scroll="(event) => (scrollTop = event.target.scrollTop)"
+    @scroll="
+      (event) => (scrollTop = (event.target as HTMLDivElement).scrollTop)
+    "
   >
     <Actionbar
       class="PageOrder-actionbar"
       :title="$options.title"
       :items="items"
       @click-item="
-        (item) => $store.getters.replaceQuery({ query: { order: item.id } })
+        (item) => useRouteStore().replaceQuery({ query: { order: item.id } })
       "
       @click-item-add="() => toAdd()"
       @click-refresh="() => refresh()"
@@ -86,20 +86,16 @@
         :items="pendingItems"
         :currentItemIdSelected="currentExpandedOrderid"
         @click-collapse="
-          (item) => $store.getters.replaceQuery({ query: { order: null } })
+          (item) => useRouteStore().replaceQuery({ query: { order: null } })
         "
         @click-expand="
-          (item) => $store.getters.replaceQuery({ query: { order: item.id } })
+          (item) => useRouteStore().replaceQuery({ query: { order: item.id } })
         "
         @click-complete="
-          (item) =>
-            $store.state.stores.order.dispatch('updateToCompletedOfId', item.id)
+          (item) => useOrderStore().updateToCompletedOfId(item.id)
         "
         @click-remove="
-          (item) =>
-            $store.state.stores.order.dispatch('removeOItemOfId', {
-              id: item.id,
-            })
+          (item) => useOrderStore().removeOItemOfId({ id: item.id })
         "
       />
 
@@ -109,28 +105,19 @@
         :items="completedItems"
         :currentItemIdSelected="currentExpandedOrderid"
         @click-collapse="
-          (item) => $store.getters.replaceQuery({ query: { order: null } })
+          (item) => useRouteStore().replaceQuery({ query: { order: null } })
         "
         @click-expand="
-          (item) => $store.getters.replaceQuery({ query: { order: item.id } })
+          (item) => useRouteStore().replaceQuery({ query: { order: item.id } })
         "
-        @click-pending="
-          (item) =>
-            $store.state.stores.order.dispatch('updateToPendingOfId', item.id)
-        "
+        @click-pending="(item) => useOrderStore().updateToPendingOfId(item.id)"
         @click-remove="
-          (item) =>
-            $store.state.stores.order.dispatch('removeOItemOfId', {
-              id: item.id,
-            })
+          (item) => useOrderStore().removeOItemOfId({ id: item.id })
         "
       />
     </main>
 
-    <Loading
-      class="viewOrder-loading"
-      :isShowing="$store.state.stores.order.getters.isLoading"
-    />
+    <Loading class="viewOrder-loading" :isShowing="useOrderStore().isLoading" />
   </div>
 </template>
 

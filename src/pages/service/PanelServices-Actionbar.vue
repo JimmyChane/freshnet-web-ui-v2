@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import SearchInput from "@/components/SearchInput.vue";
+  import SearchInput from "@/components/search/SearchInput.vue";
   import ItemService from "./item-service/ItemService.vue";
   import Searcher from "@/data/Searcher";
   import TabLayout from "@/components/tabLayout/TabLayout.vue";
   import IconSearch from "@/assets/icon/search-000000.svg";
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
   import { computed, ref } from "vue";
-  import ServiceState from "@/data/service/ServiceState";
-  import { GroupMenu, LayoutMenu, SortMenu } from "./PanelServices";
-  import { Tab } from "@/components/tabLayout/TabLayout";
+  import { ServiceState } from "@/data/service/ServiceState";
+  import type { GroupMenu, LayoutMenu, SortMenu } from "./PanelServices";
+  import type { Tab } from "@/components/tabLayout/TabLayout";
   import { useWindowStore } from "@/stores/window.store";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
 
   const emits = defineEmits<{ clickService: [Service]; clickSearch: [void] }>();
   const props = withDefaults(
@@ -104,7 +104,7 @@
         v-slot="{ collapse }"
       >
         <ItemService
-          v-for="item in (results as Service[])"
+          v-for="item in results as Service[]"
           :key="item.getUnique()"
           :item="item"
           @click="

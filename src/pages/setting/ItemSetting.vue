@@ -4,7 +4,6 @@
   import TextArea from "./ItemSetting-TextArea.vue";
   import List from "./ItemSetting-List.vue";
   import { computed, defineComponent } from "vue";
-  import Setting from "@/data/setting/Setting";
   import { SettingUI } from "./PageSetting";
   import { optArray } from "@/U";
 

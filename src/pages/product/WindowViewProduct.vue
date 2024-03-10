@@ -1,17 +1,16 @@
 <script setup lang="ts">
   import ItemPrice from "../item/ItemPrice.vue";
   import ItemProductSpecification from "../item/ItemProductSpecification.vue";
-  import ButtonImage from "./components/ButtonImage.vue";
   import ButtonImageAdd from "./components/ButtonImageAdd.vue";
   import ToggleButton from "@/components/button/ToggleButton.vue";
   import MenuOption from "@/components/button/MenuOption.vue";
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
-
   import IconEdit from "@/assets/icon/edit-505050.svg";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { onMounted, ref, watch } from "vue";
   import { useProductStore } from "@/data-stores/product.store";
-  import Specification from "@/data/specification/Specification";
+  import { Specification } from "@/data/specification/Specification";
+  import ButtonImage from "../service/ButtonImage.vue";
 
   const emits = defineEmits<{
     "request-viewImage": [void];

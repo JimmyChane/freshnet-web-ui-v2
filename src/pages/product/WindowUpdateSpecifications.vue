@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import SpecificationInputs from "@/pages/customer/SpecificationInputs.vue";
-  import CustomerDeviceSpecification from "@/data/CustomerDeviceSpecification";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref } from "vue";
-  import Specification from "@/data/specification/Specification";
+  import { Specification } from "@/data/specification/Specification";
   import { optArray } from "@/U";
+  import { CustomerDeviceSpecification } from "@/data/customer/CustomerDeviceSpecification";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

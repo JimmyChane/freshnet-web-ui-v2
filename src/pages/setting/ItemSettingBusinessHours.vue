@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import SettingModule from "@/data/setting/Setting";
+  import { Setting } from "@/data/setting/Setting";
   import ItemSettingHeader from "./ItemSetting-Header.vue";
   import BusinessHoursItem from "./ItemSettingBusinessHours-Item.vue";
   import { onMounted, ref, watch } from "vue";
   import { useSettingStore } from "@/data-stores/setting.store";
-  import WorkingDay from "@/data/working-day/WorkingDay";
+  import { WorkingDay } from "@/data/working-day/WorkingDay";
 
-  const key = ref(SettingModule.Key.CompanyWorkingHours);
+  const key = ref(Setting.Key.CompanyWorkingHours);
   const title = ref("Business Hours (Readonly)");
   const values = ref<WorkingDay[]>([]);
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import ProductVue from "./PageCategoryExport-Layout-Product.vue";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
 
   withDefaults(
     defineProps<{ width?: number; height?: number; products: Product[] }>(),

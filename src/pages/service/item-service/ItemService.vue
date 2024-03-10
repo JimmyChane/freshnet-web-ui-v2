@@ -1,17 +1,14 @@
 <script setup lang="ts">
   import ItemButton from "@/pages/manage/PanelItems-ItemButton.vue";
-  import LabelCount from "@/components/LabelCount.vue";
-  import ImageView from "@/components/ImageView.vue";
-
-  import ServicePrice from "@/data/service/ServicePrice";
-  import State from "@/data/service/ServiceState";
-
+  import LabelCount from "@/components/label/LabelCount.vue";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
+  import { ServicePrice } from "@/data/service/ServicePrice";
+  import { ServiceState } from "@/data/service/ServiceState";
   import ItemServiceCustomer from "./ItemService-Customer.vue";
   import ItemServiceTimestamp from "./ItemService-Timestamp.vue";
   import ItemServiceDetailColumn from "./ItemService-DetailColumn.vue";
-
   import IconImage from "@/assets/icon/image-FFFFFF.svg";
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
   import { computed } from "vue";
   import { Mode } from "./ItemServiceMode";
   import { optArray } from "@/U";
@@ -50,7 +47,7 @@
   const timestamp = computed(() => props.item?.timestamp);
   const state = computed(() => props.item?.state);
   const primaryColor = computed(() =>
-    state.value ? State.findByKey(state.value)?.primaryColor : undefined,
+    state.value ? ServiceState.findByKey(state.value)?.primaryColor : undefined,
   );
 
   const events = computed(() => {
@@ -59,20 +56,26 @@
       .sort((event1, event2) => event1.compare(event2));
   });
   const totalCost = computed(() => {
-    return events.value.reduce((cost, event) => {
-      if (event.isPurchase() && event.price) {
-        return cost.plus(event.price);
-      }
-      return cost;
-    }, new ServicePrice().fromData({ amount: 0 }));
+    return events.value.reduce(
+      (cost, event) => {
+        if (event.isPurchase() && event.price) {
+          return cost.plus(event.price);
+        }
+        return cost;
+      },
+      new ServicePrice().fromData({ amount: 0 }),
+    );
   });
   const totalQuote = computed(() => {
-    return events.value.reduce((cost, event) => {
-      if (event.isQuotation() && event.price) {
-        return cost.plus(event.price);
-      }
-      return cost;
-    }, new ServicePrice().fromData({ amount: 0 }));
+    return events.value.reduce(
+      (cost, event) => {
+        if (event.isQuotation() && event.price) {
+          return cost.plus(event.price);
+        }
+        return cost;
+      },
+      new ServicePrice().fromData({ amount: 0 }),
+    );
   });
   const labels = computed(() => {
     const labels = [];

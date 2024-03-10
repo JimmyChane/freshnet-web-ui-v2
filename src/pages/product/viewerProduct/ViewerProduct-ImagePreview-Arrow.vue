@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import IconDynamic from "@/components/IconDynamic.vue";
-  import chroma, { Color } from "chroma-js";
+  import chroma, { type Color } from "chroma-js";
 
   import IconArrowDownWhite from "@/assets/icon/arrowDown-white.svg";
   import IconArrowDownDark from "@/assets/icon/arrowDown-black.svg";

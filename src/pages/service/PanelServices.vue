@@ -3,20 +3,17 @@
   import ListServices from "./ListServices.vue";
   import Empty from "@/components/Empty.vue";
   import PageService from "@/pages/service/PageService.vue";
-
-  import ServiceState from "@/data/service/ServiceState";
-
+  import { ServiceState } from "@/data/service/ServiceState";
   import IconGrid from "@/assets/icon/grid-000000.svg";
   import IconList from "@/assets/icon/list-000000.svg";
   import IconDetail from "@/assets/icon/detail-000000.svg";
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { useRoute } from "vue-router";
-  import { useStore } from "@/stores/store";
   import { useServiceStore } from "@/data-stores/service.store";
-  import { GroupMenu, LayoutMenu, SortMenu } from "./PanelServices";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
+  import type { GroupMenu, LayoutMenu, SortMenu } from "./PanelServices";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
   import { optString } from "@/U";
   import { useRouteStore } from "@/stores/route.store";
 

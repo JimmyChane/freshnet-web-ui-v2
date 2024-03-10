@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import TextArea from "@/components/InputTextArea.vue";
+  import TextArea from "@/components/input/InputTextArea.vue";
   import { ref, watch } from "vue";
 
   const emits = defineEmits<{ inputDescription: [string] }>();

@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import PrintContent from "@/components/PrintContent.vue";
-  import Pixel from "@/data/Pixel";
+  import { Pixel } from "@/data/Pixel";
   import Layout from "./PageCategoryExport-Layout.vue";
 
   import IconPrinter from "@/assets/icon/printer-000000.svg";
   import { computed, onMounted, ref } from "vue";
   import { useLoginStore } from "@/stores/login.store";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { useRoute } from "vue-router";
   import { useProductStore } from "@/data-stores/product.store";
 

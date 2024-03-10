@@ -1,16 +1,13 @@
 <script setup lang="ts">
-  import Actionbar from "@/components/actionbar/Actionbar.vue";
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import SearchInput from "@/components/SearchInput.vue";
+  import SearchInput from "@/components/search/SearchInput.vue";
   import ItemSearchProduct from "./ItemSearchProduct.vue";
   import Searcher from "@/data/Searcher";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
-
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
   import IconSearch from "@/assets/icon/search-000000.svg";
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { computed, ref } from "vue";
-  import { useStore } from "@/stores/store";
   import { useCategoryStore } from "@/data-stores/category.store";
   import { useProductStore } from "@/data-stores/product.store";
   import { usePageStore } from "@/stores/page.store";

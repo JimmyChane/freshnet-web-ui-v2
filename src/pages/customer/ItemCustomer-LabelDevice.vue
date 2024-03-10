@@ -2,7 +2,7 @@
   import { computed, onMounted, ref, watch } from "vue";
   import Label from "./ItemCustomer-Label.vue";
   import { useCategoryStore } from "@/data-stores/category.store";
-  import Category from "@/data/category/Category";
+  import { Category } from "@/data/category/Category";
 
   const props = withDefaults(
     defineProps<{ categoryKey: string; count: number }>(),

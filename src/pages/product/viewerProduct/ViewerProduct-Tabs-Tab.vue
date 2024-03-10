@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Tab } from "./Tab";
+  import type { Tab } from "./Tab";
 
   defineProps<{ item: Tab }>();
 </script>

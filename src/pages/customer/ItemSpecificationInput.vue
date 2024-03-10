@@ -3,7 +3,7 @@
   import IconClose from "@/assets/icon/close-000000.svg";
   import { computed, ref } from "vue";
   import { useSpecificationStore } from "@/data-stores/specification.store";
-  import Specification from "@/data/specification/Specification";
+  import { Specification } from "@/data/specification/Specification";
 
   const emits = defineEmits<{
     inputContent: [string];

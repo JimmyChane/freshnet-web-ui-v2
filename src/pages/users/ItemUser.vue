@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import MenuOption from "@/components/button/MenuOption.vue";
-  import User from "@/data/user/User";
+  import { User } from "@/data/user/User";
   import Row from "./ItemUser-Row.vue";
 
   withDefaults(

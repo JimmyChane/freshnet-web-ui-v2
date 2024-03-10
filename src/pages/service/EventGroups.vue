@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import ItemEvent from "./ServiceEvent.vue";
   import FloatingTimestampVue from "./FloatingTimestamp.vue";
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
   import { format } from "date-fns";
-  import ServiceEvent from "@/data/service/ServiceEvent";
+  import { ServiceEvent } from "@/data/service/ServiceEvent";
   import { computed } from "vue";
-  import { Action } from "./PanelService";
+  import type { Action } from "./PanelService";
 
   const props = withDefaults(
     defineProps<{

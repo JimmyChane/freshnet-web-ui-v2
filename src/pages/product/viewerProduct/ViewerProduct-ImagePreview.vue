@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import MenuOption from "@/components/button/MenuOption.vue";
-  import ImageView from "@/components/ImageView.vue";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
   import Arrow from "./ViewerProduct-ImagePreview-Arrow.vue";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, ref, watch } from "vue";
   import { useWindowStore } from "@/stores/window.store";
-  import Image from "@/data/Image";
-  import { Color } from "chroma-js";
+  import { Image } from "@/data/Image";
+  import type { Color } from "chroma-js";
   import { Direction } from "./Arrow";
 
   const emits = defineEmits<{

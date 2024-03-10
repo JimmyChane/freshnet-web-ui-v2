@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
-  import TextArea from "@/components/InputTextArea.vue";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import TextArea from "@/components/input/InputTextArea.vue";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref } from "vue";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();

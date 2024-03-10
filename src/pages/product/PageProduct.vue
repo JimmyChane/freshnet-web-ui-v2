@@ -15,7 +15,7 @@
   import { useProductStore } from "@/data-stores/product.store";
   import { useLoginStore } from "@/stores/login.store";
   import { computed, onMounted, ref, watch } from "vue";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { useRoute } from "vue-router";
   import { useRouteStore } from "@/stores/route.store";
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";

@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import Selector from "@/components/selector/Selector.vue";
-  import User from "@/data/user/User";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import { User } from "@/data/user/User";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed } from "vue";
-  import { WindowChangeOption } from "./WindowChange";
+  import type { WindowChangeOption } from "./WindowChange";
 
   const props = defineProps<{
     popupWindow: PopupWindow<WindowChangeOption<{ user: User }>>;

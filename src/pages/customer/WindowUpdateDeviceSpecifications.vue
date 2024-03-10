@@ -2,9 +2,9 @@
   import PanelAction from "@/components/panel/PanelAction.vue";
   import WindowSection from "./WindowSection.vue";
   import SpecificationInputs from "./SpecificationInputs.vue";
-  import Customer from "@/data/customer/Customer";
-  import CustomerDeviceSpecification from "@/data/CustomerDeviceSpecification";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import { Customer } from "@/data/customer/Customer";
+  import { CustomerDeviceSpecification } from "@/data/customer/CustomerDeviceSpecification";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
 

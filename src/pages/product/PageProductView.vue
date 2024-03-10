@@ -1,13 +1,12 @@
 <script setup lang="ts">
   import ViewerProduct from "@/pages/product/viewerProduct/ViewerProduct.vue";
-  import LoadingDots from "@/components/LoadingDots.vue";
-  import Product from "@/data/product/Product";
+  import LoadingDots from "@/components/loading/LoadingDots.vue";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, ref, watch } from "vue";
   import { useProductStore } from "@/data-stores/product.store";
-  import { useStore } from "@/stores/store";
   import { useRoute } from "vue-router";
   import { useWindowStore } from "@/stores/window.store";
-  import AppLayout from "@/stores/app-layout/AppLayout";
+  import { AppLayout } from "@/stores/app-layout/AppLayout";
   import { useNavigationStore } from "@/stores/navigation/navigation.store";
   import { useAppLayoutStore } from "@/stores/app-layout/app-layout.store";
 

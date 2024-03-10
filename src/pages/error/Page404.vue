@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
-  import Footer from "@/app/footer/Footer.vue";
+  import Footer from "@/app/footer/AppFooter.vue";
   import IconHamburgerMenu from "@/assets/icon/hamburgerMenu-000000.svg";
   import Logo from "@/assets/logo/freshnet-enterprise-logo.svg";
   import { ref } from "vue";
-  import { useStore } from "@/stores/store";
   import { useRouter } from "vue-router";
+  import { useNavigationStore } from "@/stores/navigation/navigation.store";
 
   const router = useRouter();
 
@@ -15,11 +15,13 @@
 <template>
   <div
     class="Page404"
-    @scroll="(event) => (top.shadow = (event.target as HTMLDivElement).scrollTop > 0)"
+    @scroll="
+      (event) => (top.shadow = (event.target as HTMLDivElement).scrollTop > 0)
+    "
   >
     <Actionbar
       :class="['Home-top', 'transition', top.shadow ? 'Home-top-shadow' : '']"
-      v-if="useStore().navigation.isDrawer()"
+      v-if="useNavigationStore().navigation.isDrawer()"
       :leftMenus="[
         {
           key: 'home',
@@ -30,7 +32,7 @@
         {
           title: 'Hamburger Menu',
           icon: IconHamburgerMenu,
-          click: () => useStore().navigation.openNavigationDrawer(),
+          click: () => useNavigationStore().navigation.openNavigationDrawer(),
         },
       ]"
     />

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import Product from "@/data/product/Product";
-  import ImageView from "@/components/ImageView.vue";
+  import { Product } from "@/data/product/Product";
+  import ImageView from "@/components/image-viewer/ImageView.vue";
   import { computed, onMounted, ref } from "vue";
-  import Brand from "@/data/brand/Brand";
-  import Image from "@/data/Image";
-  import Specification from "@/data/specification/Specification";
+  import { Brand } from "@/data/brand/Brand";
+  import { Image } from "@/data/Image";
+  import { Specification } from "@/data/specification/Specification";
 
   const props = defineProps<{ product: Product }>();
 

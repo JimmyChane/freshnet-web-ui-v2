@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { isColorDark } from "@/U";
-  import chroma, { Color } from "chroma-js";
+  import chroma, { type Color } from "chroma-js";
   import { computed } from "vue";
 
   const props = withDefaults(

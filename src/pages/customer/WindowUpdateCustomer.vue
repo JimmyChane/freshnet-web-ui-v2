@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import WindowSection from "./WindowSection.vue";
-  import Customer from "@/data/customer/Customer";
-  import Input from "@/components/Input.vue";
+  import { Customer } from "@/data/customer/Customer";
+  import Input from "@/components/input/Input.vue";
   import { computed, onMounted, ref, watch } from "vue";
-  import { PopupWindow, useStore } from "@/stores/store";
   import { useCustomerStore } from "@/data-stores/customer.store";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 
@@ -82,14 +82,14 @@
             type="text"
             :isRequired="true"
             :bindValue="data.name"
-            @input="(value:string) => (data.name = value)"
+            @input="(value: string) => (data.name = value)"
           />
           <Input
             class="WindowUpdateCustomer-customer-part"
             label="Phone Number"
             type="text"
             :bindValue="data.phoneNumber"
-            @input="(value:string) => (data.phoneNumber = value)"
+            @input="(value: string) => (data.phoneNumber = value)"
           />
         </div>
       </WindowSection>

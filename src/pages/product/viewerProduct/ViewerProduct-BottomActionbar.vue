@@ -1,145 +1,143 @@
-<script>
-   import ButtonContact from "./BottomActionbar-ButtonContact.vue";
-   import ButtonTop from "./BottomActionbar-ButtonTop.vue";
-   import Setting from "@/data/setting/Setting";
+<script setup lang="ts">
+  import type { Product } from "@/data/product/Product";
+  import ButtonContact from "./BottomActionbar-ButtonContact.vue";
+  import ButtonTop from "./BottomActionbar-ButtonTop.vue";
+  import { Setting } from "@/data/setting/Setting";
+  import { onMounted, ref, watch } from "vue";
+  import { useSettingStore } from "@/data-stores/setting.store";
+  import type { Contact } from "@/data/contact/Contact";
 
-   export default {
-      components: { ButtonContact, ButtonTop },
-      props: {
-         product: { type: Object, default: () => null },
-         isWide: { type: Boolean, default: false },
-         parentScrollTop: { type: Number, default: 0 },
-      },
-      data: (c) => ({
-         whatsappLink: "",
+  const props = withDefaults(
+    defineProps<{
+      product?: Product;
+      isWide?: boolean;
+      parentScrollTop?: number;
+    }>(),
+    {
+      isWide: false,
+      parentScrollTop: 0,
+    },
+  );
 
-         callTypeTitle: "",
-         callTitle: "",
-         callHref: "",
-         callTarget: "",
-         callIcon: "",
+  const whatsappLink = ref("");
 
-         whatsappTypeTitle: "",
-         whatsappTitle: "",
-         whatsappHref: "",
-         whatsappTarget: "",
-         whatsappIcon: "",
-      }),
-      watch: {
-         "$store.state.stores.setting.getters.lastModified"() {
-            this.invalidate();
-         },
-         product() {
-            this.invalidate();
-         },
-      },
-      mounted() {
-         this.invalidate();
-      },
-      methods: {
-         async invalidate() {
-            const contacts = await this.$store.state.stores.setting.dispatch(
-               "findValueOfKey",
-               { key: Setting.Key.Contacts, default: [] },
-            );
-            const contact = this.findContactByTitle(contacts, "Beh Aik Keong");
+  const callTypeTitle = ref("");
+  const callTitle = ref("");
+  const callHref = ref("");
+  const callTarget = ref("");
+  const callIcon = ref("");
 
-            const contactCall =
-               contact?.links.find((link) => link.category.title === "Call") ??
-               null;
-            const contactWhatsapp =
-               contact?.links.find(
-                  (link) => link.category.title === "Whatsapp",
-               ) ?? null;
+  const whatsappTypeTitle = ref("");
+  const whatsappTitle = ref("");
+  const whatsappHref = ref("");
+  const whatsappTarget = ref("");
+  const whatsappIcon = ref("");
 
-            this.callTypeTitle = contactCall?.category?.title ?? "";
-            this.callTitle = contact?.title ?? "";
-            this.callHref = contactCall?.toHtmlHref() ?? "";
-            this.callTarget = contactCall?.toHtmlTarget() ?? "";
-            this.callIcon = contactCall?.category?.icon ?? "";
-            this.whatsappTypeTitle = contactWhatsapp?.category?.title ?? "";
-            this.whatsappTitle = contact?.title ?? "";
-            this.whatsappTarget = contactWhatsapp?.toHtmlTarget() ?? "";
-            this.whatsappIcon = contactWhatsapp?.category?.icon ?? "";
+  watch(() => useSettingStore().lastModified, invalidate);
+  watch(() => props.product, invalidate);
 
-            const whatsappHref = contactWhatsapp?.toHtmlHref() ?? "";
+  async function invalidate() {
+    const contacts: Contact[] = await useSettingStore().findValueOfKey({
+      key: Setting.Key.Contacts,
+      default: [],
+    });
+    const contact = findContactByTitle(contacts, "Beh Aik Keong");
 
-            let { product } = this;
-            if (!product) {
-               this.whatsappHref = whatsappHref;
-               return;
-            }
+    const contactCall = contact?.links.find(
+      (link) => link.socialMedia?.title === "Call",
+    );
+    const contactWhatsapp = contact?.links.find(
+      (link) => link.socialMedia?.title === "Whatsapp",
+    );
 
-            const productLink = this.product.getLink();
-            const title = await product.fetchFullTitle();
+    callTypeTitle.value = contactCall?.socialMedia?.title ?? "";
+    callTitle.value = contact?.title ?? "";
+    callHref.value = contactCall?.toHtmlHref() ?? "";
+    callTarget.value = contactCall?.toHtmlTarget() ?? "";
+    callIcon.value = contactCall?.socialMedia?.icon ?? "";
+    whatsappTypeTitle.value = contactWhatsapp?.socialMedia?.title ?? "";
+    whatsappTitle.value = contact?.title ?? "";
+    whatsappTarget.value = contactWhatsapp?.toHtmlTarget() ?? "";
+    whatsappIcon.value = contactWhatsapp?.socialMedia?.icon ?? "";
 
-            let text = `Hi, I am interested in this product`;
-            if (title) text += `\n\n${title}`;
-            if (productLink) text += `\n${productLink}`;
-            const textUri = encodeURIComponent(text);
+    const xWhatsappHref = contactWhatsapp?.toHtmlHref() ?? "";
 
-            this.whatsappHref = `${whatsappHref}&text=${textUri}`;
-         },
+    const xProduct = props.product;
+    if (!xProduct) {
+      whatsappHref.value = xWhatsappHref;
+      return;
+    }
 
-         findContactByTitle(contacts = [], title = "") {
-            return contacts.find((contact) => contact.title === title);
-         },
-      },
-   };
+    const productLink = props.product?.getLink();
+    const title = await xProduct.fetchFullTitle();
+
+    let text = `Hi, I am interested in this product`;
+    if (title) text += `\n\n${title}`;
+    if (productLink) text += `\n${productLink}`;
+    const textUri = encodeURIComponent(text);
+
+    whatsappHref.value = `${xWhatsappHref}&text=${textUri}`;
+  }
+
+  function findContactByTitle(contacts: Contact[], title: string) {
+    return contacts.find((contact) => contact.title === title);
+  }
+
+  onMounted(() => invalidate());
 </script>
 
 <template>
-   <div
-      class="ViewerProduct-BottomActionbar"
-      :isButtonTopHidden="parentScrollTop <= 10"
-   >
-      <ButtonContact
-         class="ViewerProduct-BottomActionbar-whatsapp"
-         :target="whatsappTarget"
-         :href="whatsappHref"
-         :icon="whatsappIcon"
-         :titleHeader="whatsappTypeTitle"
-         :titleContent="whatsappTitle"
-         primaryColorHex="#4caf50"
-         :toShrink="true"
-      />
-      <ButtonContact
-         class="ViewerProduct-BottomActionbar-call"
-         :target="callTarget"
-         :href="callHref"
-         :icon="callIcon"
-         :titleHeader="callTypeTitle"
-         :titleContent="callTitle"
-         primaryColorHex="#2196f3"
-         :toShrink="true"
-      />
-      <ButtonTop
-         :isHidden="parentScrollTop <= 10"
-         @click="() => $emit('click-scrollToTop')"
-      />
-   </div>
+  <div
+    class="ViewerProduct-BottomActionbar"
+    :isButtonTopHidden="parentScrollTop <= 10"
+  >
+    <ButtonContact
+      class="ViewerProduct-BottomActionbar-whatsapp"
+      :target="whatsappTarget"
+      :href="whatsappHref"
+      :icon="whatsappIcon"
+      :titleHeader="whatsappTypeTitle"
+      :titleContent="whatsappTitle"
+      primaryColorHex="#4caf50"
+      :toShrink="true"
+    />
+    <ButtonContact
+      class="ViewerProduct-BottomActionbar-call"
+      :target="callTarget"
+      :href="callHref"
+      :icon="callIcon"
+      :titleHeader="callTypeTitle"
+      :titleContent="callTitle"
+      primaryColorHex="#2196f3"
+      :toShrink="true"
+    />
+    <ButtonTop
+      :isHidden="parentScrollTop <= 10"
+      @click="() => $emit('click-scrollToTop')"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
-   .ViewerProduct-BottomActionbar {
-      position: sticky;
-      bottom: 0;
-      width: 100%;
-      gap: 0.3rem;
+  .ViewerProduct-BottomActionbar {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    gap: 0.3rem;
 
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 1rem;
-   }
-   .ViewerProduct-BottomActionbar[isButtonTopHidden="true"] {
-      .ViewerProduct-BottomActionbar-whatsapp {
-         transform: translateX(4.3rem);
-      }
-      .ViewerProduct-BottomActionbar-call {
-         transform: translateX(4.3rem);
-      }
-   }
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+  }
+  .ViewerProduct-BottomActionbar[isButtonTopHidden="true"] {
+    .ViewerProduct-BottomActionbar-whatsapp {
+      transform: translateX(4.3rem);
+    }
+    .ViewerProduct-BottomActionbar-call {
+      transform: translateX(4.3rem);
+    }
+  }
 </style>

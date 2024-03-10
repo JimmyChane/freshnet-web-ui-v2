@@ -9,9 +9,9 @@
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { useServiceStore } from "@/data-stores/service.store";
-  import Customer from "@/data/customer/Customer";
+  import { Customer } from "@/data/customer/Customer";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

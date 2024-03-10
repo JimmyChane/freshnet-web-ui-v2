@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import chroma, { Color } from "chroma-js";
+  import chroma, { type Color } from "chroma-js";
   import { computed, ref } from "vue";
   import { State } from "./WindowAddEvent-LabelMenus";
 

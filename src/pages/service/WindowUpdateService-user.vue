@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Input from "@/components/Input.vue";
+  import Input from "@/components/input/Input.vue";
   import { useLoginStore } from "@/stores/login.store";
   import { computed, onMounted, ref, watch } from "vue";
 

@@ -7,7 +7,7 @@
   import IconCopyDark from "@/assets/icon/copy-000000.svg";
   import IconPrinter from "@/assets/icon/printer-000000.svg";
   import IconTrash from "@/assets/icon/trash-000000.svg";
-  import Product from "@/data/product/Product";
+  import { Product } from "@/data/product/Product";
   import { computed } from "vue";
   import { useRouter } from "vue-router";
   import { copyText, getOrigin, openLink } from "@/U";

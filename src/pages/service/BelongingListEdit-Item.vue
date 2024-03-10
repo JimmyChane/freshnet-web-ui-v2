@@ -1,8 +1,6 @@
 <script setup lang="ts">
-  import Input from "@/components/Input.vue";
-  import ServiceBelonging, {
-    ServiceBelongingData,
-  } from "@/data/service/ServiceBelonging";
+  import Input from "@/components/input/Input.vue";
+  import type { ServiceBelongingData } from "@/data/service/ServiceBelonging";
 
   const emits = defineEmits<{ invalidate: [void] }>();
   const props = defineProps<{
@@ -70,8 +68,14 @@
       autocapitalize="words"
       :placeholder="`Item ${belongings.indexOf(belonging) + 1}`"
       :value="belonging.title"
-      @input="(event) => onTitleInput((event.target as HTMLInputElement).value, belonging)"
-      @change="(event) => onTitleChange((event.target as HTMLInputElement).value, belonging)"
+      @input="
+        (event) =>
+          onTitleInput((event.target as HTMLInputElement).value, belonging)
+      "
+      @change="
+        (event) =>
+          onTitleChange((event.target as HTMLInputElement).value, belonging)
+      "
     />
     <div class="BelongingListEdit-item-line"></div>
     <span class="BelongingListEdit-item-equation" style="grid-area: equation"
@@ -91,7 +95,13 @@
       type="text"
       placeholder="Description"
       :value="belonging.description"
-      @input="(event) => onDescriptionInput((event.target as HTMLTextAreaElement).value, belonging)"
+      @input="
+        (event) =>
+          onDescriptionInput(
+            (event.target as HTMLTextAreaElement).value,
+            belonging,
+          )
+      "
       @keyup="(event) => onDescriptionKeyup(event)"
     />
   </div>

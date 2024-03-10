@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import ListEvents from "./EventGroups.vue";
-  import Service from "@/data/service/Service";
-  import ServiceEvent from "@/data/service/ServiceEvent";
+  import { Service } from "@/data/service/Service";
+  import { ServiceEvent } from "@/data/service/ServiceEvent";
   import { computed } from "vue";
-  import { Action } from "./PanelService";
+  import type { Action } from "./PanelService";
 
   const emits = defineEmits<{
     clickAddEvent: [void];

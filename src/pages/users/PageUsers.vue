@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import Loading from "@/components/Loading.vue";
+  import Loading from "@/components/loading/Loading.vue";
   import Empty from "@/components/Empty.vue";
   import ItemUser from "./ItemUser.vue";
 
@@ -16,8 +16,8 @@
   import { optNumber } from "@/U";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
-  import User from "@/data/user/User";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
+  import { User } from "@/data/user/User";
 
   const isLoading = computed(() => useUserStore().isLoading);
   const isCurrentUserAdmin = computed(() => user.value?.isTypeAdmin() ?? false);

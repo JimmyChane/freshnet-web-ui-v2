@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
-  import Loading from "@/components/Loading.vue";
+  import Loading from "@/components/loading/Loading.vue";
 
   import PanelItemCustomer from "@/pages/manage/PanelItem-Customer.vue";
   import Section from "@/pages/manage/PanelItem-Section.vue";
@@ -9,10 +9,8 @@
   import ItemService from "@/pages/service/item-service/ItemService.vue";
   import ItemDevice from "./ItemDevice.vue";
   import PanelCustomerEmpty from "./PanelCustomer-Empty.vue";
-
   import chroma from "chroma-js";
-  import Customer from "@/data/customer/Customer";
-
+  import { Customer } from "@/data/customer/Customer";
   import IconClose from "@/assets/icon/close-000000.svg";
   import IconEdit from "@/assets/icon/edit-000000.svg";
   import IconAdd from "@/assets/icon/add-000000.svg";
@@ -20,13 +18,13 @@
   import IconWhatsapp from "@/assets/icon/whatsapp-color.svg";
   import IconCall from "@/assets/icon/call-color.svg";
   import { computed, onMounted, ref, watch } from "vue";
-  import { useStore } from "@/stores/store";
   import { useCustomerStore } from "@/data-stores/customer.store";
-  import CustomerDevice from "@/data/CustomerDevice";
+  import { CustomerDevice } from "@/data/customer/CustomerDevice";
+  import { useWindowStore } from "@/stores/window.store";
 
   const emits = defineEmits<{
     clickItemClose: [void];
-    clickItemRemove: [void];
+    clickItemRemove: [Customer];
     clickItemDeviceRemove: [void];
     clickItemDeviceUpdateSpecifications: [void];
     clickItemDeviceUpdateDescription: [void];
@@ -41,7 +39,7 @@
   const menus = computed(() => {
     const menus = [];
 
-    if (c.isPhoneNumber) {
+    if (isPhoneNumber.value) {
       menus.push({
         title: "Chat with Customer on Whatsapp",
         icon: IconWhatsapp,
@@ -52,15 +50,17 @@
       menus.push({
         title: "Call Customer",
         icon: IconCall,
-        href: `tel:+6${c.phoneNumberStr}`,
+        href: `tel:+6${phoneNumberStr.value}`,
       });
     }
 
-    if (c.isFromStoreCustomer) {
+    if (isFromStoreCustomer.value) {
       menus.push({
         title: "Delete Customer",
         icon: IconTrash,
-        click: () => c.$emit("click-item-remove", { item: c.item }),
+        click: () => {
+          if (props.item) emits("clickItemRemove", { item: props.item });
+        },
         isHidden: true,
       });
     }

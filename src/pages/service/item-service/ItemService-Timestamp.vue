@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
   import { format, formatDistanceToNow } from "date-fns";
   import { computed } from "vue";
 

@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
   import Selector from "@/components/selector/Selector.vue";
-  import State from "@/data/service/ServiceState";
+  import { ServiceState } from "@/data/service/ServiceState";
   import PanelItemCustomer from "@/pages/manage/PanelItem-Customer.vue";
   import SectionVue from "./PanelService-Info-Section.vue";
   import LabelVue from "./PanelService-Info-Label.vue";
   import BelongingVue from "./ItemBelonging.vue";
-  import MenuIconVue from "@/components/MenuIcon.vue";
+  import MenuIconVue from "@/components/menu/MenuIcon.vue";
   import { format, formatDistanceToNow } from "date-fns";
 
-  import Service from "@/data/service/Service";
+  import { Service } from "@/data/service/Service";
 
   import IconWhatsapp from "@/assets/icon/whatsapp-color.svg";
   import IconCall from "@/assets/icon/call-color.svg";
@@ -19,10 +19,8 @@
   import IconBookmarkAdd from "@/assets/icon/bookmark-000000.svg";
   import IconEdit from "@/assets/icon/edit-505050.svg";
   import { computed, onMounted, ref, watch } from "vue";
-  import { useStore } from "@/stores/store";
   import { useServiceStore } from "@/data-stores/service.store";
-  import { Action } from "./PanelService";
-  import ServiceBelonging from "@/data/service/ServiceBelonging";
+  import type { Action } from "./PanelService";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
   const emits = defineEmits<{ toggleExpand: [boolean] }>();
@@ -78,7 +76,7 @@
   const isPhoneNumber = computed(() => !!phoneNumberStr.value);
 
   const stateMenus = computed(() => {
-    return State.map((state) => {
+    return ServiceState.map((state) => {
       return {
         key: state.key,
         title: state.title,

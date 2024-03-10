@@ -1,65 +1,67 @@
-<script>
+<script setup lang="ts">
+  import { computed } from "vue";
   import Section from "./ViewerProduct-Section.vue";
   import ItemProductSpecification from "./ViewerProduct-Section-Specification-Item.vue";
-  import { Type } from "@/data/specification/Specification";
+  import { Specification, Type } from "@/data/specification/Specification";
   import IconEdit from "@/assets/icon/edit-000000.svg";
+  import type { Color } from "chroma-js";
+  import type { Product } from "@/data/product/Product";
 
-  export default {
-    components: { Section, ItemProductSpecification },
-    props: {
-      primaryColor: { type: Object },
-      allowEdit: { type: Boolean, default: false },
-      product: { type: Object, default: () => null },
-    },
-    computed: {
-      keys() {
-        return Object.keys(Type.Key).map((objectKey) => {
-          return Type.Key[objectKey];
-        });
-      },
-      specifications() {
-        if (!this.product) return [];
-        if (!Array.isArray(this.product.specifications)) return [];
+  const emits = defineEmits<{
+    clickEdit: [{ product?: Product; specifications: Specification[] }];
+  }>();
+  const props = withDefaults(
+    defineProps<{
+      primaryColor?: Color;
+      allowEdit?: boolean;
+      product?: Product;
+    }>(),
+    { allowEdit: false },
+  );
 
-        return this.product.specifications
-          .filter((spec) => spec && spec.type && spec.content)
-          .sort((spec1, spec2) => {
-            const key1 = this.obtainKeyOfSpecificationType(spec1.type);
-            const key2 = this.obtainKeyOfSpecificationType(spec2.type);
+  const keys = computed(() => {
+    return Object.keys(Type.Key).map((objectKey) => {
+      return Type.Key[objectKey];
+    });
+  });
 
-            let index1 = this.keys.indexOf(key1);
-            let index2 = this.keys.indexOf(key2);
+  const specifications = computed(() => {
+    if (!props.product) return [];
+    if (!Array.isArray(props.product.specifications)) return [];
 
-            index1 = index1 >= 0 ? index1 : this.keys.length;
-            index2 = index2 >= 0 ? index2 : this.keys.length;
+    return props.product.specifications
+      .filter((spec) => spec && spec.type && spec.content)
+      .sort((spec1, spec2) => {
+        const key1 = obtainKeyOfSpecificationType(spec1.type);
+        const key2 = obtainKeyOfSpecificationType(spec2.type);
 
-            return index1 !== index2
-              ? index1 - index2
-              : key1.localeCompare(key2);
-          });
-      },
+        let index1 = keys.value.indexOf(key1);
+        let index2 = keys.value.indexOf(key2);
 
-      menu() {
-        if (!this.allowEdit) return null;
-        return {
-          title: "Edit",
-          icon: IconEdit,
-          click: () =>
-            this.$emit("click-edit", {
-              product: this.product,
-              specifications: this.specifications,
-            }),
-        };
-      },
-    },
-    methods: {
-      obtainKeyOfSpecificationType(type) {
-        if (typeof type === "object") return type.key;
-        if (typeof type === "string") return type;
-        return "";
-      },
-    },
-  };
+        index1 = index1 >= 0 ? index1 : keys.value.length;
+        index2 = index2 >= 0 ? index2 : keys.value.length;
+
+        return index1 !== index2 ? index1 - index2 : key1.localeCompare(key2);
+      });
+  });
+  const menu = computed(() => {
+    if (!props.allowEdit) return null;
+    return {
+      title: "Edit",
+      icon: IconEdit,
+      click: () =>
+        emits("clickEdit", {
+          product: props.product,
+          specifications: specifications.value,
+        }),
+    };
+  });
+
+  function obtainKeyOfSpecificationType(type?: Type) {
+    if (typeof type === "object") return type.key;
+    if (typeof type === "string") return type;
+    return "";
+  }
 </script>
 
 <template>
@@ -73,7 +75,7 @@
       <div class="SectionSpecification-items" v-if="specifications.length">
         <ItemProductSpecification
           v-for="spec in specifications"
-          :key="spec.name"
+          :key="spec.typeKey"
           :productSpecification="spec"
           :isVertical="true"
         />

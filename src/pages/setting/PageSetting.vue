@@ -4,7 +4,7 @@
   import ItemSetting from "./ItemSetting.vue";
   import ItemSettingContacts from "./ItemSettingContacts.vue";
   import ItemSettingBusinessHours from "./ItemSettingBusinessHours.vue";
-  import SettingModule from "@/data/setting/Setting";
+  import { Setting } from "@/data/setting/Setting";
 
   import { computed, onMounted } from "vue";
 
@@ -44,12 +44,12 @@
             .setReadonly(true)
             .setList(
               new SettingBuilderUI()
-                .setKey(SettingModule.Key.CompanyName)
+                .setKey(Setting.Key.CompanyName)
                 .setReadonly(true)
                 .setTitle('Name')
                 .setType('text'),
               new SettingBuilderUI()
-                .setKey(SettingModule.Key.CompanyCategory)
+                .setKey(Setting.Key.CompanyCategory)
                 .setReadonly(true)
                 .setTitle('Category')
                 .setType('text'),
@@ -63,11 +63,11 @@
             .setTitle('Location')
             .setList(
               new SettingBuilderUI()
-                .setKey(SettingModule.Key.Location)
+                .setKey(Setting.Key.Location)
                 .setTitle('Address')
                 .setType('text'),
               new SettingBuilderUI()
-                .setKey(SettingModule.Key.LocationLink)
+                .setKey(Setting.Key.LocationLink)
                 .setTitle('Link')
                 .setType('text'),
             )
@@ -82,7 +82,7 @@
             .setTitle('Product Page')
             .setList(
               new SettingBuilderUI()
-                .setKey(SettingModule.Key.PublicShowPrice)
+                .setKey(Setting.Key.PublicShowPrice)
                 .setTitle('Show Price in View Mode')
                 .setType('boolean'),
             )

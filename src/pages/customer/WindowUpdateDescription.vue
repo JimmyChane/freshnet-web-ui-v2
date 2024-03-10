@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
-  import TextArea from "@/components/InputTextArea.vue";
-  import Customer from "@/data/customer/Customer";
-  import { PopupWindow, useStore } from "@/stores/store";
+  import TextArea from "@/components/input/InputTextArea.vue";
+  import { Customer } from "@/data/customer/Customer";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

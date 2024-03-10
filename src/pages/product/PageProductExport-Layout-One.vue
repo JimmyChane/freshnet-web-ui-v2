@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { Type } from "@/data/specification/Specification";
   import Item from "./PageProductExport-Layout-One-Specification.vue";
-  import ProductPrice from "@/data/product/ProductPrice";
-  import Product from "@/data/product/Product";
+  import { ProductPrice } from "@/data/product/ProductPrice";
+  import { Product } from "@/data/product/Product";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
 
@@ -132,15 +132,15 @@
       class="ExportLayoutOne-body"
       ref="bodyRef"
       :style="{
-        'padding': `${padding}px ${initialPadding}px`,
-        'gap': `${gap}px`,
+        padding: `${padding}px ${initialPadding}px`,
+        gap: `${gap}px`,
       }"
     >
       <span class="ExportLayoutOne-title">{{ fullTitle }}</span>
 
       <div
         class="ExportLayoutOne-items"
-        :style="{ 'gap': `${specificationGap}px` }"
+        :style="{ gap: `${specificationGap}px` }"
       >
         <Item
           v-for="specification in specifications"

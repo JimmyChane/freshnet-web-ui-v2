@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ContactLink } from "@/data/Contact";
+  import { ContactLink } from "@/data/contact-link/ContactLink";
 
   defineProps<{ link: ContactLink }>();
 </script>
@@ -8,12 +8,12 @@
   <div class="ItemSettingContacts-Item-Link">
     <div class="ItemSettingContacts-Item-Link-header">
       <img
-        v-if="link.category?.icon"
+        v-if="link.socialMedia?.icon"
         class="ItemSettingContacts-Item-Link-icon"
-        :src="link.category.icon"
+        :src="link.socialMedia.icon"
         alt=""
       />
-      <span>{{ link.category?.title }}</span>
+      <span>{{ link.socialMedia?.title }}</span>
     </div>
     <span>{{ link.id }}</span>
   </div>

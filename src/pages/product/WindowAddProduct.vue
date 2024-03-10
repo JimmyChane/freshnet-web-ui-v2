@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
-  import Category from "@/data/category/Category";
-  import Input from "@/components/Input.vue";
-  import LabelMenus from "@/components/LabelMenus.vue";
+  import { Category } from "@/data/category/Category";
+  import Input from "@/components/input/Input.vue";
+  import LabelMenus from "@/components/label/LabelMenus.vue";
   import { computed, onMounted, ref, watch } from "vue";
   import { useBrandStore } from "@/data-stores/brand.store";
   import { useCategoryStore } from "@/data-stores/category.store";
   import { useProductStore } from "@/data-stores/product.store";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
-  import { Menu } from "@/stores/popup-menu/PopupMenu";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

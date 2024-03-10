@@ -11,9 +11,9 @@
   import { useLoginStore } from "@/stores/login.store";
   import { useServiceStore } from "@/data-stores/service.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
-  import { PopupWindow } from "@/stores/popup-window/PopupWindow";
-  import ServiceState from "@/data/service/ServiceState";
-  import Customer from "@/data/customer/Customer";
+  import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import { ServiceState } from "@/data/service/ServiceState";
+  import { Customer } from "@/data/customer/Customer";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 

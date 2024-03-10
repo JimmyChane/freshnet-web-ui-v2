@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import WorkingDay from "@/data/working-day/WorkingDay";
+  import { WorkingDay } from "@/data/working-day/WorkingDay";
 
   defineProps<{ value: WorkingDay }>();
 </script>

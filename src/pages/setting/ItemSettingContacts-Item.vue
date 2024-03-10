@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import ContactLink from "./ItemSettingContacts-Item-Link.vue";
-  import { Contact } from "@/data/Contact";
+  import { Contact } from "@/data/contact/Contact";
 
   defineProps<{ value: Contact }>();
 </script>
@@ -11,7 +11,7 @@
 
     <ContactLink
       v-for="link of value.links"
-      :key="`${value.title}${link.category?.key ?? ''}${link.id}`"
+      :key="`${value.title}${link.socialMedia?.key ?? ''}${link.id}`"
       :link="link"
     />
   </div>

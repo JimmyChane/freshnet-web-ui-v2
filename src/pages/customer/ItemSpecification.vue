@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import CustomerDeviceSpecification from "@/data/CustomerDeviceSpecification";
   import { useSpecificationStore } from "@/data-stores/specification.store";
+  import type { CustomerDeviceSpecification } from "@/data/customer/CustomerDeviceSpecification";
   import { onMounted, ref, watch } from "vue";
 
   const emits = defineEmits<{ click: [void]; clickRemove: [void] }>();
