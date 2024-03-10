@@ -19,7 +19,7 @@
   import { Service } from "@/data/service/Service";
   import { Item } from "@/data/Item";
 
-  const props = defineProps<{ placeholder?: string }>();
+  defineProps<{ placeholder?: string }>();
 
   const loginStore = useLoginStore();
   const categoryStore = useCategoryStore();
