@@ -1,13 +1,12 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import Tabs from "./PagePrint-Tabs.vue";
-  import Card from "./PagePrint-Card.vue";
+  import Tabs from "./components/PagePrint-Tabs.vue";
+  import Card from "./components/PagePrint-Card.vue";
   import Footer from "@/app/footer/AppFooter.vue";
-
-  import { PaperSide } from "./PaperSide";
-  import { Paper } from "./Paper";
-  import { Output } from "./Output";
-  import { PaperSize } from "./PaperSize";
+  import { PaperSide } from "./components/PaperSide";
+  import { Paper } from "./components/Paper";
+  import { Output } from "./components/Output";
+  import { PaperSize } from "./components/PaperSize";
   import { Price } from "@/data/Price";
   import { computed, onMounted, ref } from "vue";
   import { Category, Item, Media, Subcategory, type Tab } from "./PagePrint";

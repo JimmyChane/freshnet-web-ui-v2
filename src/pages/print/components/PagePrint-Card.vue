@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from "vue";
   import ItemVue from "./PagePrint-Item.vue";
-  import { Subcategory } from "./PagePrint";
+  import { Subcategory } from "../PagePrint";
 
   const props = defineProps<{
     preview: Subcategory;

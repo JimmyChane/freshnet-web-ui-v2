@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import Empty from "@/components/Empty.vue";
-  import ItemSetting from "./ItemSetting.vue";
-  import ItemSettingContacts from "./ItemSettingContacts.vue";
-  import ItemSettingBusinessHours from "./ItemSettingBusinessHours.vue";
+  import ItemSetting from "./components/ItemSetting.vue";
+  import ItemSettingContacts from "./components/ItemSettingContacts.vue";
+  import ItemSettingBusinessHours from "./components/ItemSettingBusinessHours.vue";
   import { Setting } from "@/data/setting/Setting";
 
   import { computed, onMounted } from "vue";

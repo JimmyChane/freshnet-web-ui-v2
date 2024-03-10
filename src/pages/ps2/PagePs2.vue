@@ -4,8 +4,8 @@
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
   import Empty from "@/components/Empty.vue";
   import Footer from "@/app/footer/AppFooter.vue";
-  import WindowItemPs2Disc from "./WindowItemPs2Disc.vue";
-  import ItemPs2Disc from "./ItemPs2Disc.vue";
+  import WindowItemPs2Disc from "./components/WindowItemPs2Disc.vue";
+  import ItemPs2Disc from "./components/ItemPs2Disc.vue";
   import IconHamburgerMenu from "@/assets/icon/hamburgerMenu-000000.svg";
   import IconClose from "@/assets/icon/close-2A4858.svg";
   import IconSearch from "@/assets/icon/search-2A4858.svg";

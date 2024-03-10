@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Item } from "./PagePrint";
+  import { Item } from "../PagePrint";
 
   defineProps<{ item: Item }>();
 </script>

@@ -3,7 +3,6 @@
   import Label from "./ItemCustomer-Label.vue";
   import LabelDevice from "./ItemCustomer-LabelDevice.vue";
   import { Customer } from "@/data/customer/Customer";
-
   import IconService from "@/assets/icon/service-505050.svg";
   import IconOrder from "@/assets/icon/order-505050.svg";
   import { computed, onMounted, ref, watch } from "vue";

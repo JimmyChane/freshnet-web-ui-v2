@@ -3,8 +3,7 @@
   import Input from "@/components/input/Input.vue";
   import Actionbar from "@/components/actionbar/Actionbar.vue";
   import Footer from "@/app/footer/AppFooter.vue";
-
-  import ButtonLogin from "./ButtonLogin.vue";
+  import ButtonLogin from "./components/ButtonLogin.vue";
   import Logo from "@/assets/logo/freshnet-enterprise-logo.svg";
   import IconHamburgerMenu from "@/assets/icon/hamburgerMenu-000000.svg";
   import { computed, onMounted, ref } from "vue";

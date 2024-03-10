@@ -1,16 +1,14 @@
 <script setup lang="ts">
   import Loading from "@/components/loading/Loading.vue";
-  import WindowRemove from "@/components/window/WindowRemove.vue";
-  import PanelServices from "./PanelServices.vue";
-  import PanelService from "./PanelService.vue";
-  import WindowSearch from "./WindowSearch.vue";
-  import WindowImportService from "./WindowImportService.vue";
-  import WindowAddService from "./WindowAddService.vue";
-  import WindowUpdateDescription from "./WindowUpdateDescription.vue";
-  import WindowUpdateBelonging from "./WindowUpdateBelonging.vue";
-  import WindowUpdateCustomer from "./WindowUpdateCustomer.vue";
+  import PanelServices from "./components/PanelServices.vue";
+  import PanelService from "./components/PanelService.vue";
+  import WindowSearch from "./components/WindowSearch.vue";
+  import WindowImportService from "./components/WindowImportService.vue";
+  import WindowAddService from "./components/WindowAddService.vue";
+  import WindowUpdateDescription from "./components/WindowUpdateDescription.vue";
+  import WindowUpdateBelonging from "./components/WindowUpdateBelonging.vue";
+  import WindowUpdateCustomer from "./components/WindowUpdateCustomer.vue";
   import PanelRight from "@/components/panel/PanelRight.vue";
-
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
@@ -18,7 +16,7 @@
   import { useRoute } from "vue-router";
   import { Service } from "@/data/service/Service";
   import type { Menu } from "@/stores/popup-menu/PopupMenu";
-  import type { Action } from "./PanelService";
+  import type { Action } from "./components/PanelService";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
   import { useRouteStore } from "@/stores/route.store";

@@ -7,7 +7,7 @@
   import { computed, onMounted, ref, watch } from "vue";
   import { useUserStore } from "@/data-stores/user.store";
   import { useSettingStore } from "@/data-stores/setting.store";
-  import { SettingUI } from "./PageSetting";
+  import { SettingUI } from "../PageSetting";
   import { optString } from "@/U";
 
   const props = defineProps<{ item: SettingUI }>();

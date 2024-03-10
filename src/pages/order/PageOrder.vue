@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import WindowAdd from "./WindowAdd.vue";
+  import WindowAdd from "./components/WindowAdd.vue";
   import Loading from "@/components/loading/Loading.vue";
-  import Actionbar from "./Actionbar.vue";
-  import SectionOrder from "./SectionOrder.vue";
+  import Actionbar from "./components/Actionbar.vue";
+  import SectionOrder from "./components/SectionOrder.vue";
   import { Order } from "@/data/order/Order";
   import { useRoute } from "vue-router";
   import { computed, onMounted, ref, watch } from "vue";

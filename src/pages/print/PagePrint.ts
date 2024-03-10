@@ -1,9 +1,12 @@
-import { Paper } from "./Paper";
-import { Output } from "./Output";
+import { Paper } from "./components/Paper";
+import { Output } from "./components/Output";
 import { Price } from "@/data/Price";
 
 export class Media {
-  constructor(readonly title: string, readonly items: Category[]) {}
+  constructor(
+    readonly title: string,
+    readonly items: Category[],
+  ) {}
 }
 export class Category {
   readonly title: string;

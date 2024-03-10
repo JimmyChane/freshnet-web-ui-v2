@@ -1,20 +1,21 @@
 <script setup lang="ts">
   import Loading from "@/components/loading/Loading.vue";
-  import WindowAddCustomer from "./WindowAddCustomer.vue";
-  import WindowRemoveCustomer from "./WindowRemoveCustomer.vue";
-  import WindowUpdateCustomer from "./WindowUpdateCustomer.vue";
-  import WindowUpdateDescription from "./WindowUpdateDescription.vue";
-  import WindowAddDevice from "./WindowAddDevice.vue";
-  import WindowRemoveDevice from "./WindowRemoveDevice.vue";
-  import WindowUpdateDeviceSpecifications from "./WindowUpdateDeviceSpecifications.vue";
-  import WindowUpdateDeviceDescription from "./WindowUpdateDeviceDescription.vue";
-  import PanelCustomers from "./PanelCustomers.vue";
-  import PanelCustomer from "./PanelCustomer.vue";
+  import WindowAddCustomer from "./components/WindowAddCustomer.vue";
+  import WindowRemoveCustomer from "./components/WindowRemoveCustomer.vue";
+  import WindowUpdateCustomer from "./components/WindowUpdateCustomer.vue";
+  import WindowUpdateDescription from "./components/WindowUpdateDescription.vue";
+  import WindowAddDevice from "./components/WindowAddDevice.vue";
+  import WindowRemoveDevice from "./components/WindowRemoveDevice.vue";
+  import WindowUpdateDeviceSpecifications from "./components/WindowUpdateDeviceSpecifications.vue";
+  import WindowUpdateDeviceDescription from "./components/WindowUpdateDeviceDescription.vue";
+  import PanelCustomers from "./components/PanelCustomers.vue";
+  import PanelCustomer from "./components/PanelCustomer.vue";
   import PanelRight from "@/components/panel/PanelRight.vue";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { useRoute } from "vue-router";
   import { Customer } from "@/data/customer/Customer";
+  import { useRouteStore } from "@/stores/route.store";
 
   const panelListened = ref({ isWide: false });
   const items = ref<Customer[]>([]);

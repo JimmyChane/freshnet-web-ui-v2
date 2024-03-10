@@ -3,7 +3,6 @@
   import ItemSpecification from "./ItemSpecification.vue";
   import Item from "./PanelCustomer-Item.vue";
   import { CustomerDevice } from "@/data/customer/CustomerDevice";
-
   import IconTrash from "@/assets/icon/trash-DB4A2A.svg";
   import IconOption from "@/assets/icon/option-000000.svg";
   import { computed, onMounted } from "vue";

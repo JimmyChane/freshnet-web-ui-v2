@@ -2,12 +2,9 @@
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import Loading from "@/components/loading/Loading.vue";
   import Empty from "@/components/Empty.vue";
-  import ItemUser from "./ItemUser.vue";
-
-  import WindowAdd from "./WindowAdd.vue";
-  import WindowRemove from "./WindowRemove.vue";
-  import WindowChange from "./WindowChange.vue";
-
+  import ItemUser from "./components/ItemUser.vue";
+  import WindowAdd from "./components/WindowAdd.vue";
+  import WindowChange from "./components/WindowChange.vue";
   import IconAdd from "@/assets/icon/add-000000.svg";
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
   import { computed, onMounted } from "vue";

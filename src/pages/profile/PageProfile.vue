@@ -3,10 +3,10 @@
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import Loading from "@/components/loading/Loading.vue";
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
-  import Section from "./PageProfile-Section.vue";
-  import SectionTitle from "./PageProfile-Section-Title.vue";
-  import SectionMain from "./PageProfile-Section-Main.vue";
-  import WindowChangePassword from "./WindowChangePassword.vue";
+  import Section from "./components/PageProfile-Section.vue";
+  import SectionTitle from "./components/PageProfile-Section-Title.vue";
+  import SectionMain from "./components/PageProfile-Section-Main.vue";
+  import WindowChangePassword from "./components/WindowChangePassword.vue";
   import IconArrowDown from "@/assets/icon/arrowDown-000000.svg";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { useLoginStore } from "@/stores/login.store";

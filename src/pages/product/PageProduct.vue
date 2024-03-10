@@ -1,15 +1,15 @@
 <script setup lang="ts">
-  import PanelProducts from "./PanelProducts.vue";
-  import PanelProduct from "./PanelProduct.vue";
-  import WindowSearch from "./WindowSearch.vue";
-  import WindowAddProduct from "./WindowAddProduct.vue";
-  import WindowRemoveProduct from "./WindowRemoveProduct.vue";
-  import WindowRemoveImage from "./WindowRemoveImage.vue";
-  import WindowUpdateTitleBrand from "./WindowUpdateTitleBrand.vue";
-  import WindowUpdatePrice from "./WindowUpdatePrice.vue";
-  import WindowUpdateDescription from "./WindowUpdateDescription.vue";
-  import WindowUpdateCategory from "./WindowUpdateCategory.vue";
-  import WindowUpdateSpecifications from "./WindowUpdateSpecifications.vue";
+  import PanelProducts from "./components/PanelProducts.vue";
+  import PanelProduct from "./components/PanelProduct.vue";
+  import WindowSearch from "./components/WindowSearch.vue";
+  import WindowAddProduct from "./components/WindowAddProduct.vue";
+  import WindowRemoveProduct from "./components/WindowRemoveProduct.vue";
+  import WindowRemoveImage from "./components/WindowRemoveImage.vue";
+  import WindowUpdateTitleBrand from "./components/WindowUpdateTitleBrand.vue";
+  import WindowUpdatePrice from "./components/WindowUpdatePrice.vue";
+  import WindowUpdateDescription from "./components/WindowUpdateDescription.vue";
+  import WindowUpdateCategory from "./components/WindowUpdateCategory.vue";
+  import WindowUpdateSpecifications from "./components/WindowUpdateSpecifications.vue";
   import PanelRight from "@/components/panel/PanelRight.vue";
   import { useCategoryStore } from "@/data-stores/category.store";
   import { useProductStore } from "@/data-stores/product.store";

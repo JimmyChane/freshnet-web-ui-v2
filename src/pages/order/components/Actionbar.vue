@@ -6,12 +6,13 @@
   import IconAdd from "@/assets/icon/add-000000.svg";
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
   import { ref } from "vue";
+  import type { Order } from "@/data/order/Order";
 
-  const props = defineProps<{ title?: string; items: Countable[] }>();
+  const props = defineProps<{ title?: string; items: Order[] }>();
 
-  const results = ref<Countable[]>([]);
+  const results = ref<Order[]>([]);
 
-  function searchResults(str: string): Countable[] {
+  function searchResults(str: string) {
     return Searcher.withItems(props.items).search(str);
   }
 </script>

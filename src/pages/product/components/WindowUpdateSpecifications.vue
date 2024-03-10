@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
-  import SpecificationInputs from "@/pages/customer/SpecificationInputs.vue";
+  import SpecificationInputs from "@/pages/customer/components/SpecificationInputs.vue";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref } from "vue";
   import { Specification } from "@/data/specification/Specification";

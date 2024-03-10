@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ItemOrderAction from "@/pages/order/ItemOrder-Action.vue";
+  import ItemOrderAction from "./ItemOrder-Action.vue";
   import { Order } from "@/data/order/Order";
   import { format } from "date-fns";
   import IconSuccessGreen from "@/assets/icon/success-green.svg";

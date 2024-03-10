@@ -1,10 +1,8 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
   import Loading from "@/components/loading/Loading.vue";
-
   import PanelItemCustomer from "@/pages/manage/PanelItem-Customer.vue";
   import Section from "@/pages/manage/PanelItem-Section.vue";
-
   import Item from "./PanelCustomer-Item.vue";
   import ItemService from "@/pages/service/item-service/ItemService.vue";
   import ItemDevice from "./ItemDevice.vue";

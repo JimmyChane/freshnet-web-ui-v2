@@ -3,7 +3,7 @@
   import { useSettingStore } from "@/data-stores/setting.store";
   import { useUserStore } from "@/data-stores/user.store";
   import { computed, onMounted, ref, watch } from "vue";
-  import { SettingUI } from "./PageSetting";
+  import { SettingUI } from "../PageSetting";
 
   const props = defineProps<{ item: SettingUI }>();
 

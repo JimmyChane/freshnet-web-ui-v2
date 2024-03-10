@@ -3,7 +3,7 @@
   import Loading from "@/components/loading/Loading.vue";
   import Empty from "@/components/Empty.vue";
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
-  import ItemDatabase from "./ItemDatabase.vue";
+  import ItemDatabase from "./components/ItemDatabase.vue";
   import IconRefresh from "@/assets/icon/refresh-000000.svg";
   import { useLoginStore } from "@/stores/login.store";
   import { useDatabaseStore } from "@/data-stores/database.store";
