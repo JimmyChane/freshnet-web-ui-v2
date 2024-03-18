@@ -15,7 +15,7 @@ export const usePs2Store = defineStore("ps2", () => {
       const api = await Ps2Request.listDisc();
       const content: any[] = api.optArrayContent();
       const items = content.map((content) => {
-        return new Ps2Disc().fromData(content);
+        return new Ps2Disc(content);
       });
       return items.sort((a, b) => a.compare(b));
     });

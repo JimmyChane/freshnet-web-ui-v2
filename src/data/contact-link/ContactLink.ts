@@ -1,10 +1,10 @@
 import { optString } from "@/U";
 import {
-  Call,
-  Whatsapp,
+  CALL,
+  WHATSAPP,
   SocialMedia,
-  Telephone,
-  Telegram,
+  TELEPHONE,
+  TELEGRAM,
 } from "../social-media/SocialMedia";
 
 export interface ContactLinkData {
@@ -18,7 +18,7 @@ export class ContactLink {
 
   constructor(data: ContactLinkData) {
     this.id = optString(data.id);
-    this.socialMedia = [Call, Whatsapp, Telegram, Telephone].find(
+    this.socialMedia = [CALL, WHATSAPP, TELEGRAM, TELEPHONE].find(
       (category) => {
         return category.key === data.category;
       },
@@ -36,18 +36,18 @@ export class ContactLink {
   }
 
   toHtmlHref(): string {
-    if (this.socialMedia === Call || this.socialMedia === Telephone)
+    if (this.socialMedia === CALL || this.socialMedia === TELEPHONE)
       return `tel:+6${this.id}`;
-    if (this.socialMedia === Whatsapp)
+    if (this.socialMedia === WHATSAPP)
       return `https://api.whatsapp.com/send?phone=6${this.id}`;
-    if (this.socialMedia === Telegram) return `https://t.me/${this.id}`;
+    if (this.socialMedia === TELEGRAM) return `https://t.me/${this.id}`;
     return "";
   }
 
   toHtmlTarget(): string {
-    if (this.socialMedia === Call || this.socialMedia === Telephone)
+    if (this.socialMedia === CALL || this.socialMedia === TELEPHONE)
       return "_self";
-    if (this.socialMedia === Whatsapp || this.socialMedia === Telegram)
+    if (this.socialMedia === WHATSAPP || this.socialMedia === TELEGRAM)
       return "_blank";
     return "";
   }

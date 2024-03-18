@@ -10,7 +10,7 @@
   import { onMounted, ref, watch } from "vue";
   import { useProductStore } from "@/data-stores/product.store";
   import { Specification } from "@/data/specification/Specification";
-  import ButtonImage from "../service/ButtonImage.vue";
+  import ButtonImage from "@/pages/service/components/ButtonImage.vue";
 
   const emits = defineEmits<{
     "request-viewImage": [void];

@@ -1,6 +1,12 @@
 <script setup lang="ts">
-  const emits = defineEmits<{ click: [Object] }>();
-  defineProps<{ item?: Object }>();
+  interface Tab {
+    title: string;
+    isSelected: () => boolean;
+    click: (tab: this) => void;
+  }
+
+  const emits = defineEmits<{ click: [Tab] }>();
+  defineProps<{ item: Tab }>();
 </script>
 
 <template>

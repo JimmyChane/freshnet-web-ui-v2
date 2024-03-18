@@ -1,7 +1,7 @@
 import type { Item } from "../Item";
-import { textContains, trimId, trimText } from "@/U";
+import { optNumber, textContains, trimId, trimText } from "@/U";
 
-interface UserData {
+export interface UserData {
   username: string;
   name: string;
   userType: number;
@@ -11,15 +11,14 @@ export class User implements Item {
   static Type = { None: -1, Admin: 0, Staff: 1, Customer: 2 };
   static ReservedUsername = { Admin: "admin", Staff: "staff" };
 
-  username: string = "";
-  name: string = "";
-  userType: number = User.Type.None;
+  username: string;
+  name: string;
+  userType: number;
 
-  fromData(data: UserData): this {
+  constructor(data: UserData) {
     this.username = trimId(data.username);
     this.name = trimText(data.name);
-    this.userType = data.userType;
-    return this;
+    this.userType = optNumber(data.userType, User.Type.None);
   }
 
   toData(): UserData {

@@ -1,16 +1,21 @@
 import { trimId, trimText } from "@/U";
 
-export class CustomerDeviceSpecification {
-  typeKey: string = "";
-  content: string = "";
+export interface CustomerDeviceSpecificationData {
+  typeKey?: string;
+  content?: string;
+}
 
-  fromData(data: any): CustomerDeviceSpecification {
+export class CustomerDeviceSpecification {
+  typeKey: string;
+  content: string;
+
+  constructor(data: CustomerDeviceSpecificationData) {
     this.typeKey = trimId(data.typeKey);
     this.content = trimText(data.content);
 
     return this;
   }
-  toData(): any {
+  toData(): CustomerDeviceSpecificationData {
     return {
       typeKey: trimId(this.typeKey),
       content: trimText(this.content),

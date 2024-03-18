@@ -12,7 +12,7 @@
   import { useServiceStore } from "@/data-stores/service.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
-  import { ServiceState } from "@/data/service/ServiceState";
+  import { PENDING, ServiceState, map } from "@/data/service/ServiceState";
   import { Customer } from "@/data/customer/Customer";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
@@ -44,7 +44,7 @@
   });
 
   const stateMenus = computed(() => {
-    return ServiceState.map((state) => {
+    return map((state) => {
       return {
         key: state.key,
         title: state.title,
@@ -63,7 +63,7 @@
     };
 
     if (!data.value.state) {
-      data.value.state = ServiceState.PENDING.key;
+      data.value.state = PENDING.key;
     }
 
     const now = new Date();

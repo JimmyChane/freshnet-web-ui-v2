@@ -1,6 +1,6 @@
 import { getOriginApi } from "@/data/server/Server";
 import { Filename } from "../Filename";
-import { Image, type ImageUrlOption } from "../Image";
+import { Image, Method, type ImageUrlOption, dimensionToQuery } from "../Image";
 import { useLoginStore } from "@/stores/login.store";
 import { trimId } from "@/U";
 
@@ -12,13 +12,13 @@ export interface ServiceImageData {
 }
 
 export class ServiceImage {
-  name: string = "";
-  path: string = "";
-  method: string = "";
-  storageType: string = "";
+  name: string;
+  path: string;
+  method: string;
+  storageType: string;
 
-  fromData(data: ServiceImageData): this {
-    const image = new Image().fromData({
+  constructor(data: ServiceImageData) {
+    const image = new Image({
       path: data.path,
       method: data.method,
     });
@@ -27,13 +27,10 @@ export class ServiceImage {
     this.path = image.path;
     this.method = image.method;
     this.storageType = trimId(data.storageType);
-    return this;
   }
 
   toData(): ServiceImageData {
-    const image = new Image()
-      .fromData({ path: this.path, method: this.method })
-      .toData();
+    const image = new Image({ path: this.path, method: this.method }).toData();
     return {
       name: trimId(this.name),
       path: image.path,
@@ -50,10 +47,10 @@ export class ServiceImage {
     const { width = 0, height = 0 } = option ?? {};
 
     const { path, method } = this;
-    const dimensionQuery = Image.dimensionToQuery(width, height);
+    const dimensionQuery = dimensionToQuery(width, height);
     const query = dimensionQuery.length ? `?${dimensionQuery}` : "";
 
-    if (method === Image.Method.StorageImage) {
+    if (method === Method.StorageImage) {
       const prefix = "/api/image/name/";
       const name = path.substring(prefix.length, path.length);
       const filename = new Filename(name);

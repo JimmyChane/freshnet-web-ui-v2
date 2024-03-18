@@ -8,17 +8,16 @@ export interface ServiceBelongingData {
 }
 
 export class ServiceBelonging {
-  title: string = "";
-  time: number = 0;
-  quantity: number = 1;
-  description: string = "";
+  title: string;
+  time: number;
+  quantity: number;
+  description: string;
 
-  fromData(data: ServiceBelongingData) {
-    this.title = trimText(data.title);
-    this.time = optNumber(data.time);
-    this.quantity = Math.max(optNumber(data.quantity), 1);
-    this.description = trimText(data.description);
-    return this;
+  constructor(data?: ServiceBelongingData) {
+    this.title = trimText(data?.title);
+    this.time = optNumber(data?.time);
+    this.quantity = Math.max(optNumber(data?.quantity), 1);
+    this.description = trimText(data?.description);
   }
   toData(): ServiceBelongingData {
     return {

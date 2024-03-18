@@ -1,4 +1,4 @@
-import { Mode } from "./item-service/ItemServiceMode";
+import { Mode } from "../item-service/ItemServiceMode";
 
 export enum SortMode {
   DateCreated = 1,

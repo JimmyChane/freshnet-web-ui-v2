@@ -20,7 +20,7 @@ export const useDatabaseStore = defineStore("database", () => {
     })
     .getData(() => baseInfo.value);
   const baseInfo = ref<any>(null);
-  const items = ref([]);
+  const items = ref<{ name: string }[]>([]);
   const processor = ref(new Processor());
 
   async function refresh() {

@@ -4,17 +4,9 @@ import { Product } from "@/data/product/Product";
 import { Specification } from "@/data/specification/Specification";
 
 class Brands {
-  static INTEL = new Brand().fromData({
-    _id: "",
-    title: "Intel",
-    icon: null,
-  });
-  static AMD = new Brand().fromData({ _id: "", title: "AMD", icon: null });
-  static NVIDIA = new Brand().fromData({
-    _id: "",
-    title: "Nvidia",
-    icon: null,
-  });
+  static INTEL = new Brand({ _id: "", title: "Intel", icon: null });
+  static AMD = new Brand({ _id: "", title: "AMD", icon: null });
+  static NVIDIA = new Brand({ _id: "", title: "Nvidia", icon: null });
 }
 
 class Unit {

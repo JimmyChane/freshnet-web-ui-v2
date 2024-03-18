@@ -3,7 +3,7 @@
   import Loading from "@/components/loading/Loading.vue";
   import Actionbar from "./components/Actionbar.vue";
   import SectionOrder from "./components/SectionOrder.vue";
-  import { Order } from "@/data/order/Order";
+  import { Order, OrderStatus } from "@/data/order/Order";
   import { useRoute } from "vue-router";
   import { computed, onMounted, ref, watch } from "vue";
   import { useOrderStore } from "@/data-stores/order.store";
@@ -39,10 +39,10 @@
 
     const groups = await useOrderStore().getGroupsByStatus();
     const groupPending = groups.find((group) => {
-      return group.status === Order.Status.Pending;
+      return group.status === OrderStatus.Pending;
     });
     const groupCompleted = groups.find((group) => {
-      return group.status === Order.Status.Completed;
+      return group.status === OrderStatus.Completed;
     });
 
     pendingItems.value = groupPending?.items ?? [];

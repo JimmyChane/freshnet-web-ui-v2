@@ -84,7 +84,7 @@
     >
       <ItemSearchProduct
         class="ActionbarProduct-search-item"
-        v-for="product in list"
+        v-for="product in list as Product[]"
         :key="product.id"
         :item="product"
       />

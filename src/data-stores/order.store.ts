@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Order } from "@/data/order/Order";
+import { Order, OrderStatus } from "@/data/order/Order";
 import { OrderRequest } from "@/data/order/OrderRequest";
 import { DataLoader } from "./tools/DataLoader";
 import { Processor } from "@/stores/tools/Processor";
@@ -16,7 +16,7 @@ export const useOrderStore = defineStore("order", () => {
     .loadData(async () => {
       const api = await OrderRequest.list();
       const content: any[] = api.optArrayContent();
-      return content.map((data) => new Order().fromData(data));
+      return content.map((data) => new Order(data));
     });
 
   const processor = ref(new Processor());
@@ -87,7 +87,7 @@ export const useOrderStore = defineStore("order", () => {
     const { data } = arg;
     if (!data) return null;
     const api = await OrderRequest.add(data);
-    const order = new Order().fromData(api.optObjectContent());
+    const order = new Order(api.optObjectContent());
     return list.value.addItem(order);
   }
   async function removeOItemOfId(arg: { id: string }) {
@@ -107,11 +107,11 @@ export const useOrderStore = defineStore("order", () => {
   }
 
   async function updateToPendingOfId(id = "") {
-    const status = Order.Status.Pending;
+    const status = OrderStatus.Pending;
     return updateStatusOfId({ id, status });
   }
   async function updateToCompletedOfId(id = "") {
-    const status = Order.Status.Completed;
+    const status = OrderStatus.Completed;
     return updateStatusOfId({ id, status });
   }
 

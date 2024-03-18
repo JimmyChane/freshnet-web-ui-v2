@@ -6,22 +6,12 @@ export interface LabelData {
 }
 
 export class Label {
-  static URGENT: Label = new Label().fromData({
-    title: "Urgent",
-    hexColor: "d93f35",
-  });
-  static WARRANTY: Label = new Label().fromData({
-    title: "Warranty",
-    hexColor: "db950c",
-  });
+  title: string;
+  hexColor: string;
 
-  title: string = "";
-  hexColor: string = "";
-
-  fromData(data: LabelData): this {
+  constructor(data: LabelData) {
     this.title = trimText(data.title);
     this.hexColor = trimId(data.hexColor);
-    return this;
   }
   toData(): LabelData {
     return {
@@ -41,3 +31,6 @@ export class Label {
     return 0;
   }
 }
+
+export const URGENT = new Label({ title: "Urgent", hexColor: "d93f35" });
+export const WARRANTY = new Label({ title: "Warranty", hexColor: "db950c" });

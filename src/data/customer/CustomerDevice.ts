@@ -21,20 +21,18 @@ export class CustomerDevice implements Item {
   categoryKey: string = "";
   specifications: CustomerDeviceSpecification[] = [];
 
-  fromData(data: CustomerDeviceData): this {
+  constructor(data: CustomerDeviceData) {
     this.id = trimId(data._id);
     this.ownerCustomerId = trimId(data.ownerCustomerId);
     this.description = trimText(data.description);
     this.categoryKey = trimId(data.categoryKey);
     this.specifications = optArray(data.specifications)
       .map((specification) => {
-        return new CustomerDeviceSpecification().fromData(specification);
+        return new CustomerDeviceSpecification(specification);
       })
       .filter((specification) => {
         return specification.typeKey && specification.content;
       });
-
-    return this;
   }
 
   toData(): CustomerDeviceData {

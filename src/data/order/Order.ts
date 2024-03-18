@@ -2,31 +2,41 @@ import { OrderCustomer } from "./OrderCustomer";
 import { Item } from "@/data/Item";
 import { textContains, trimId, trimText } from "@/U";
 
-export class Order implements Item {
-  static Status = { Pending: 0, Completed: 1 };
+export enum OrderStatus {
+  Pending = 0,
+  Completed = 1,
+}
 
+export interface OrderData {
+  _id?: string;
+  customer_name?: string;
+  phone_number?: string;
+  content?: string;
+  createdAt?: string;
+  status?: number;
+}
+
+export class Order implements Item {
   id: string = "";
   customer?: OrderCustomer;
-  content: string = "";
-  createdAt: string = "";
-  status: number = Order.Status.Pending;
+  content: string;
+  createdAt?: string;
+  status: OrderStatus = OrderStatus.Pending;
 
-  fromData(data: any): Order {
+  constructor(data: OrderData) {
     this.id = trimId(data._id);
-    this.customer = new OrderCustomer().fromData({
+    this.customer = new OrderCustomer({
       name: trimText(data.customer_name),
       phoneNumber: trimText(data.phone_number),
     });
     this.content = trimText(data.content);
     this.createdAt = data.createdAt;
     this.status =
-      data.status !== Order.Status.Completed
-        ? Order.Status.Pending
-        : Order.Status.Completed;
-
-    return this;
+      data.status !== OrderStatus.Completed
+        ? OrderStatus.Pending
+        : OrderStatus.Completed;
   }
-  toData(): any {
+  toData(): OrderData {
     const customer = this.customer?.toData();
     return {
       _id: this.id,

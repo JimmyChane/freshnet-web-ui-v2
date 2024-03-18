@@ -5,11 +5,10 @@ interface PhoneNumberData {
 }
 
 export class PhoneNumber {
-  value: string = "";
+  value: string;
 
-  fromData(data: PhoneNumberData): this {
+  constructor(data: PhoneNumberData) {
     this.value = data.value;
-    return this;
   }
 
   toData(): PhoneNumberData {

@@ -18,6 +18,14 @@ import { Image } from "../Image";
 import { Brand } from "../brand/Brand";
 import { Category } from "../category/Category";
 
+const FORMAT_SPECIFICATION_ORDERS = Object.values(Type.Key);
+function putForwardSlash(texts: string[], separation: string = " / "): string {
+  return texts.reduce((result, text, i) => {
+    if (i === 0) return text;
+    return `${result}${separation}${text}`;
+  });
+}
+
 export interface ProductData {
   _id?: string;
   title?: string;
@@ -35,52 +43,39 @@ export interface ProductData {
 }
 
 export class Product implements Item {
-  private static FORMAT_SPECIFICATION_ORDERS = Object.values(Type.Key);
-  private static putForwardSlash(
-    texts: string[],
-    separation: string = " / ",
-  ): string {
-    return texts.reduce((result, text, i) => {
-      if (i === 0) return text;
-      return `${result}${separation}${text}`;
-    });
-  }
+  id: string;
+  title: string;
+  description: string;
+  gifts: string[];
+  bundles: any[];
+  brandId: string;
+  categoryId: string;
+  specifications: Specification[];
+  images: Image[];
+  price?: ProductPrices;
+  stock?: ProductStock;
 
-  id: string = "";
-  title: string = "";
-  description: string = "";
-  gifts: string[] = [];
-  bundles: any[] = [];
-  brandId: string = "";
-  categoryId: string = "";
-  specifications: Specification[] = [];
-  images: Image[] = [];
-  price: ProductPrices | null = null;
-  stock: ProductStock | null = null;
+  category?: Category;
+  brand?: Brand;
 
-  category: Category | null = null;
-  brand: Brand | null = null;
-
-  fromData(data: ProductData): Product {
+  constructor(data: ProductData) {
     this.id = trimId(data._id);
     this.title = trimText(data.title);
     this.description = trimText(data.description);
     this.stock =
       typeof data.stock === "object"
-        ? new ProductStock().fromData(data.stock)
+        ? new ProductStock(data.stock)
         : new ProductStock();
-    this.setBrandId(trimId(data.brandId));
+    this.brandId = trimId(data.brandId);
+    this.categoryId = trimId(data.categoryId);
+    this.gifts = optArray(data.gifts)
+      .map((gift) => trimText(gift))
+      .filter((gift) => !!gift);
+    this.bundles = optArray(data.bundles).map((bundle) => {
+      return new ProductBundle(bundle).toData();
+    });
+
     this.setCategoryId(trimId(data.categoryId));
-    this.setGifts(
-      optArray(data.gifts)
-        .map((gift) => trimText(gift))
-        .filter((gift) => !!gift),
-    );
-    this.setBundles(
-      optArray(data.bundles)
-        .map((bundle) => new ProductBundle().fromData(bundle))
-        .map((bundle) => bundle.toData()),
-    );
 
     const specifications = optArray(data.specifications).map(
       (specification: any) => {
@@ -101,20 +96,29 @@ export class Product implements Item {
         }),
       );
     }
-    this.setSpecifications(specifications);
+    this.specifications = specifications.map((specification) => {
+      return new Specification().fromData({
+        key: specification.type,
+        content: specification.content,
+      });
+    });
 
     const images = optArray(data.images);
     if (typeof data.image === "object" && data.image) {
       images.unshift(data.image);
     }
-    this.setImages(
-      images.map((image) => {
-        return {
+    this.images = images
+      .filter((image) => {
+        const isMethodString = typeof image.method === "string";
+        const isPathString = typeof image.path === "string";
+        return isMethodString && isPathString;
+      })
+      .map((image) => {
+        return new Image({
           method: trimId(image.method),
           path: trimId(image.path),
-        };
-      }),
-    );
+        });
+      });
 
     let dataPrice = null;
     if (data.price) dataPrice = data.price;
@@ -124,10 +128,8 @@ export class Product implements Item {
       });
       if (prices.length > 0) dataPrice = prices[prices.length - 1];
     }
-    const price = dataPrice ? new ProductPrices().fromData(dataPrice) : null;
+    const price = dataPrice ? new ProductPrices(dataPrice) : null;
     this.setPrice(price?.toData());
-
-    return this;
   }
   toData(): ProductData {
     return {
@@ -151,7 +153,7 @@ export class Product implements Item {
       price:
         this.price instanceof ProductPrices
           ? this.price.toData()
-          : new ProductPrices().fromData(this.price ?? {}).toData(),
+          : new ProductPrices(this.price ?? {}).toData(),
     };
   }
 
@@ -232,15 +234,13 @@ export class Product implements Item {
     const texts: string[] = [];
     const specs = this.specifications
       .filter((specification) => {
-        return Product.FORMAT_SPECIFICATION_ORDERS.includes(
-          specification.typeKey,
-        );
+        return FORMAT_SPECIFICATION_ORDERS.includes(specification.typeKey);
       })
       .sort((specification1, specification2) => {
-        const index1 = Product.FORMAT_SPECIFICATION_ORDERS.indexOf(
+        const index1 = FORMAT_SPECIFICATION_ORDERS.indexOf(
           specification1.typeKey,
         );
-        const index2 = Product.FORMAT_SPECIFICATION_ORDERS.indexOf(
+        const index2 = FORMAT_SPECIFICATION_ORDERS.indexOf(
           specification2.typeKey,
         );
 
@@ -272,7 +272,7 @@ export class Product implements Item {
       texts.push(price);
     }
 
-    return Product.putForwardSlash(texts);
+    return putForwardSlash(texts);
   }
 
   isPricePromotion(): boolean {
@@ -396,17 +396,17 @@ export class Product implements Item {
   setBrandId(brandId: string) {
     this.brandId = brandId;
     this.fetchBrand().then((brand) => {
-      this.brand = brand ?? null;
+      this.brand = brand ?? undefined;
     });
   }
   setCategoryId(categoryId: string) {
     this.categoryId = categoryId;
     this.fetchCategory().then((category) => {
-      this.category = category ?? null;
+      this.category = category ?? undefined;
     });
   }
   setPrice(price: any) {
-    this.price = new ProductPrices().fromData(price ?? {});
+    this.price = new ProductPrices(price ?? {});
   }
 
   setImages(images: (Image | any)[]) {
@@ -417,14 +417,11 @@ export class Product implements Item {
         return isMethodString && isPathString;
       })
       .map((image) => {
-        return new Image().fromData({
-          method: image.method,
-          path: image.path,
-        });
+        return new Image({ method: image.method, path: image.path });
       });
   }
   addImages(images: (Image | any)[]) {
-    this.images.push(...images.map((data) => new Image().fromData(data)));
+    this.images.push(...images.map((data) => new Image(data)));
   }
   removeImage(image: Image | any) {
     this.images = this.images.filter((thisImage) => {
@@ -466,7 +463,7 @@ export class Product implements Item {
 
   setBundles(data: (ProductBundle | any)[] = []) {
     this.bundles = optArray(data).map((bundle) => {
-      return new ProductBundle().fromData(bundle).toData();
+      return new ProductBundle(bundle).toData();
     });
   }
   addBundle(bundle: ProductBundle) {

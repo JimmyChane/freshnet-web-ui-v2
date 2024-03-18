@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import PanelSearch from "@/components/panel/PanelSearch.vue";
-  import ItemService from "./item-service/ItemService.vue";
+  import ItemService from "../item-service/ItemService.vue";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref, watch } from "vue";
   import { Item } from "@/data/Item";

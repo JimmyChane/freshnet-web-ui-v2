@@ -1,15 +1,15 @@
 <script setup lang="ts">
-  import ItemButton from "@/pages/manage/PanelItems-ItemButton.vue";
-  import Label from "./ItemCustomer-Label.vue";
+   import Label from "./ItemCustomer-Label.vue";
   import LabelDevice from "./ItemCustomer-LabelDevice.vue";
   import { Customer } from "@/data/customer/Customer";
   import IconService from "@/assets/icon/service-505050.svg";
   import IconOrder from "@/assets/icon/order-505050.svg";
   import { computed, onMounted, ref, watch } from "vue";
+import PanelItemsItemButton from "@/pages/manage/components/PanelItems-ItemButton.vue";
 
   const emits = defineEmits<{ click: [void]; clickRemove: [void] }>();
   const props = withDefaults(
-    defineProps<{ item?: Customer; selected?: boolean }>(),
+    defineProps<{ item: Customer; selected?: boolean }>(),
     { selected: false },
   );
 
@@ -44,7 +44,7 @@
 </script>
 
 <template>
-  <ItemButton
+  <PanelItemsItemButton
     class="ItemCustomer"
     :isSelected="selected"
     @focus="$emit('click', { item })"

@@ -23,7 +23,7 @@ export const useProductStore = defineStore("product", () => {
       const api = await ProductRequest.list();
       const content: any[] = api.optArrayContent();
       const promises = content.map((content) => {
-        return new Product().fromData(content);
+        return new Product(content);
       });
       return Promise.all(promises);
     });
@@ -107,7 +107,7 @@ export const useProductStore = defineStore("product", () => {
     const { data } = arg;
     if (!data) throw new Error("data not valid");
     const api = await ProductRequest.addItem(data);
-    const inputItem = new Product().fromData(api.optObjectContent());
+    const inputItem = new Product(api.optObjectContent());
     return list.value.addItem(inputItem);
   }
   async function removeItemOfId(arg: { id: string }) {
@@ -186,13 +186,13 @@ export const useProductStore = defineStore("product", () => {
     const { id, price } = arg;
     const api = await ProductRequest.updatePrice(
       id,
-      new ProductPrices().fromData(price).toData(),
+      new ProductPrices(price).toData(),
     );
 
     const content = api.optObjectContent();
     return list.value.updateItemById(content.productId, (item) => {
       if (!item) return;
-      item.setPrice(new ProductPrices().fromData(content.price).toData());
+      item.setPrice(new ProductPrices(content.price).toData());
     });
   }
   async function addBundleOfId(arg: { id: string; bundle: any }) {
@@ -202,9 +202,7 @@ export const useProductStore = defineStore("product", () => {
     return list.value.updateItemById(content.productId, (item) => {
       if (!item) return;
       item.addBundle(
-        new ProductBundle().fromData({
-          title: trimText(content.bundle.title),
-        }),
+        new ProductBundle({ title: trimText(content.bundle.title) }),
       );
     });
   }

@@ -3,7 +3,7 @@
   import ListServices from "./ListServices.vue";
   import Empty from "@/components/Empty.vue";
   import PageService from "@/pages/service/PageService.vue";
-  import { ServiceState } from "@/data/service/ServiceState";
+  import { ServiceState, map } from "@/data/service/ServiceState";
   import IconGrid from "@/assets/icon/grid-000000.svg";
   import IconList from "@/assets/icon/list-000000.svg";
   import IconDetail from "@/assets/icon/detail-000000.svg";
@@ -95,7 +95,7 @@
   function setPageSelected(state: string) {
     const menu = stateMenus.value.find((menu) => menu.state.key === state);
 
-    const states = ServiceState.map((state) => state);
+    const states = map((state) => state);
     if (!menu && stateMenus.value.length && states.length) {
       useRouteStore().replaceQuery({ query: { state: states[0].key } });
     }

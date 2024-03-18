@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
   import Loading from "@/components/loading/Loading.vue";
-  import PanelItemCustomer from "@/pages/manage/PanelItem-Customer.vue";
-  import Section from "@/pages/manage/PanelItem-Section.vue";
   import Item from "./PanelCustomer-Item.vue";
   import ItemService from "@/pages/service/item-service/ItemService.vue";
   import ItemDevice from "./ItemDevice.vue";
@@ -19,6 +17,8 @@
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { CustomerDevice } from "@/data/customer/CustomerDevice";
   import { useWindowStore } from "@/stores/window.store";
+  import PanelItemCustomer from "@/pages/manage/components/PanelItem-Customer.vue";
+  import PanelItemSection from "@/pages/manage/components/PanelItem-Section.vue";
 
   const emits = defineEmits<{
     clickItemClose: [void];
@@ -42,7 +42,7 @@
         title: "Chat with Customer on Whatsapp",
         icon: IconWhatsapp,
         alth: "Chat on Whatsapp",
-        href: `https://api.whatsapp.com/send?phone=6${c.phoneNumberStr}`,
+        href: `https://api.whatsapp.com/send?phone=6${phoneNumberStr.value}`,
         target: "_blank",
       });
       menus.push({
@@ -57,7 +57,7 @@
         title: "Delete Customer",
         icon: IconTrash,
         click: () => {
-          if (props.item) emits("clickItemRemove", { item: props.item });
+          if (props.item) emits("clickItemRemove", props.item);
         },
         isHidden: true,
       });
@@ -120,8 +120,11 @@
 <template>
   <div
     class="PanelCustomer"
-    :style="{ 'background-color': backgroundColor }"
-    @scroll="(event) => (top.showShadow = event.target.scrollTop > 0)"
+    :style="{ 'background-color': backgroundColor.toString() }"
+    @scroll="
+      (event) =>
+        (top.showShadow = (event.target as HTMLDivElement).scrollTop > 0)
+    "
   >
     <div class="PanelCustomer-body">
       <Actionbar
@@ -144,7 +147,7 @@
       </Actionbar>
 
       <div class="PanelCustomer-main" :isWide="`${isWide}`">
-        <Section
+        <PanelItemSection
           title="Description"
           v-if="id"
           :menus="{
@@ -154,9 +157,9 @@
         >
           <span v-if="description">{{ description }}</span>
           <PanelCustomerEmpty v-else />
-        </Section>
+        </PanelItemSection>
 
-        <Section
+        <PanelItemSection
           title="Owned Devices"
           v-if="isFromStoreCustomer"
           :menus="{
@@ -200,9 +203,9 @@
             class="PanelCustomer-devices-loading"
             :isShowing="isLoadingDevices"
           />
-        </Section>
+        </PanelItemSection>
 
-        <Section title="Services">
+        <PanelItemSection title="Services">
           <router-link
             class="PanelCustomer-SectionService-item"
             v-for="service of services"
@@ -215,9 +218,9 @@
             <ItemService :headerCustomer="false" :item="service" />
           </router-link>
           <PanelCustomerEmpty v-if="!services.length" />
-        </Section>
+        </PanelItemSection>
 
-        <Section title="Orders">
+        <PanelItemSection title="Orders">
           <Item
             v-for="order of orders"
             :key="order.id"
@@ -230,7 +233,7 @@
             <span>{{ order.content }}</span>
           </Item>
           <PanelCustomerEmpty v-if="!orders.length" />
-        </Section>
+        </PanelItemSection>
       </div>
     </div>
   </div>

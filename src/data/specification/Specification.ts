@@ -3,6 +3,14 @@ import { Image } from "../Image";
 import { useSpecificationStore } from "@/data-stores/specification.store";
 import { isObjectOnly, textContains, trimId, trimText } from "@/U";
 
+export interface TypeData {
+  _id?: string;
+  key?: string;
+  title?: string;
+  icon?: any;
+  color?: string;
+}
+
 export class Type implements Item {
   static Key: Record<string, string> = {
     Processor: "processor",
@@ -34,28 +42,19 @@ export class Type implements Item {
     Os: "os",
   };
 
-  id: string = "";
-  key: string = "";
-  title: string = "";
-  icon: Image | null = null;
-  color: string = "";
+  id: string;
+  key: string;
+  title: string;
+  icon?: Image;
+  color: string;
 
-  fromData(data: {
-    _id?: string;
-    key?: string;
-    title?: string;
-    icon?: any;
-    color?: string;
-  }): Type {
+  constructor(data: TypeData) {
     this.id = trimId(data._id || "");
     this.key = trimId(data.key || "");
     this.title = trimText(data.title || "");
-    this.icon = isObjectOnly(data.icon)
-      ? new Image().fromData(data.icon)
-      : null;
     this.color = trimId(data.color || "");
 
-    return this;
+    if (isObjectOnly(data.icon)) this.icon = new Image(data.icon);
   }
   toData(): {
     _id: string;

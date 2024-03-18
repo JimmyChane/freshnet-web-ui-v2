@@ -7,17 +7,14 @@ export interface ServiceCustomerData {
 }
 
 export class ServiceCustomer {
-  name: string = "";
-  phoneNumber: PhoneNumber | null = null;
+  name: string;
+  phoneNumber?: PhoneNumber;
 
-  fromData(data: ServiceCustomerData): ServiceCustomer {
+  constructor(data: ServiceCustomerData) {
     this.name = trimText(data.name);
 
     const phoneNumber = trimStringAll(data.phoneNumber, undefined);
-    this.phoneNumber = phoneNumber
-      ? new PhoneNumber().fromData({ value: phoneNumber })
-      : null;
-    return this;
+    if (phoneNumber) this.phoneNumber = new PhoneNumber({ value: phoneNumber });
   }
   toData(): ServiceCustomerData {
     return {

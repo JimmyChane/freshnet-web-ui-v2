@@ -15,9 +15,7 @@ export const useSpecificationStore = defineStore("specification", () => {
       const api = await SpecificationRequest.list();
       const content: any[] = api.optArrayContent();
 
-      return content.map((content) => {
-        return new Type().fromData(content);
-      });
+      return content.map((content) => new Type(content));
     });
 
   const processor = ref(new Processor());

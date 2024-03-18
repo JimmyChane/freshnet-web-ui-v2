@@ -2,7 +2,10 @@
   import MenuOption from "@/components/button/MenuOption.vue";
   import ImageView from "@/components/image-viewer/ImageView.vue";
   import { ServiceEvent } from "@/data/service/ServiceEvent";
-  import { ServiceEventMethod } from "@/data/service/ServiceEventMethod";
+  import {
+    INITIAL,
+    ServiceEventMethod,
+  } from "@/data/service/ServiceEventMethod";
   import { ServiceImage } from "@/data/service/ServiceImage";
   import { computed } from "vue";
 
@@ -16,7 +19,7 @@
   }>();
 
   const isInitial = computed(() => {
-    return props.event.method === ServiceEventMethod.INITIAL.key;
+    return props.event.method === INITIAL.key;
   });
   const menus = computed(() => {
     return [

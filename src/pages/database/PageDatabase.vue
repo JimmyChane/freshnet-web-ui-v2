@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watch } from "vue";
+  import { computed, onMounted, ref, watch } from "vue";
   import Loading from "@/components/loading/Loading.vue";
   import Empty from "@/components/Empty.vue";
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
@@ -17,10 +17,12 @@
   const imports = ref({ data: null });
   const addDatabase = ref({ isShowing: false });
 
-  const isLoading = () => loginStore.isLoading || databaseStore.isLoading;
-  const user = () => loginStore.user;
-  const baseInfo = () => databaseStore.baseInfo;
-  const databases = () => databaseStore.items;
+  const isLoading = computed(
+    () => loginStore.isLoading || databaseStore.isLoading,
+  );
+  const user = computed(() => loginStore.user);
+  const baseInfo = computed(() => databaseStore.baseInfo);
+  const databases = computed(() => databaseStore.items);
 
   watch(() => user.value, actionRefresh);
 
@@ -70,7 +72,9 @@
 <template>
   <div
     class="PageDatabase"
-    @scroll="(event) => (scrollTop = event.target.scrollTop)"
+    @scroll="
+      (event) => (scrollTop = (event.target as HTMLDivElement).scrollTop)
+    "
   >
     <NavigationBar
       style="z-index: 2"

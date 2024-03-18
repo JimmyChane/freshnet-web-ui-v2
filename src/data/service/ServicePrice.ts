@@ -1,7 +1,7 @@
 import { Price } from "@/data/Price";
 
 export class ServicePrice {
-  private price: Price | null = null;
+  private price?: Price;
 
   get amount(): number {
     return this.price?.amount ?? 0;
@@ -10,7 +10,7 @@ export class ServicePrice {
     return this.price?.currency ?? "rm";
   }
 
-  fromData(data: ServicePriceData): this {
+  constructor(data: ServicePriceData) {
     this.price = new Price(data.amount, data.currency ?? "rm");
     return this;
   }
@@ -41,7 +41,7 @@ export class ServicePrice {
       amount: price?.amount ?? 0,
       currency: price?.currency ?? "rm",
     };
-    return new ServicePrice().fromData(data);
+    return new ServicePrice(data);
   }
   minus(value: ServicePrice | number): ServicePrice {
     const price =
@@ -52,7 +52,7 @@ export class ServicePrice {
       amount: price?.amount ?? 0,
       currency: price?.currency ?? "rm",
     };
-    return new ServicePrice().fromData(data);
+    return new ServicePrice(data);
   }
 }
 

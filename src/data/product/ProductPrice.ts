@@ -1,18 +1,17 @@
-import { Price } from "@/data/Price";
+import { DefaultCurrency, Price, parse } from "@/data/Price";
+
+export const Currency = DefaultCurrency;
+
+export function fromString(str: string): ProductPrice {
+  const { currency, amount: value } = parse(str);
+  return new ProductPrice({ currency, value });
+}
 
 export class ProductPrice {
-  static readonly Currency: string = Price.DefaultCurrency;
+  private price?: Price;
 
-  private price: Price | null = null;
-
-  fromString(str: string): ProductPrice {
-    const { currency, amount: value } = Price.parse(str);
-    this.fromData({ currency, value });
-    return this;
-  }
-  fromData(data?: { currency: string; value: number }): ProductPrice {
+  constructor(data?: { currency: string; value: number }) {
     this.price = new Price(data?.value ?? 0, data?.currency ?? "");
-    return this;
   }
   toData(): { currency: string; value: number } {
     return {
@@ -37,7 +36,7 @@ export class ProductPrice {
         ? this.price?.plus(value.price) ?? new Price(0, "")
         : this.price?.plus(value) ?? new Price(0, "");
     const data = { value: price.amount, currency: price.currency };
-    return new ProductPrice().fromData(data);
+    return new ProductPrice(data);
   }
   minus(value: ProductPrice | number): ProductPrice {
     const price =
@@ -45,7 +44,7 @@ export class ProductPrice {
         ? this.price?.minus(value.price) ?? new Price(0, "")
         : this.price?.minus(value) ?? new Price(0, "");
     const data = { value: price.amount, currency: price.currency };
-    return new ProductPrice().fromData(data);
+    return new ProductPrice(data);
   }
 
   get value(): number {

@@ -4,6 +4,13 @@ import { Item } from "@/data/Item";
 import { useCustomerStore } from "@/data-stores/customer.store";
 import { optArray, textContains, trimId, trimText } from "@/U";
 
+export const Requirement = {
+  name: { isRequired: true },
+  phoneNumber: { isRequired: false },
+  description: { isRequired: false },
+  deviceIds: { isRequired: false },
+};
+
 export interface CustomerData {
   _id?: string;
   name?: string;
@@ -13,18 +20,11 @@ export interface CustomerData {
 }
 
 export class Customer implements Item {
-  static Requirement = {
-    name: { isRequired: true },
-    phoneNumber: { isRequired: false },
-    description: { isRequired: false },
-    deviceIds: { isRequired: false },
-  };
-
-  id: string = "";
-  name: string = "";
-  phoneNumber: PhoneNumber | null = null;
-  description: string = "";
-  deviceIds: string[] = [];
+  id: string;
+  name: string;
+  phoneNumber?: PhoneNumber;
+  description: string;
+  deviceIds: string[];
 
   cachedServices: any[] = [];
   cachedOrders: any[] = [];
@@ -41,18 +41,15 @@ export class Customer implements Item {
     return this.id;
   }
 
-  fromData(data: CustomerData): this {
+  constructor(data: CustomerData) {
     this.id = trimId(data._id);
     this.name = trimText(data.name);
     const phoneNumber = trimText(data.phoneNumber);
-    this.phoneNumber = phoneNumber
-      ? new PhoneNumber().fromData({ value: phoneNumber })
-      : null;
+    if (phoneNumber) this.phoneNumber = new PhoneNumber({ value: phoneNumber });
     this.description = trimText(data.description);
     this.deviceIds = optArray(data.deviceIds)
       .map((deviceId) => trimId(deviceId))
       .filter((deviceId) => !!deviceId);
-    return this;
   }
 
   toData(): CustomerData {

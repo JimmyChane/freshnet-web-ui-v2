@@ -61,10 +61,10 @@
     return props.item?.price;
   });
   const productPriceNormal = computed(() => {
-    return productPrice.value?.normal ?? new ProductPrice().fromData();
+    return productPrice.value?.normal ?? new ProductPrice();
   });
   const productPricePromotion = computed(() => {
-    return productPrice.value?.promotion ?? new ProductPrice().fromData();
+    return productPrice.value?.promotion ?? new ProductPrice();
   });
   const price = computed(() => {
     if (!allowEdit.value && !shouldShowPrice.value) return null;

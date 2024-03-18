@@ -3,9 +3,17 @@ import { ServiceEvent } from "./ServiceEvent";
 import { ServicePrice } from "./ServicePrice";
 import { ServiceCustomer, type ServiceCustomerData } from "./ServiceCustomer";
 import { ServiceImage } from "./ServiceImage";
-import { Label, type LabelData } from "./ServiceLabel";
-import { ServiceEventMethod } from "./ServiceEventMethod";
-import { ServiceState } from "./ServiceState";
+import { Label, URGENT, type LabelData, WARRANTY } from "./ServiceLabel";
+import { INITIAL, PURCHASE, ServiceEventMethod } from "./ServiceEventMethod";
+import {
+  COMPLETED,
+  PENDING,
+  REJECTED,
+  ServiceState,
+  WAITING,
+  findByKey,
+  indexOfKey,
+} from "./ServiceState";
 import {
   ServiceBelonging,
   type ServiceBelongingData,
@@ -34,79 +42,81 @@ export interface ServiceData {
 }
 
 export class Service extends Item {
-  id: string = "";
-  timestamp: ServiceTimestamp | null = null;
-  username: string = "";
-  name: string = "";
-  state: string = "";
+  id: string;
+  timestamp?: ServiceTimestamp;
+  username: string;
+  name: string;
+  state: string;
   customer?: ServiceCustomer;
-  description: string = "";
-  belongings: ServiceBelonging[] = [];
-  private _events: ServiceEvent[] = [];
-  imageFiles: ServiceImage[] = [];
-  labels: Label[] = [];
+  description: string;
+  belongings: ServiceBelonging[];
+  private _events: ServiceEvent[];
+  imageFiles: ServiceImage[];
+  labels: Label[];
 
-  fromData(data: ServiceData): Service {
+  constructor(data: ServiceData) {
+    super();
+
     this.id = trimId(data._id);
-    this.timestamp =
-      typeof data.time === "number" ? new ServiceTimestamp(data.time) : null;
+    if (typeof data.time === "number")
+      this.timestamp = new ServiceTimestamp(data.time);
     this.username = trimId(data.username);
     this.name = trimText(data.nameOfUser);
 
     switch (trimId(data.state)) {
-      case ServiceState.PENDING.key:
-        this.state = ServiceState.PENDING.key;
+      case PENDING.key:
+        this.state = PENDING.key;
         break;
-      case ServiceState.WAITING.key:
-        this.state = ServiceState.WAITING.key;
+      case WAITING.key:
+        this.state = WAITING.key;
         break;
-      case ServiceState.COMPLETED.key:
-        this.state = ServiceState.COMPLETED.key;
+      case COMPLETED.key:
+        this.state = COMPLETED.key;
         break;
-      case ServiceState.REJECTED.key:
-        this.state = ServiceState.REJECTED.key;
+      case REJECTED.key:
+        this.state = REJECTED.key;
         break;
       default:
-        this.state = ServiceState.PENDING.key;
+        this.state = PENDING.key;
     }
 
     if (typeof data.customer === "object")
-      this.customer = new ServiceCustomer().fromData(data.customer);
+      this.customer = new ServiceCustomer(data.customer);
     this.description = trimText(data.description);
     this.belongings = optArray(data.belongings).map((belonging) => {
-      return new ServiceBelonging().fromData(belonging);
+      return new ServiceBelonging(belonging);
     });
 
     this._events = optArray(data.events).map((subData) => {
-      return new ServiceEvent().fromData(subData);
+      return new ServiceEvent(subData);
     });
 
     // images
     this.imageFiles = optArray(data.imageFiles).map((image) => {
-      return new ServiceImage().fromData(image);
+      return new ServiceImage(image);
     });
 
     // labels
     this.labels = optArray(data.labels)
-      .map((subData) => new Label().fromData(subData))
+      .map((subData) => new Label(subData))
       .filter((label) => label.title.trim().length > 0);
 
     // refactoring notice to labels
     const existingLabelUrgent = this.labels.find((label) => {
-      return label.title === Label.URGENT.title;
+      return label.title === URGENT.title;
     });
     const existingLabelWarranty = this.labels.find((label) => {
-      return label.title === Label.WARRANTY.title;
+      return label.title === WARRANTY.title;
     });
     const notice = {
       isUrgent: !!data.notice?.isUrgent ?? false,
       isWarranty: !!data.notice?.isWarranty ?? false,
     };
     if (notice.isUrgent && !existingLabelUrgent) {
-      this.labels.push(Label.URGENT);
+      this.labels.push(URGENT);
     }
     if (notice.isWarranty && !existingLabelWarranty) {
-      this.labels.push(Label.WARRANTY);
+      this.labels.push(WARRANTY);
     }
 
     return this;
@@ -129,7 +139,7 @@ export class Service extends Item {
   toCount(strs: string[]): number {
     const { customer, timestamp, state: stateKey, description } = this;
 
-    const state = ServiceState.findByKey(stateKey);
+    const state = findByKey(stateKey);
     const stateTitle = state?.title ?? "";
 
     const ts = [
@@ -152,8 +162,8 @@ export class Service extends Item {
   get events(): ServiceEvent[] {
     const serviceData = this.toData();
 
-    const serviceEvent = new ServiceEvent().fromData({
-      method: ServiceEventMethod.INITIAL.key,
+    const serviceEvent = new ServiceEvent({
+      method: INITIAL.key,
       time: serviceData.time,
       username: serviceData.username,
       nameOfUser: serviceData.nameOfUser,
@@ -176,11 +186,11 @@ export class Service extends Item {
   }
 
   isUrgent(): boolean {
-    return !!this.labels.find((label) => label.isEqual(Label.URGENT));
+    return !!this.labels.find((label) => label.isEqual(URGENT));
   }
   isWarranty(): boolean {
     return !!this.labels.find((label) => {
-      return label.isEqual(Label.WARRANTY);
+      return label.isEqual(WARRANTY);
     });
   }
 
@@ -191,9 +201,7 @@ export class Service extends Item {
     return value;
   }
   compareState(item: Service): number {
-    return (
-      ServiceState.indexOfKey(this.state) - ServiceState.indexOfKey(item.state)
-    );
+    return indexOfKey(this.state) - indexOfKey(item.state);
   }
   compareTimestamp(item: Service): number {
     if (this.timestamp && item.timestamp)
@@ -240,18 +248,18 @@ export class Service extends Item {
   toTotalPrice(): ServicePrice {
     return this._events.reduce(
       (cost, event) => {
-        if (event.price && event.method === ServiceEventMethod.PURCHASE.key) {
+        if (event.price && event.method === PURCHASE.key) {
           cost = cost.plus(event.price);
         }
         return cost;
       },
-      new ServicePrice().fromData({ amount: 0 }),
+      new ServicePrice({ amount: 0 }),
     );
   }
 
   setLabels(labels: Label[] = []) {
     this.labels = optArray(labels)
-      .map((label: Label) => new Label().fromData(label.toData()))
+      .map((label: Label) => new Label(label.toData()))
       .filter((label) => label.title.trim().length > 0);
   }
   addLabel(label: Label) {
@@ -272,13 +280,9 @@ export class Service extends Item {
   }
 
   setUrgent(bool: boolean = false) {
-    optBoolean(bool)
-      ? this.addLabel(Label.URGENT)
-      : this.removeLabel(Label.URGENT);
+    optBoolean(bool) ? this.addLabel(URGENT) : this.removeLabel(URGENT);
   }
   setWarranty(bool: boolean = false) {
-    optBoolean(bool)
-      ? this.addLabel(Label.WARRANTY)
-      : this.removeLabel(Label.WARRANTY);
+    optBoolean(bool) ? this.addLabel(WARRANTY) : this.removeLabel(WARRANTY);
   }
 }

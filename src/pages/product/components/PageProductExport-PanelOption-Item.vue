@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import Selector from "@/components/selector/Selector.vue";
   import { computed } from "vue";
-  import { Option } from "./PageProductExport";
+  import type { Option } from "../PageProductExport";
 
   const props = defineProps<{ item: Option }>();
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import SearchInput from "@/components/search/SearchInput.vue";
-  import ItemService from "./item-service/ItemService.vue";
   import Searcher from "@/data/Searcher";
   import TabLayout from "@/components/tabLayout/TabLayout.vue";
   import IconSearch from "@/assets/icon/search-000000.svg";
@@ -12,6 +11,7 @@
   import type { Tab } from "@/components/tabLayout/TabLayout";
   import { useWindowStore } from "@/stores/window.store";
   import type { Menu } from "@/stores/popup-menu/PopupMenu";
+  import ItemService from "../item-service/ItemService.vue";
 
   const emits = defineEmits<{ clickService: [Service]; clickSearch: [void] }>();
   const props = withDefaults(

@@ -1,4 +1,4 @@
-import { ProductPrice } from "./ProductPrice";
+import { ProductPrice, fromString } from "./ProductPrice";
 
 export interface ProductPricesData {
   normal?: string;
@@ -9,10 +9,9 @@ export class ProductPrices {
   normal: ProductPrice | null = null;
   promotion: ProductPrice | null = null;
 
-  fromData(data: ProductPricesData): ProductPrices {
-    this.normal = new ProductPrice().fromString(data.normal || "");
-    this.promotion = new ProductPrice().fromString(data.promotion || "");
-    return this;
+  constructor(data: ProductPricesData) {
+    this.normal = fromString(data.normal || "");
+    this.promotion = fromString(data.promotion || "");
   }
   toData(): ProductPricesData {
     return {

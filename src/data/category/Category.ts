@@ -18,61 +18,56 @@ import BgRam from "@/assets/bg/harrison-broadbent-ING1Uf1Fc30-unsplash-w300h100.
 import BgNetwork from "@/assets/bg/jordan-harrison-40XgDxBfYXM-unsplash-w300h100.webp";
 import BgOther from "@/assets/bg/christopher-bill-3l19r5EOZaw-unsplash-w300h100.webp";
 
-class CategoryBackground extends Image {
-  static TABLET = new Image().fromData({ method: "link", path: BgTablet });
-  static NOTEBOOK = new Image().fromData({ method: "link", path: BgNotebook });
-  static DESKTOP = new Image().fromData({ method: "link", path: BgDesktop });
-  static PRINTER = new Image().fromData({ method: "link", path: BgPrinter });
-  static CARTRIDGE = new Image().fromData({
-    method: "link",
-    path: BgCartridge,
-  });
-  static MOUSE = new Image().fromData({ method: "link", path: BgMouse });
-  static KEYBOARD = new Image().fromData({ method: "link", path: BgKeyboard });
-  static AUDIO = new Image().fromData({ method: "link", path: BgAudio });
-  static MONITOR = new Image().fromData({ method: "link", path: BgMonitor });
-  static WEBCAM = new Image().fromData({ method: "link", path: BgWebcam });
-  static CCTV = new Image().fromData({ method: "link", path: BgCctv });
-  static STORAGE = new Image().fromData({ method: "link", path: BgStorage });
-  static RAM = new Image().fromData({ method: "link", path: BgRam });
-  static NETWORK = new Image().fromData({ method: "link", path: BgNetwork });
-  static OTHER = new Image().fromData({ method: "link", path: BgOther });
+export const TABLET = new Image({ method: "link", path: BgTablet });
+export const NOTEBOOK = new Image({ method: "link", path: BgNotebook });
+export const DESKTOP = new Image({ method: "link", path: BgDesktop });
+export const PRINTER = new Image({ method: "link", path: BgPrinter });
+export const CARTRIDGE = new Image({ method: "link", path: BgCartridge });
+export const MOUSE = new Image({ method: "link", path: BgMouse });
+export const KEYBOARD = new Image({ method: "link", path: BgKeyboard });
+export const AUDIO = new Image({ method: "link", path: BgAudio });
+export const MONITOR = new Image({ method: "link", path: BgMonitor });
+export const WEBCAM = new Image({ method: "link", path: BgWebcam });
+export const CCTV = new Image({ method: "link", path: BgCctv });
+export const STORAGE = new Image({ method: "link", path: BgStorage });
+export const RAM = new Image({ method: "link", path: BgRam });
+export const NETWORK = new Image({ method: "link", path: BgNetwork });
+export const OTHER = new Image({ method: "link", path: BgOther });
 
-  static getBackground(key: string): Image | null {
-    switch (key) {
-      case Category.Key.Tablet:
-        return CategoryBackground.TABLET;
-      case Category.Key.Notebook:
-        return CategoryBackground.NOTEBOOK;
-      case Category.Key.Desktop:
-        return CategoryBackground.DESKTOP;
-      case Category.Key.Printer:
-        return CategoryBackground.PRINTER;
-      case Category.Key.Cartridge:
-        return CategoryBackground.CARTRIDGE;
-      case Category.Key.Mouse:
-        return CategoryBackground.MOUSE;
-      case Category.Key.Keyboard:
-        return CategoryBackground.KEYBOARD;
-      case Category.Key.Audio:
-        return CategoryBackground.AUDIO;
-      case Category.Key.Monitor:
-        return CategoryBackground.MONITOR;
-      case Category.Key.Webcam:
-        return CategoryBackground.WEBCAM;
-      case Category.Key.Cctv:
-        return CategoryBackground.CCTV;
-      case Category.Key.Storage:
-        return CategoryBackground.STORAGE;
-      case Category.Key.Ram:
-        return CategoryBackground.RAM;
-      case Category.Key.Network:
-        return CategoryBackground.NETWORK;
-      case Category.Key.Other:
-        return CategoryBackground.OTHER;
-      default:
-        return null;
-    }
+export function getBackground(key: string): Image | undefined {
+  switch (key) {
+    case Category.Key.Tablet:
+      return TABLET;
+    case Category.Key.Notebook:
+      return NOTEBOOK;
+    case Category.Key.Desktop:
+      return DESKTOP;
+    case Category.Key.Printer:
+      return PRINTER;
+    case Category.Key.Cartridge:
+      return CARTRIDGE;
+    case Category.Key.Mouse:
+      return MOUSE;
+    case Category.Key.Keyboard:
+      return KEYBOARD;
+    case Category.Key.Audio:
+      return AUDIO;
+    case Category.Key.Monitor:
+      return MONITOR;
+    case Category.Key.Webcam:
+      return WEBCAM;
+    case Category.Key.Cctv:
+      return CCTV;
+    case Category.Key.Storage:
+      return STORAGE;
+    case Category.Key.Ram:
+      return RAM;
+    case Category.Key.Network:
+      return NETWORK;
+    case Category.Key.Other:
+      return OTHER;
+    default:
+      return undefined;
   }
 }
 
@@ -104,21 +99,18 @@ export class Category implements Item {
     Other: "other",
   };
 
-  id: string = "";
-  key: string = "";
-  title: string = "";
-  icon: Image | null = null;
-  background: Image | null = null;
+  id: string;
+  key: string;
+  title: string;
+  icon?: Image;
+  background?: Image;
 
-  fromData(data: CategoryData): this {
+  constructor(data: CategoryData) {
     this.id = trimId(data._id);
     this.key = trimId(data.key);
     this.title = trimStringAll(data.title);
-    this.icon =
-      typeof data.icon === "object" ? new Image().fromData(data.icon) : null;
-    this.background = CategoryBackground.getBackground(this.key);
-
-    return this;
+    if (typeof data.icon === "object") this.icon = new Image(data.icon);
+    this.background = getBackground(this.key);
   }
 
   toData(): CategoryData {

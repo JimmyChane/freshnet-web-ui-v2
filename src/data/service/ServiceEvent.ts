@@ -1,7 +1,7 @@
 import { ServiceTimestamp } from "./ServiceTimestamp";
 import { ServicePrice, type ServicePriceData } from "./ServicePrice";
 import { ServiceImage, type ServiceImageData } from "./ServiceImage";
-import { ServiceEventMethod } from "./ServiceEventMethod";
+import { INFO, PURCHASE, QUOTATION } from "./ServiceEventMethod";
 import { User } from "../user/User";
 import { useUserStore } from "@/data-stores/user.store";
 import { optArray, textContains, trimId, trimText } from "@/U";
@@ -18,30 +18,27 @@ export interface ServiceEventData {
 }
 
 export class ServiceEvent {
-  timestamp: ServiceTimestamp | null = null;
-  username: string = "";
-  name: string = "";
-  method: string = "";
-  description: string = "";
-  status: string = "";
-  price: ServicePrice | null = null;
-  images: ServiceImage[] = [];
+  timestamp?: ServiceTimestamp;
+  username: string;
+  name: string;
+  method: string;
+  description: string;
+  status: string;
+  price?: ServicePrice;
+  images: ServiceImage[];
 
-  fromData(data: ServiceEventData) {
+  constructor(data: ServiceEventData) {
     this.timestamp = new ServiceTimestamp(data.time);
     this.username = trimId(data.username);
     this.name = trimText(data.nameOfUser);
     this.method = trimId(data.method);
     this.description = trimText(data.description);
     this.status = trimId(data.status);
-    this.price =
-      typeof data.price === "object"
-        ? new ServicePrice().fromData(data.price)
-        : null;
-    this.images = optArray(data.images).map((image: any) => {
-      return new ServiceImage().fromData(image);
+    if (typeof data.price === "object")
+      this.price = new ServicePrice(data.price);
+    this.images = optArray(data.images).map((image) => {
+      return new ServiceImage(image);
     });
-    return this;
   }
 
   toData(): ServiceEventData {
@@ -80,15 +77,15 @@ export class ServiceEvent {
   }
 
   isInfo() {
-    return this.method === ServiceEventMethod.INFO.key;
+    return this.method === INFO.key;
   }
 
   isQuotation() {
-    return this.method === ServiceEventMethod.QUOTATION.key;
+    return this.method === QUOTATION.key;
   }
 
   isPurchase() {
-    return this.method === ServiceEventMethod.PURCHASE.key;
+    return this.method === PURCHASE.key;
   }
 
   compare(item: ServiceEvent) {

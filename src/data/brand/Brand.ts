@@ -11,15 +11,12 @@ interface BrandData {
 export class Brand implements Item {
   id: string = "";
   title: string = "";
-  icon: Image | null = null;
+  icon?: Image;
 
-  fromData(data: BrandData): this {
+  constructor(data: BrandData) {
     this.id = trimId(data._id);
     this.title = trimText(data.title);
-    this.icon = isObjectOnly(data.icon)
-      ? new Image().fromData(data.icon)
-      : null;
-    return this;
+    if (isObjectOnly(data.icon)) this.icon = new Image(data.icon);
   }
 
   toData(): BrandData {

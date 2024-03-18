@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ServiceState as State } from "@/data/service/ServiceState";
+  import { findByKey } from "@/data/service/ServiceState";
   import ImageViews from "@/components/image-viewer/ImageViews.vue";
   import ItemSearch from "./GlobalSearch-Item.vue";
   import Labels from "./GlobalSearch-Item-Labels.vue";
@@ -13,7 +13,7 @@
   });
   const stateTitle = computed(() => {
     const key = props.item?.state ?? "";
-    const state = State.findByKey(key);
+    const state = findByKey(key);
     return state?.title ?? "";
   });
   const title = computed(() => {

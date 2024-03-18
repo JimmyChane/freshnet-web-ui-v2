@@ -26,7 +26,7 @@ export const useSettingStore = defineStore("setting", () => {
       const api = await SettingRequest.list();
       const list: any[] = api.optArrayContent();
       const items = list.map((content) => {
-        return new Setting().fromData(content);
+        return new Setting(content);
       });
 
       const contacts = [
@@ -67,22 +67,22 @@ export const useSettingStore = defineStore("setting", () => {
 
       return [
         ...items.filter((item) => !isPredefinedSetting(item.key)),
-        new Setting().fromData({
+        new Setting({
           key: Setting.Key.CompanyWorkingHours,
           visibility: Setting.Visibility.Protected,
           value: days,
         }),
-        new Setting().fromData({
+        new Setting({
           key: Setting.Key.Contacts,
           visibility: Setting.Visibility.Protected,
           value: contacts,
         }),
-        new Setting().fromData({
+        new Setting({
           key: Setting.Key.CompanyName,
           visibility: Setting.Visibility.Protected,
           value: "Freshnet Enterprise",
         }),
-        new Setting().fromData({
+        new Setting({
           key: Setting.Key.CompanyCategory,
           visibility: Setting.Visibility.Protected,
           value: "Computer Store",
@@ -105,7 +105,7 @@ export const useSettingStore = defineStore("setting", () => {
 
     if (isPredefinedSetting(key)) throw new Error("testing");
 
-    const setting = new Setting().fromData({ key, value }).toData();
+    const setting = new Setting({ key, value }).toData();
     const api = await SettingRequest.update(setting);
     const content = api.getObjectContent();
 

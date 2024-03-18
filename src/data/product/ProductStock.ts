@@ -12,24 +12,22 @@ export class ProductStock {
   isSecondHand: boolean = false;
   prices: any[] = [];
 
-  fromData(data: ProductStockData) {
-    this.isAvailable = optBoolean(data.isAvailable, true);
-    this.isSecondHand = optBoolean(data.isSecondHand, false);
+  constructor(data?: ProductStockData) {
+    this.isAvailable = optBoolean(data?.isAvailable, true);
+    this.isSecondHand = optBoolean(data?.isSecondHand, false);
 
     // deprecated on 2022_04_09
-    this.prices = optArray(data.prices)
-      .map((price) => new ProductPrices().fromData(price))
+    this.prices = optArray(data?.prices)
+      .map((price) => new ProductPrices(price))
       .map((price) => price.toData())
       .filter((price) => price && Object.keys(price).length);
-
-    return this;
   }
   toData(): ProductStockData {
     return {
       isAvailable: optBoolean(this.isAvailable),
       isSecondHand: optBoolean(this.isSecondHand),
       prices: this.prices
-        .map((price) => new ProductPrices().fromData(price))
+        .map((price) => new ProductPrices(price))
         .map((price) => price.toData()),
     };
   }

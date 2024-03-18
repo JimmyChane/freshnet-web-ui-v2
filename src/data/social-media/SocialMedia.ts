@@ -15,19 +15,19 @@ export class SocialMedia {
   }
 }
 
-export const Call = new SocialMedia("call", {
+export const CALL = new SocialMedia("call", {
   title: "Call",
   icon: IconCall,
 });
-export const Whatsapp = new SocialMedia("whatsapp", {
+export const WHATSAPP = new SocialMedia("whatsapp", {
   title: "Whatsapp",
   icon: IconWhatsapp,
 });
-export const Telegram = new SocialMedia("telegram", {
+export const TELEGRAM = new SocialMedia("telegram", {
   title: "Telegram",
   icon: IconTelegram,
 });
-export const Telephone = new SocialMedia("telephone", {
+export const TELEPHONE = new SocialMedia("telephone", {
   title: "Telephone",
   icon: IconTelephone,
 });

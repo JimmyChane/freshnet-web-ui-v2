@@ -1,4 +1,4 @@
-import Pixel from "@/data/Pixel";
+import { Pixel } from "@/data/Pixel";
 
 export class Orientation {
   static Portrait = new Orientation("Portrait");

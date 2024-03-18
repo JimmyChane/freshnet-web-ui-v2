@@ -5,7 +5,10 @@
   import WindowUpdateEventDescription from "./WindowUpdateEventDescription.vue";
   import { Service } from "@/data/service/Service";
   import { ServiceEvent } from "@/data/service/ServiceEvent";
-  import { ServiceEventMethod } from "@/data/service/ServiceEventMethod";
+  import {
+    INITIAL,
+    ServiceEventMethod,
+  } from "@/data/service/ServiceEventMethod";
   import IconTrash from "@/assets/icon/trash-000000.svg";
   import { computed, onMounted, ref, watch } from "vue";
   import { useServiceStore } from "@/data-stores/service.store";
@@ -70,7 +73,7 @@
   });
 
   const isInitial = computed(() => {
-    return props.event.method === ServiceEventMethod.INITIAL.key;
+    return props.event.method === INITIAL.key;
   });
 
   const menus = computed(() => {

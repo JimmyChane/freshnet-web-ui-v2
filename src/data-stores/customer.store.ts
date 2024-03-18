@@ -21,7 +21,7 @@ export const useCustomerStore = defineStore("customer", () => {
       const api = await CustomerRequest.list();
       const content: any[] = api.optArrayContent();
       return content.map((content) => {
-        return new Customer().fromData(content);
+        return new Customer(content);
       });
     });
 
@@ -54,7 +54,7 @@ export const useCustomerStore = defineStore("customer", () => {
     const cloneCustomer = (
       customer: Customer | ServiceCustomer | OrderCustomer,
     ) => {
-      return new Customer().fromData(customer.toData());
+      return new Customer(customer.toData());
     };
 
     const customers: Customer[] = await getItems();
@@ -99,18 +99,18 @@ export const useCustomerStore = defineStore("customer", () => {
     return customers;
   }
   async function addItem(arg: CustomerData) {
-    const data: any = new Customer().fromData(arg).toData();
+    const data: any = new Customer(arg).toData();
     delete data.id;
     const api = await CustomerRequest.add(data);
     const content = api.optObjectContent();
-    const item = new Customer().fromData(content);
+    const item = new Customer(content);
     return list.value.addItem(item);
   }
   async function removeItemOfId(arg: { _id: string }) {
     const { _id } = arg;
     const api = await CustomerRequest.remove(_id);
     const content = api.optObjectContent();
-    const item = new Customer().fromData(content);
+    const item = new Customer(content);
     return list.value.removeItemByItem(item);
   }
   async function updateNamePhoneNumberOfItemId(arg: {
@@ -125,7 +125,7 @@ export const useCustomerStore = defineStore("customer", () => {
       phoneNumber,
     );
     const content = api.optObjectContent();
-    const inputItem = new Customer().fromData(content);
+    const inputItem = new Customer(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return;
       item.name = inputItem.name;
@@ -140,7 +140,7 @@ export const useCustomerStore = defineStore("customer", () => {
     const { _id, description } = arg;
     const api = await CustomerRequest.updateDescription(_id, description);
     const content = api.optObjectContent();
-    const inputItem = new Customer().fromData(content);
+    const inputItem = new Customer(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return;
       item.description = inputItem.description;

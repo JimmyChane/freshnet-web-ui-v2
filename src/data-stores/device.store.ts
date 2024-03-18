@@ -17,7 +17,7 @@ export const useDeviceStore = defineStore("device", () => {
       const api = await DeviceRequest.list();
       const content: any[] = api.optArrayContent();
       return content.map((content) => {
-        return new CustomerDevice().fromData(content);
+        return new CustomerDevice(content);
       });
     });
 
@@ -46,11 +46,11 @@ export const useDeviceStore = defineStore("device", () => {
     return results;
   }
   async function addItem(arg: any) {
-    const data: any = new CustomerDevice().fromData(arg).toData();
+    const data: any = new CustomerDevice(arg).toData();
     delete data.id;
     const api = await DeviceRequest.add({ content: data });
     const content = api.optObjectContent();
-    const item = list.value.addItem(new CustomerDevice().fromData(content));
+    const item = list.value.addItem(new CustomerDevice(content));
     if (item) {
       const customers: Customer[] = useCustomerStore().items;
       const customer = customers.find((customer) => {
@@ -68,7 +68,7 @@ export const useDeviceStore = defineStore("device", () => {
       },
     });
     const content = api.optObjectContent();
-    const item = new CustomerDevice().fromData(content);
+    const item = new CustomerDevice(content);
     const customer = useCustomerStore().items.find((customer: Customer) => {
       return customer.id === item.ownerCustomerId;
     });
@@ -91,7 +91,7 @@ export const useDeviceStore = defineStore("device", () => {
       content: { _id, specifications },
     });
     const content = api.optObjectContent();
-    const inputItem = new CustomerDevice().fromData(content);
+    const inputItem = new CustomerDevice(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return;
       item.specifications = inputItem.specifications;
@@ -106,7 +106,7 @@ export const useDeviceStore = defineStore("device", () => {
       content: { _id, description },
     });
     const content = api.optObjectContent();
-    const inputItem = new CustomerDevice().fromData(content);
+    const inputItem = new CustomerDevice(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return;
       item.description = inputItem.description;

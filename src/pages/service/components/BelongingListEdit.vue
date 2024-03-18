@@ -18,7 +18,7 @@
   };
 
   function getNewBelongingTemplate(): ServiceBelongingData {
-    const data = new ServiceBelonging().toData();
+    const data = new ServiceBelonging();
     data.quantity = 0;
     data.time = TimeGetter.getTimeNow();
 
@@ -41,7 +41,7 @@
 
   function onReset() {
     const values = optArray(props.values).map((value) => {
-      const data = new ServiceBelonging().fromData(value).toData();
+      const data = new ServiceBelonging(value).toData();
       data.time = TimeGetter.getTimeNow();
 
       return data;

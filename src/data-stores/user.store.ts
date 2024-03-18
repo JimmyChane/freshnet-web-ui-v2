@@ -18,7 +18,7 @@ export const useUserStore = defineStore("user", () => {
 
       const api = await UserRequest.list();
       const content: any[] = api.optArrayContent();
-      return content.map((data) => new User().fromData(data));
+      return content.map((data) => new User(data));
     });
 
   const processor = ref(new Processor());
@@ -47,7 +47,7 @@ export const useUserStore = defineStore("user", () => {
       const { username, userType } = arg;
       const api = await UserRequest.update(username, userType);
       const content = api.optObjectContent();
-      const userChange = new User().fromData(content);
+      const userChange = new User(content);
       if (!userChange) throw new Error();
       list.value.updateItemById(userChange.username, (item) => {
         return userChange;
@@ -76,7 +76,7 @@ export const useUserStore = defineStore("user", () => {
       arg.passwordRepeat,
     );
     const content = api.getObjectContent();
-    const newUser = new User().fromData(content);
+    const newUser = new User(content);
     list.value.addItem(newUser);
     return newUser;
   }

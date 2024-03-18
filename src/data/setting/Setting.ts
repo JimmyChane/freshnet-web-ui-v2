@@ -19,15 +19,15 @@ export class Setting extends Item {
     CompanyWorkingHours: "store-working-hours",
   };
 
-  key: string = "";
-  visibility: string = "";
+  key: string;
+  visibility: string;
   value: any;
 
-  fromData(data: SettingData): this {
+  constructor(data: SettingData) {
+    super();
     this.key = trimId(data.key);
     this.visibility = trimId(data.visibility);
     this.value = data.value;
-    return this;
   }
 
   toData(): SettingData {

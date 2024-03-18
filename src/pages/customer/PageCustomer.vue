@@ -16,6 +16,7 @@
   import { useRoute } from "vue-router";
   import { Customer } from "@/data/customer/Customer";
   import { useRouteStore } from "@/stores/route.store";
+  import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
 
   const panelListened = ref({ isWide: false });
   const items = ref<Customer[]>([]);
@@ -64,9 +65,9 @@
     () => currentCustomer.value,
     () => {
       if (!currentCustomer.value) {
-        setTimeout(() => (this.drawerCustomer = this.currentCustomer), 1000);
+        setTimeout(() => (drawerCustomer.value = currentCustomer.value), 1000);
       } else {
-        this.drawerCustomer = this.currentCustomer;
+        drawerCustomer.value = currentCustomer.value;
       }
     },
   );

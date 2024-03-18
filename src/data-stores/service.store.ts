@@ -8,7 +8,11 @@ import { List } from "./tools/List";
 import { ServiceCustomer } from "@/data/service/ServiceCustomer";
 import { ServiceImage } from "@/data/service/ServiceImage";
 import { ServiceEvent } from "@/data/service/ServiceEvent";
-import { Label as ServiceLabel } from "@/data/service/ServiceLabel";
+import {
+  Label as ServiceLabel,
+  URGENT,
+  WARRANTY,
+} from "@/data/service/ServiceLabel";
 import { ServiceBelonging } from "@/data/service/ServiceBelonging";
 
 const Notify = {
@@ -37,7 +41,7 @@ export const useServiceStore = defineStore("service", () => {
     .loadData(async () => {
       const api = await ServiceRequest.list();
       const content: any[] = api.optArrayContent();
-      return content.map((content) => new Service().fromData(content));
+      return content.map((content) => new Service(content));
     });
 
   const processor = ref(new Processor());
@@ -83,9 +87,9 @@ export const useServiceStore = defineStore("service", () => {
   async function importItem(arg: { data: any }) {
     const { data } = arg;
     if (!data) throw new Error();
-    const service = new Service().fromData(data).toData();
+    const service = new Service(data).toData();
     const content = (await ServiceRequest.import(service)).optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.addItem(inputItem);
   }
   async function addItem(arg: { data: any }) {
@@ -94,7 +98,7 @@ export const useServiceStore = defineStore("service", () => {
     if (!data) throw new Error("invalid data");
 
     const content = (await ServiceRequest.add(data)).optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.addItem(inputItem);
   }
   async function removeItemOfId(arg: { id: string }) {
@@ -132,7 +136,7 @@ export const useServiceStore = defineStore("service", () => {
     const { serviceID, belongings } = arg;
     const api = await ServiceRequest.updateBelongings(serviceID, belongings);
     const content = api.optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return inputItem;
       item.belongings = inputItem.belongings;
@@ -143,7 +147,7 @@ export const useServiceStore = defineStore("service", () => {
     const { serviceID, customer } = arg;
     const api = await ServiceRequest.updateCustomer(serviceID, customer);
     const content = api.optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return inputItem;
       item.customer = inputItem.customer;
@@ -155,7 +159,7 @@ export const useServiceStore = defineStore("service", () => {
 
     const api = await ServiceRequest.addEvent(id, eventData);
     const content = api.optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return inputItem;
       item.events = inputItem.events.sort((event1, event2) => {
@@ -200,7 +204,7 @@ export const useServiceStore = defineStore("service", () => {
 
       dataImages
         .map((dataImage) => {
-          return new ServiceImage().fromData(dataImage);
+          return new ServiceImage(dataImage);
         })
         .forEach((image) => {
           const existingImage = event.images.find((eventImage) => {
@@ -234,7 +238,7 @@ export const useServiceStore = defineStore("service", () => {
     );
     const content = api.getContent();
     const { id: outputId, event } = content;
-    const outputEvent = new ServiceEvent().fromData(event);
+    const outputEvent = new ServiceEvent(event);
     return list.value.updateItemById(outputId, (item) => {
       if (!item) return;
       const foundEvent: ServiceEvent | undefined = item.events.find(
@@ -251,7 +255,7 @@ export const useServiceStore = defineStore("service", () => {
     serviceID: string;
     isUrgent: boolean;
   }) {
-    const label = ServiceLabel.URGENT.toData();
+    const label = URGENT.toData();
     if (arg.isUrgent) {
       return addLabelToId({ serviceID: arg.serviceID, label });
     } else {
@@ -262,7 +266,7 @@ export const useServiceStore = defineStore("service", () => {
     serviceID: string;
     isWarranty: boolean;
   }) {
-    const label = ServiceLabel.WARRANTY.toData();
+    const label = WARRANTY.toData();
     if (arg.isWarranty) {
       return addLabelToId({ serviceID: arg.serviceID, label });
     } else {
@@ -273,7 +277,7 @@ export const useServiceStore = defineStore("service", () => {
     const { serviceID, label } = arg;
     const api = await ServiceRequest.addLabel(serviceID, label);
     const content = api.optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return;
       if (label.title === "Urgent") item.setUrgent(inputItem.isUrgent());
@@ -285,7 +289,7 @@ export const useServiceStore = defineStore("service", () => {
 
     const api = await ServiceRequest.removeLabel(serviceID, label);
     const content = api.optObjectContent();
-    const inputItem = new Service().fromData(content);
+    const inputItem = new Service(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return inputItem;
       item.setLabels(inputItem.labels);
@@ -320,7 +324,7 @@ export const useServiceStore = defineStore("service", () => {
     return list.value.updateItemById(id, (item) => {
       if (!item) return;
       dataImages
-        .map((dataImage) => new ServiceImage().fromData(dataImage))
+        .map((dataImage) => new ServiceImage(dataImage))
         .forEach((image) => {
           const existingImage = item.imageFiles.find((img) => {
             return img.name === image.name;
@@ -356,7 +360,7 @@ export const useServiceStore = defineStore("service", () => {
 
     const id = content.id;
     const inputEventTime = content.eventTime;
-    const inputImage = new ServiceImage().fromData(content.image);
+    const inputImage = new ServiceImage(content.image);
 
     return list.value.updateItemById(id, (item) => {
       if (!item) return;
@@ -375,11 +379,11 @@ export const useServiceStore = defineStore("service", () => {
     const { key, content } = data;
 
     if (key === Notify.ItemAdd) {
-      const inputItem = new Service().fromData(content);
+      const inputItem = new Service(content);
       list.value.addItem(inputItem);
     }
     if (key === Notify.ItemRemove) {
-      const inputItem = new Service().fromData(content);
+      const inputItem = new Service(content);
       list.value.removeItemByItem(inputItem);
     }
     if (key === Notify.ItemImageAdd) {
@@ -388,7 +392,7 @@ export const useServiceStore = defineStore("service", () => {
         if (!item) return;
 
         images
-          .map((dataImage: any) => new ServiceImage().fromData(dataImage))
+          .map((dataImage: any) => new ServiceImage(dataImage))
           .forEach((image: ServiceImage) => {
             const existingImage = item.imageFiles.find((img) => {
               return img.name === image.name;
@@ -412,7 +416,7 @@ export const useServiceStore = defineStore("service", () => {
       list.value.updateItemById(id, (item) => {
         if (!item) return;
 
-        const inputEvent = new ServiceEvent().fromData(event);
+        const inputEvent = new ServiceEvent(event);
         const found = item.events.find((itemEvent: ServiceEvent) => {
           if (itemEvent.timestamp && inputEvent.timestamp) {
             return itemEvent.timestamp.time === inputEvent.timestamp.time;
@@ -430,7 +434,7 @@ export const useServiceStore = defineStore("service", () => {
       list.value.updateItemById(id, (item) => {
         if (!item) return;
 
-        const inputEvent = new ServiceEvent().fromData(event);
+        const inputEvent = new ServiceEvent(event);
         const found = item.events.find((itemEvent) => {
           if (itemEvent.timestamp && inputEvent.timestamp) {
             return itemEvent.timestamp.time === inputEvent.timestamp.time;
@@ -453,7 +457,7 @@ export const useServiceStore = defineStore("service", () => {
 
         dataImages
           .map((dataImage: any) => {
-            return new ServiceImage().fromData(dataImage);
+            return new ServiceImage(dataImage);
           })
           .forEach((image: ServiceImage) => {
             const existingImage = event.images.find((eventImage) => {
@@ -516,7 +520,7 @@ export const useServiceStore = defineStore("service", () => {
       const { id, belongings: dataBelongings } = content;
 
       const belongings = dataBelongings.map((belonging: {}) => {
-        return new ServiceBelonging().fromData(belonging);
+        return new ServiceBelonging(belonging);
       });
       list.value.updateItemById(id, (item) => {
         if (item) item.belongings = belongings;
@@ -525,7 +529,7 @@ export const useServiceStore = defineStore("service", () => {
     if (key === Notify.ItemCustomerUpdate) {
       const { id, customer } = content;
       list.value.updateItemById(id, (item) => {
-        if (item) item.customer = new ServiceCustomer().fromData(customer);
+        if (item) item.customer = new ServiceCustomer(customer);
       });
     }
   }

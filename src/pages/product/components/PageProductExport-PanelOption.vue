@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Option } from "./PageProductExport";
+  import type { Option } from "../PageProductExport";
   import Item from "./PageProductExport-PanelOption-Item.vue";
 
   withDefaults(defineProps<{ items?: Option[] }>(), {});

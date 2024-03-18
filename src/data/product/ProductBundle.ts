@@ -7,9 +7,8 @@ export interface ProductBundleData {
 export class ProductBundle {
   title: string = "";
 
-  fromData(data: ProductBundleData): ProductBundle {
+  constructor(data: ProductBundleData) {
     this.title = trimText(data.title || "");
-    return this;
   }
   toData(): ProductBundleData {
     return { title: trimText(this.title) };

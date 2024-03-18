@@ -1,18 +1,24 @@
 import { textContains, trimId, trimText } from "@/U";
 import { Item } from "@/data/Item";
 
-export class Ps2Disc implements Item {
-  id: string = "";
-  code: string = "";
-  title: string = "";
+export interface Ps2DiscData {
+  _id?: string;
+  code?: string;
+  title?: string;
+}
 
-  fromData(data: any) {
+export class Ps2Disc implements Item {
+  id: string;
+  code: string;
+  title: string;
+
+  constructor(data: Ps2DiscData) {
     this.id = trimId(data._id);
     this.code = trimId(data.code);
     this.title = trimText(data.title);
     return this;
   }
-  toData(): any {
+  toData(): Ps2DiscData {
     return {
       _id: trimId(this.id),
       code: trimId(this.code),

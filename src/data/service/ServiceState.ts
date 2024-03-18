@@ -8,53 +8,6 @@ import IconRejectedWhite from "@/assets/icon/rejected-white.svg";
 import IconRejectedColor from "@/assets/icon/rejected-color.svg";
 
 export class ServiceState {
-  static PENDING = new ServiceState(
-    "pending",
-    "Working",
-    { white: IconPendingWhite, color: IconPendingColor },
-    "#f4a60d",
-  );
-  static WAITING = new ServiceState(
-    "waiting",
-    "Waiting for Pickup",
-    { white: IconWaitingWhite, color: IconWaitingColor },
-    "#c336d9",
-  );
-  static COMPLETED = new ServiceState(
-    "completed",
-    "Finished & Pickup",
-    { white: IconCompletedWhite, color: IconCompletedColor },
-    "#25ad86",
-  );
-  static REJECTED = new ServiceState(
-    "rejected",
-    "Rejected & Pickup",
-    { white: IconRejectedWhite, color: IconRejectedColor },
-    "#d94136",
-  );
-
-  private static readonly LIST = [
-    ServiceState.PENDING,
-    ServiceState.WAITING,
-    ServiceState.COMPLETED,
-    ServiceState.REJECTED,
-  ];
-
-  static findByKey(key: string): ServiceState | undefined {
-    return this.LIST.find((state) => state.key === key);
-  }
-  static indexOfKey(key: string): number {
-    const state = this.findByKey(key);
-    if (state === undefined) return -1;
-    return this.LIST.indexOf(state);
-  }
-  static map(call: (state: ServiceState) => any): any[] {
-    return this.LIST.map(call);
-  }
-  static count(): number {
-    return this.LIST.length;
-  }
-
   key: string;
   title: string;
   icon: { white: string; color: string };
@@ -71,4 +24,46 @@ export class ServiceState {
     this.icon = icon;
     this.primaryColor = primaryColor;
   }
+}
+
+export const PENDING = new ServiceState(
+  "pending",
+  "Working",
+  { white: IconPendingWhite, color: IconPendingColor },
+  "#f4a60d",
+);
+export const WAITING = new ServiceState(
+  "waiting",
+  "Waiting for Pickup",
+  { white: IconWaitingWhite, color: IconWaitingColor },
+  "#c336d9",
+);
+export const COMPLETED = new ServiceState(
+  "completed",
+  "Finished & Pickup",
+  { white: IconCompletedWhite, color: IconCompletedColor },
+  "#25ad86",
+);
+export const REJECTED = new ServiceState(
+  "rejected",
+  "Rejected & Pickup",
+  { white: IconRejectedWhite, color: IconRejectedColor },
+  "#d94136",
+);
+
+const LIST = [PENDING, WAITING, COMPLETED, REJECTED];
+
+export function findByKey(key: string): ServiceState | undefined {
+  return LIST.find((state) => state.key === key);
+}
+export function indexOfKey(key: string): number {
+  const state = findByKey(key);
+  if (state === undefined) return -1;
+  return LIST.indexOf(state);
+}
+export function map(call: (state: ServiceState) => any): any[] {
+  return LIST.map(call);
+}
+export function count(): number {
+  return LIST.length;
 }

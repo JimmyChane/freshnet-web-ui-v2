@@ -2,7 +2,7 @@
   import Actionbar from "./PanelService-Actionbar.vue";
   import AddEvent from "./PanelService-AddEvent.vue";
   import Events from "./PanelEvents.vue";
-  import { ServiceState } from "@/data/service/ServiceState";
+  import { ServiceState, findByKey } from "@/data/service/ServiceState";
   import chroma, { type Color } from "chroma-js";
   import { Service } from "@/data/service/Service";
   import { computed, onMounted, ref, watch } from "vue";
@@ -44,7 +44,7 @@
   const stateColor = computed<Color>((c) => {
     if (!props.service) return chroma("white");
 
-    const state = ServiceState.findByKey(props.service.state);
+    const state = findByKey(props.service.state);
     return chroma(state?.primaryColor ?? "white");
   });
   const backgroundColor = computed(() => {
