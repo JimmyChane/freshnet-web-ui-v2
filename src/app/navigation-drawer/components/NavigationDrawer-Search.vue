@@ -26,9 +26,7 @@
       :src="SearchIcon"
       @click="
         () => {
-          if (!navigationStore.navigation.isWide()) {
-            navigationStore.navigation.openNavigationDrawer();
-          }
+          if (!navigationStore.isWide()) navigationStore.openDrawer();
         }
       "
     />

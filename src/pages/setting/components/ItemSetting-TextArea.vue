@@ -101,8 +101,9 @@
     <p
       :class="['ItemSetting-TextArea-value', 'ItemSetting-TextArea-p']"
       v-if="!isEmpty"
-      >{{ value }}</p
     >
+      {{ value }}
+    </p>
     <span
       :class="['transition', 'ItemSetting-TextArea-empty']"
       :isShowing="`${!isEditable && isEmpty}`"

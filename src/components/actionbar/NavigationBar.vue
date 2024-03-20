@@ -24,7 +24,7 @@
   const navigationStore = useNavigationStore();
 
   const moreLeftMenus = computed<Menu | Menu[]>((c) => {
-    if (!navigationStore.navigation.isDrawer()) return props.leftMenus;
+    if (!navigationStore.isDrawer()) return props.leftMenus;
 
     const hamburgerMenuIcon =
       props.iconTheme === "white"
@@ -35,7 +35,7 @@
         key: "hamburgerMenu",
         title: "Hamburger Menu",
         icon: hamburgerMenuIcon,
-        click: () => navigationStore.navigation.openNavigationDrawer(),
+        click: () => navigationStore.openDrawer(),
       },
       ...(Array.isArray(props.leftMenus) ? props.leftMenus : [props.leftMenus]),
     ];

@@ -1,7 +1,10 @@
 <script setup lang="ts">
   import { serverCloudinary } from "@/data/server/Server";
-  import { Navigation } from "@/stores/navigation/Navigation";
-  import { useNavigationStore } from "@/stores/navigation/navigation.store";
+  import {
+    Layout,
+    MIN_WIDTH,
+    useNavigationStore,
+  } from "@/stores/navigation/navigation.store";
   import { useWindowStore } from "@/stores/window.store";
   import { computed } from "vue";
 
@@ -12,30 +15,25 @@
   const navigationStore = useNavigationStore();
   const windowStore = useWindowStore();
 
-  const isDrawer = computed(() => navigationStore.navigation.isDrawer());
-  const isExpand = computed(() => navigationStore.navigation.isExpanded());
+  const isDrawer = computed(() => navigationStore.isDrawer());
+  const isExpand = computed(() => navigationStore.isExpanded());
   const toggleButtonVisible = computed(() => {
-    return (
-      navigationStore.navigation.isThin() ||
-      windowStore.innerWidth > Navigation.MIN_WIDTH
-    );
+    return navigationStore.isThin() || windowStore.innerWidth > MIN_WIDTH;
   });
 
   function toggleCollapse() {
     if (isDrawer.value) {
       isExpand.value
-        ? navigationStore.navigation.closeNavigationDrawer()
-        : navigationStore.navigation.openNavigationDrawer();
+        ? navigationStore.closeDrawer()
+        : navigationStore.openDrawer();
       return;
     }
 
-    const nextLayout = props.isWide
-      ? Navigation.Layout.THIN
-      : Navigation.Layout.WIDE;
+    const nextLayout = props.isWide ? Layout.THIN : Layout.WIDE;
 
-    navigationStore.navigation.getCurrentLayoutRequest() === null
-      ? navigationStore.navigation.setDefaultLayout(nextLayout)
-      : navigationStore.navigation.setLayout(nextLayout);
+    navigationStore.getCurrentLayoutRequest() === null
+      ? navigationStore.setDefaultLayout(nextLayout)
+      : navigationStore.setLayout(nextLayout);
   }
 </script>
 

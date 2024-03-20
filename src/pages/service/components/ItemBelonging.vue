@@ -21,9 +21,9 @@
       >{{ `x${quantity}` }}</span
     >
 
-    <p style="grid-area: description" v-if="description.length">{{
-      description
-    }}</p>
+    <p style="grid-area: description" v-if="description.length">
+      {{ description }}
+    </p>
   </div>
 </template>
 

@@ -157,8 +157,8 @@
       class="ExportLayoutTwo-body"
       ref="bodyRef"
       :style="{
-        'padding': `${paddingHorizontal}px ${paddingVertical}px`,
-        'gap': `${gap}px`,
+        padding: `${paddingHorizontal}px ${paddingVertical}px`,
+        gap: `${gap}px`,
       }"
     >
       <div

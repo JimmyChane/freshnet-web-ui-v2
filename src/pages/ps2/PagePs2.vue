@@ -68,13 +68,12 @@
       <Actionbar
         class="PagePs2-header transition"
         :leftMenus="
-          navigationStore.navigation.isDrawer()
+          navigationStore.isDrawer()
             ? [
                 {
                   title: 'Hamburger Menu',
                   icon: IconHamburgerMenu,
-                  click: () =>
-                    navigationStore.navigation.openNavigationDrawer(),
+                  click: () => navigationStore.openDrawer(),
                 },
                 {
                   title: 'Home',

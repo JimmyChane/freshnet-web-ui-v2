@@ -5,7 +5,10 @@ export class Color {
   static BlackWhite = new Color("Black & White", IconPaletteBw);
   static Colorful = new Color("Color", IconPaletteColor);
 
-  private constructor(readonly title: string, readonly icon: string) {}
+  private constructor(
+    readonly title: string,
+    readonly icon: string,
+  ) {}
   toString() {
     return this.title;
   }

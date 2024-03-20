@@ -1,6 +1,6 @@
 <script setup lang="ts">
   /* __placeholder__ */
-import type { RouteLocationRaw } from "vue-router";
+  import type { RouteLocationRaw } from "vue-router";
 
   withDefaults(
     defineProps<{
@@ -31,9 +31,9 @@ import type { RouteLocationRaw } from "vue-router";
     ><span>{{ text }}</span></router-link
   >
 
-  <button class="ButtonText transition" v-else @click="$emit('click')"
-    ><span>{{ text }}</span></button
-  >
+  <button class="ButtonText transition" v-else @click="$emit('click')">
+    <span>{{ text }}</span>
+  </button>
 </template>
 
 <style lang="scss" scoped>

@@ -5,7 +5,10 @@ export class Output {
   static Colorful = new Output("", Color.Colorful);
   static BorderlessColorful = new Output("Borderless", Color.Colorful);
 
-  private constructor(readonly title: string, readonly color: Color) {}
+  private constructor(
+    readonly title: string,
+    readonly color: Color,
+  ) {}
 
   toString() {
     if (!this.title) return `${this.color.title}`;

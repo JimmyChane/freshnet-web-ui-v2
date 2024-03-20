@@ -60,15 +60,15 @@
 
     <div class="buttons">
       <div class="body">
-        <button class="button-focus-none" @click="() => popupWindow.close()"
-          >Cancel</button
-        >
+        <button class="button-focus-none" @click="() => popupWindow.close()">
+          Cancel
+        </button>
       </div>
 
       <div class="body">
-        <button class="button-focus transition" @click="() => createOrder()"
-          >Submit</button
-        >
+        <button class="button-focus transition" @click="() => createOrder()">
+          Submit
+        </button>
       </div>
     </div>
   </div>

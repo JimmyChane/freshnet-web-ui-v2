@@ -21,8 +21,10 @@
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { usePageStore } from "@/stores/page.store";
-  import { useNavigationStore } from "@/stores/navigation/navigation.store";
-  import { Navigation } from "@/stores/navigation/Navigation";
+  import {
+    Layout,
+    useNavigationStore,
+  } from "@/stores/navigation/navigation.store";
 
   const stylePanelProducts = ref({});
   const stylePanelEmpty = ref({});
@@ -369,7 +371,7 @@
     invalidate();
     onProduct();
     onProductId();
-    useNavigationStore().navigation.setLayout(Navigation.Layout.THIN);
+    useNavigationStore().setLayout(Layout.THIN);
   });
 </script>
 

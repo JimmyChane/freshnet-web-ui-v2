@@ -1,11 +1,11 @@
 <script setup lang="ts">
-   import Label from "./ItemCustomer-Label.vue";
+  import Label from "./ItemCustomer-Label.vue";
   import LabelDevice from "./ItemCustomer-LabelDevice.vue";
   import { Customer } from "@/data/customer/Customer";
   import IconService from "@/assets/icon/service-505050.svg";
   import IconOrder from "@/assets/icon/order-505050.svg";
   import { computed, onMounted, ref, watch } from "vue";
-import PanelItemsItemButton from "@/pages/manage/components/PanelItems-ItemButton.vue";
+  import PanelItemsItemButton from "@/pages/manage/components/PanelItems-ItemButton.vue";
 
   const emits = defineEmits<{ click: [void]; clickRemove: [void] }>();
   const props = withDefaults(
@@ -78,7 +78,7 @@ import PanelItemsItemButton from "@/pages/manage/components/PanelItems-ItemButto
         <Label v-if="orders.length" :icon="IconOrder" :count="orders.length" />
       </div>
     </div>
-  </ItemButton>
+  </PanelItemsItemButton>
 </template>
 
 <style lang="scss" scoped>

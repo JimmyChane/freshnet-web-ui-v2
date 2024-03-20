@@ -67,12 +67,12 @@
 
     <Actionbar
       class="PageLogin-top transition"
-      v-if="navigationStore.navigation.isDrawer()"
+      v-if="navigationStore.isDrawer()"
       :leftMenus="[
         {
           title: 'Hamburger Menu',
           icon: IconHamburgerMenu,
-          click: () => navigationStore.navigation.openNavigationDrawer(),
+          click: () => navigationStore.openDrawer(),
         },
         {
           key: 'home',

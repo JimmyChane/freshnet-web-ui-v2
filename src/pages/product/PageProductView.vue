@@ -6,9 +6,11 @@
   import { useProductStore } from "@/data-stores/product.store";
   import { useRoute } from "vue-router";
   import { useWindowStore } from "@/stores/window.store";
-  import { AppLayout } from "@/stores/app-layout/AppLayout";
   import { useNavigationStore } from "@/stores/navigation/navigation.store";
-  import { useAppLayoutStore } from "@/stores/app-layout/app-layout.store";
+  import {
+    Layout,
+    useAppLayoutStore,
+  } from "@/stores/app-layout/app-layout.store";
 
   const route = useRoute();
 
@@ -35,8 +37,8 @@
   }
 
   onMounted(() => {
-    appLayoutStore.appLayout.setLayout(AppLayout.Layout.FULL);
-    navigationStore.navigation.disableNavigationDrawer();
+    appLayoutStore.setLayout(Layout.FULL);
+    navigationStore.disableDrawer();
 
     invalidate();
   });

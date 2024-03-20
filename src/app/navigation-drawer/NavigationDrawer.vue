@@ -27,9 +27,9 @@
   const dragOpen = ref(80);
   const dragWidth = ref(0);
 
-  const isWide = computed(() => navigationStore.navigation.isWide());
-  const isDrawer = computed(() => navigationStore.navigation.isDrawer());
-  const isExpand = computed(() => navigationStore.navigation.isExpanded());
+  const isWide = computed(() => navigationStore.isWide());
+  const isDrawer = computed(() => navigationStore.isDrawer());
+  const isExpand = computed(() => navigationStore.isExpanded());
   const selectedPageKey = computed(() => pageStore.currentPageKey);
   const selectedViewKey = computed(() => pageStore.currentViewKey);
   const expandedPageKey = ref("");
@@ -166,14 +166,14 @@
     const y = touch.pageY;
     refDrawer.value.onDragEnd(x, y);
     if (x > dragOpen.value) {
-      navigationStore.navigation.openNavigationDrawer();
+      navigationStore.openDrawer();
       focus();
     }
     isDragging.value = false;
   }
 
   function emitCollapse() {
-    navigationStore.navigation.closeNavigationDrawer();
+    navigationStore.closeDrawer();
     expandedPageKey.value = "";
   }
 
