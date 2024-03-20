@@ -12,7 +12,14 @@
   });
 
   const props = withDefaults(
-    defineProps<{ isShowing?: boolean; action?: unknown }>(),
+    defineProps<{
+      isShowing: boolean;
+      action: {
+        onDismiss: () => void;
+        onCancel: () => void;
+        onConfirm: (specification: { type: string; content: string }) => void;
+      };
+    }>(),
     { isShowing: false },
   );
 
@@ -97,8 +104,7 @@
           class="WindowSpecificationAdd-input"
           label="Content"
           :isRequired="true"
-          :bindValue="data.content"
-          @input="(comp) => (data.content = comp.value)"
+          v-model="data.content"
         />
       </div>
     </div>

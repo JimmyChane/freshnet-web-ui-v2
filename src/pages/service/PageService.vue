@@ -189,7 +189,7 @@
     });
   }
   function cllickRemoveServiceEvent(data: {
-    service: Service;
+    service?: Service;
     event: ServiceEvent;
   }) {
     const popupWindow = usePopupWindowStore().openWindowRemove({
@@ -198,7 +198,7 @@
       data,
       onConfirm: async () => {
         await useServiceStore().removeEventFromId({
-          serviceID: data.service.id,
+          serviceID: data.service?.id ?? "",
           time: data.event.timestamp?.time ?? 0,
         });
         popupWindow.close();

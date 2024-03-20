@@ -45,7 +45,7 @@
       });
   });
   const menu = computed(() => {
-    if (!props.allowEdit) return null;
+    if (!props.allowEdit) return undefined;
     return {
       title: "Edit",
       icon: IconEdit,

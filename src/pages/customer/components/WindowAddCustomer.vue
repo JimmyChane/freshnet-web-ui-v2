@@ -2,7 +2,7 @@
   import PanelAction from "@/components/panel/PanelAction.vue";
   import Input from "@/components/input/Input.vue";
   import TextArea from "@/components/input/InputTextArea.vue";
-  import { Customer } from "@/data/customer/Customer";
+  import { Requirement as CustomerRequirement } from "@/data/customer/Customer";
   import { computed, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
@@ -10,7 +10,7 @@
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 
-  const Requirement = ref(Customer.Requirement);
+  const Requirement = ref(CustomerRequirement);
   const data = ref({ name: "", phoneNumber: "", description: "" });
 
   const isShowing = computed(() => props.popupWindow.isShowing);
@@ -69,22 +69,19 @@
         type="text"
         autocapitalize="words"
         :isRequired="true"
-        :bindValue="data.name"
-        @input="(value: string) => (data.name = value)"
+        v-model="data.name"
       />
       <Input
         class="WindowAddCustomer-customer-input"
         label="Phone Number"
         type="text"
-        :bindValue="data.phoneNumber"
-        @input="(value: string) => (data.phoneNumber = value)"
+        v-model="data.phoneNumber"
       />
       <TextArea
         class="WindowAddCustomer-description-input"
         type="text"
         label="Description"
-        :bindValue="data.description"
-        @input="(value: string) => (data.description = value)"
+        v-model="data.description"
       />
     </div>
   </PanelAction>

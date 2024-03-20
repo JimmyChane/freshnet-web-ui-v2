@@ -3,24 +3,21 @@
   import ItemSearchProduct from "./ItemSearchProduct.vue";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref, watch } from "vue";
-  import { Product } from "@/data/product/Product";
+  import type { Item } from "@/data/Item";
+  import ItemSearch from "./WindowSearch-ItemSearch.vue";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{ popupWindow: PopupWindow<Item[]> }>();
 
   const windowSearch = ref<typeof PanelSearch>();
 
   const search = ref("");
-  const results = ref<Product[]>([]);
+  const results = ref<Item[]>([]);
 
-  const isShowing = computed(() => props.popupWindow.isShowing);
-  const items = computed(() => props.popupWindow.items);
+  const items = computed(() => props.popupWindow.data);
 
-  watch(
-    () => search.value,
-    () => {
-      results.value = inputText(search.value);
-    },
-  );
+  watch([search.value], () => {
+    results.value = inputText(search.value);
+  });
 
   function blur() {
     windowSearch.value?.blur();
@@ -29,7 +26,7 @@
     windowSearch.value?.focus();
   }
 
-  function inputText(text: string) {
+  function inputText(text: string): Item[] {
     const str = text;
 
     if (!str) return [];
@@ -40,10 +37,10 @@
       .filter((text) => text);
 
     return items.value
-      .reduce((results: { count: number; product: Product }[], product) => {
+      .reduce((results: { count: number; item: Item }[], item) => {
         try {
-          const count = product.toCount(strs);
-          if (count > 0) results.push({ count, product });
+          const count = item.toCount(strs);
+          if (count > 0) results.push({ count, item });
         } catch (error) {
           console.error("one of search result failed");
           console.error(error);
@@ -51,7 +48,7 @@
         return results;
       }, [])
       .sort((result1, result2) => result2.count - result1.count)
-      .map((result) => result.product);
+      .map((result) => result.item);
   }
   function clickDismiss() {
     blur();
@@ -72,10 +69,10 @@
     @input-text="(text) => (search = text)"
     @click-dismiss="() => clickDismiss()"
   >
-    <ItemSearchProduct
+    <ItemSearch
       class="ActionbarProduct-search-item"
       v-for="item in results"
-      :key="item.id"
+      :key="item.getUnique()"
       :item="item"
       @click="() => clickDismiss()"
     />

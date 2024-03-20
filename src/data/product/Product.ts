@@ -97,7 +97,7 @@ export class Product implements Item {
       );
     }
     this.specifications = specifications.map((specification) => {
-      return new Specification().fromData({
+      return new Specification({
         key: specification.type,
         content: specification.content,
       });
@@ -431,14 +431,14 @@ export class Product implements Item {
 
   setSpecifications(specifications: { type: string; content: string }[] = []) {
     this.specifications = specifications.map((specification) => {
-      return new Specification().fromData({
+      return new Specification({
         key: specification.type,
         content: specification.content,
       });
     });
   }
   addSpecification(specification: { type: string; content: string }) {
-    const specContent = new Specification().fromData({
+    const specContent = new Specification({
       key: specification.type,
       content: specification.content,
     });

@@ -3,7 +3,7 @@
   import LoadingDots from "@/components/loading/LoadingDots.vue";
   import Footer from "@/app/footer/AppFooter.vue";
   import TabLayout from "./PanelProducts-TabLayout.vue";
-  import CategoryTab from "./PanelProducts-CategoryTab.vue";
+  import CategoryTabVue from "./PanelProducts-CategoryTab.vue";
   import BrandTab from "./PanelProducts-BrandTab.vue";
   import ActionbarProduct from "./ActionBarProduct.vue";
   import ItemProduct from "./ItemProduct.vue";
@@ -20,6 +20,7 @@
   import { useRouteStore } from "@/stores/route.store";
   import { useWindowStore } from "@/stores/window.store";
   import { useRoute } from "vue-router";
+  import type { TabMenu } from "./CategoryTab";
 
   const route = useRoute();
 
@@ -72,8 +73,8 @@
 
   const labelMenuPrimaryColor = ref(chroma("000000"));
   const currentProductId = ref("");
-  const categoryTabs = ref<Menu[]>([]);
-  const brandTabs = ref<Menu[]>([]);
+  const categoryTabs = ref<TabMenu[]>([]);
+  const brandTabs = ref<TabMenu[]>([]);
   const filterMenus = ref<MenuGroup[]>([]);
   const productGroups = ref<
     {
@@ -158,52 +159,53 @@
 
     if (!isEditable.value) {
       categoryGroups = categoryGroups
-        .filter((group) => {
-          group.items = group.items.filter((product) => {
+        .filter((categoryGroup) => {
+          categoryGroup.items = categoryGroup.items.filter((product) => {
             if (!product.toImageThumbnail()) return false;
             if (!product.isStockAvailable()) return false;
             return true;
           });
-          return group.items.length > 0;
+          return categoryGroup.items.length > 0;
         })
-        .sort((group1, group2) => {
-          if (group1.category && group2.category)
-            return group1.category.compare(group2.category);
+        .sort((categoryGroup1, categoryGroup2) => {
+          if (categoryGroup1.parent && categoryGroup2.parent)
+            return categoryGroup1.parent.compare(categoryGroup2.parent);
           return 0;
         });
     }
     brandGroups = brandGroups
-      .filter((group) => {
-        return group.brand && group.items.length > 0;
+      .filter((brandGroup) => {
+        return brandGroup.parent && brandGroup.items.length > 0;
       })
-      .sort((group1, group2) => {
-        if (group1.brand && group2.brand)
-          return group1.brand.compare(group2.brand);
+      .sort((brandGroup1, brandGroup2) => {
+        if (brandGroup1.parent && brandGroup2.parent)
+          return brandGroup1.parent.compare(brandGroup2.parent);
         return 0;
       });
-    categoryGroups.sort((group1, group2) => {
-      if (group1.category && group2.category)
-        return group1.category.compare(group2.category);
+    categoryGroups.sort((categoryGroup1, categoryGroup2) => {
+      if (categoryGroup1.parent && categoryGroup2.parent)
+        return categoryGroup1.parent.compare(categoryGroup2.parent);
       return 0;
     });
 
     // menus
     const categoryMenus = new MenuGroup("category", "Category", [
       { title: "All" },
-      ...categoryGroups.map((group) => {
-        const { category } = group;
+      ...categoryGroups.map((categoryGroup) => {
         return {
-          key: category?.id ?? "",
-          title: category?.title ?? "",
-          background: category?.background?.toUrl() ?? "",
+          key: categoryGroup.parent?.id ?? "",
+          title: categoryGroup.parent?.title ?? "",
+          background: categoryGroup.parent?.background?.toUrl() ?? "",
         };
       }),
     ]);
     const brandMenus = new MenuGroup("brand", "Brand", [
       { title: "All" },
-      ...brandGroups.map((group) => {
-        const { brand } = group;
-        return { key: brand?.id, title: brand?.title ?? "" };
+      ...brandGroups.map((brandGroup) => {
+        return {
+          key: brandGroup.parent?.id,
+          title: brandGroup.parent?.title ?? "",
+        };
       }),
     ]);
 
@@ -212,20 +214,20 @@
       return {
         title: menu.title,
         background: menu.background,
-        click: () => {
+        isSelected: (tab) => categoryMenus.menu === menu,
+        click: (tab) => {
           if (typeof menu.click === "function") menu.click(menu);
         },
-        isSelected: () => categoryMenus.menu === menu,
       };
     });
     brandTabs.value = brandMenus.menus.map((menu) => {
       return {
         title: menu.title,
         icon: menu.icon instanceof Image ? menu.icon?.toUrl() ?? "" : menu.icon,
-        click: () => {
+        isSelected: (tab) => brandMenus.menu === menu,
+        click: (tab) => {
           if (typeof menu.click === "function") menu.click(menu);
         },
-        isSelected: () => brandMenus.menu === menu,
       };
     });
 
@@ -242,8 +244,8 @@
 
     // products
     productGroups.value = categoryGroups
-      .map((group) => {
-        const items = group.items
+      .map((categoryGroup) => {
+        const items = categoryGroup.items
           .filter((item) => {
             if (!isEditable.value) return item.isStockAvailable();
             if (queryStock.value === "all") return true;
@@ -261,10 +263,10 @@
             return product1.compare(product2);
           });
         return {
-          id: group.category?.id ?? "",
-          key: group.category?.key ?? "",
-          title: group.category?.title ?? "",
-          icon: group.category?.icon ? group.category.icon.toUrl() : "",
+          id: categoryGroup.parent?.id ?? "",
+          key: categoryGroup.parent?.key ?? "",
+          title: categoryGroup.parent?.title ?? "",
+          icon: categoryGroup.parent?.icon?.toUrl() ?? "",
           items,
         };
       })
@@ -304,7 +306,7 @@
         Category
       </span>
       <TabLayout v-if="categoryTabs.length > 0">
-        <CategoryTab
+        <CategoryTabVue
           v-for="menu of categoryTabs"
           :key="menu.title"
           :menu="menu"

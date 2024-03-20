@@ -8,7 +8,7 @@
     defineProps<{
       title?: string;
       item?: Product;
-      to: Partial<RouteRecordRaw>;
+      to: Partial<RouteRecordRaw> | { query: Record<string, string> };
     }>(),
     { title: "" },
   );

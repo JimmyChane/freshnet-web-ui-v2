@@ -2,7 +2,7 @@
   import NavigationBar from "@/components/actionbar/NavigationBar.vue";
   import PrintContent from "@/components/PrintContent.vue";
   import { Pixel } from "@/data/Pixel";
-  import Layout from "./PageCategoryExport-Layout.vue";
+  import Layout from "./components/PageCategoryExport-Layout.vue";
 
   import IconPrinter from "@/assets/icon/printer-000000.svg";
   import { computed, onMounted, ref } from "vue";
@@ -25,7 +25,7 @@
   async function invalidate() {
     const { id } = useRoute().query;
     const groups = await useProductStore().getGroupsByCategory();
-    const group = groups.find((group) => group.category.id === id);
+    const group = groups.find((group) => group.parent?.id === id);
     products.value = group?.items ?? [];
   }
 

@@ -2,6 +2,9 @@
   import { computed } from "vue";
   import Section from "./ViewerProduct-Section.vue";
   import Checkbox from "./ViewerProduct-StockCheckbox.vue";
+  import type { Color } from "chroma-js";
+  import type { Product } from "@/data/product/Product";
+  import { useProductStore } from "@/data-stores/product.store";
 
   const props = withDefaults(
     defineProps<{
@@ -29,10 +32,11 @@
         :checked="!productIsAvailable"
         @click="
           () => {
-            $store.state.stores.product.dispatch('updateAvailabilityOfId', {
-              id: product.id,
-              isAvailable: !productIsAvailable,
-            });
+            if (product)
+              useProductStore().updateAvailabilityOfId({
+                id: product.id,
+                isAvailable: !productIsAvailable,
+              });
           }
         "
       />
@@ -42,10 +46,11 @@
         :checked="productIsSecondHand"
         @click="
           () => {
-            $store.state.stores.product.dispatch('updateSecondHandOfId', {
-              id: product.id,
-              isSecondHand: !productIsSecondHand,
-            });
+            if (product)
+              useProductStore().updateSecondHandOfId({
+                id: product.id,
+                isSecondHand: !productIsSecondHand,
+              });
           }
         "
       />

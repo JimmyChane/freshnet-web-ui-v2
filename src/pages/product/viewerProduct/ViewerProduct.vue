@@ -22,9 +22,11 @@
   import { isObjectOnly, optString, trimText } from "@/U";
   import { useImageViewerStore } from "@/stores/image-viewer.store";
   import type { Tab } from "./Tab";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
+  import type { Image } from "@/data/Image";
 
   const emits = defineEmits<{
-    "click-product-imageRemove": [void];
+    "click-product-imageRemove": [{ product: Product | undefined; image: any }];
     "click-product-titleBrandUpdate": [void];
     "click-product-priceUpdate": [void];
     "click-product-descriptionUpdate": [void];
@@ -38,8 +40,8 @@
       isActionbarHidden?: boolean;
       openedWindowCount?: number;
 
-      leftMenus?: unknown[];
-      rightMenus?: unknown[];
+      leftMenus?: Menu[];
+      rightMenus?: Menu[];
 
       product?: Product;
       productPrevious?: Product;
@@ -429,7 +431,8 @@
           @click-image="(image) => (imagePreviewIndex = images.indexOf(image))"
           @click-add-image-file="
             (files) => {
-              useProductStore().addImageOfId({ id: product.id, files });
+              if (product)
+                useProductStore().addImageOfId({ id: product.id, files });
             }
           "
         />

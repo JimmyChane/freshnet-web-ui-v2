@@ -93,12 +93,10 @@ export class Specification {
   type?: Type;
   content: string = "";
 
-  fromData(data: { key?: string; content?: string }): Specification {
+  constructor(data: { key?: string; content?: string }) {
     this.typeKey = trimId(data.key);
     this.content = trimText(data.content);
     this.fetchType();
-
-    return this;
   }
   toData(): { key: string | undefined; content: string } {
     return {

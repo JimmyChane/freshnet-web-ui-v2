@@ -63,7 +63,7 @@
         }
         return cost;
       },
-      new ServicePrice().fromData({ amount: 0 }),
+      new ServicePrice({ amount: 0 }),
     );
   });
   const totalQuote = computed(() => {
@@ -74,7 +74,7 @@
         }
         return cost;
       },
-      new ServicePrice().fromData({ amount: 0 }),
+      new ServicePrice({ amount: 0 }),
     );
   });
   const labels = computed(() => {

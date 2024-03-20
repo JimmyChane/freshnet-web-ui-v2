@@ -6,13 +6,18 @@
   import { Item } from "@/data/Item";
   import { Service } from "@/data/service/Service";
 
-  const props = defineProps<{ popupWindow: PopupWindow<Item[]> }>();
+  const props = defineProps<{
+    popupWindow: PopupWindow<{
+      items: Item[];
+      clickItem: (item: Item) => void;
+    }>;
+  }>();
 
   const search = ref("");
   const results = ref<Item[]>([]);
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const items = computed(() => props.popupWindow.data);
+  const items = computed(() => props.popupWindow.data.items);
 
   watch(() => search.value, invalidate);
 
@@ -58,7 +63,7 @@
   }
   function clickItem(item: Item) {
     props.popupWindow.close();
-    props.popupWindow.clickItem(item);
+    props.popupWindow.data.clickItem(item);
   }
   function clickDismiss() {
     props.popupWindow.close();

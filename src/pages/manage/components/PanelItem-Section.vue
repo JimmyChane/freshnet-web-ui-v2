@@ -1,13 +1,8 @@
 <script setup lang="ts">
   import { isObjectOnly } from "@/U";
   import ButtonIcon from "@/components/button/ButtonIcon.vue";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
   import { computed } from "vue";
-
-  interface Menu {
-    title: string;
-    icon: string;
-    click: () => void;
-  }
 
   const props = withDefaults(
     defineProps<{ title?: string; menus?: Menu[] }>(),
@@ -38,7 +33,11 @@
             v-for="menu of theMenus"
             :key="menu.title"
             :src="menu.icon"
-            @click="() => menu.click()"
+            @click="
+              () => {
+                if (typeof menu.click === 'function') menu.click(menu);
+              }
+            "
           />
         </div>
       </div>

@@ -1,19 +1,25 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import WindowSection from "./WindowSection.vue";
-  import { Customer } from "@/data/customer/Customer";
+  import {
+    Customer,
+    Requirement as CustomerRequirement,
+  } from "@/data/customer/Customer";
   import Input from "@/components/input/Input.vue";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{ popupWindow: PopupWindow<Customer> }>();
 
-  const Requirement = ref(Customer.Requirement);
-  const data = ref({ name: "", phoneNumber: "" });
+  const Requirement = ref(CustomerRequirement);
+
+  const name = ref("");
+  const phoneNumber = ref("");
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const item = computed(() => props.popupWindow.item);
+  const item = computed(() => props.popupWindow.data);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
 
@@ -34,20 +40,19 @@
 
   function bindData() {
     if (item.value) {
-      const { name, phoneNumber } = item.value;
-      data.value.name = name;
-      data.value.phoneNumber = phoneNumber?.toString() ?? "";
+      name.value = item.value.name;
+      phoneNumber.value = item.value.phoneNumber?.toString() ?? "";
     }
   }
   function clickOk() {
-    data.value.name = data.value.name.trim();
-    data.value.phoneNumber = data.value.phoneNumber.trim();
+    name.value = name.value.trim();
+    phoneNumber.value = phoneNumber.value.trim();
 
-    if (Requirement.value.name.isRequired && !data.value.name) {
+    if (Requirement.value.name.isRequired && !name.value) {
       useSnackbarStore().show('You must specify the "Name"');
       return;
     }
-    if (Requirement.value.phoneNumber.isRequired && !data.value.phoneNumber) {
+    if (Requirement.value.phoneNumber.isRequired && !phoneNumber.value) {
       useSnackbarStore().show('You must specify the "Phone Number"');
       return;
     }
@@ -55,8 +60,8 @@
     useCustomerStore()
       .updateNamePhoneNumberOfItemId({
         _id: item.value.id,
-        name: data.value.name,
-        phoneNumber: data.value.phoneNumber,
+        name: name.value,
+        phoneNumber: phoneNumber.value,
       })
       .then((item) => props.popupWindow.close());
   }
@@ -81,15 +86,13 @@
             label="Name"
             type="text"
             :isRequired="true"
-            :bindValue="data.name"
-            @input="(value: string) => (data.name = value)"
+            v-model="name"
           />
           <Input
             class="WindowUpdateCustomer-customer-part"
             label="Phone Number"
             type="text"
-            :bindValue="data.phoneNumber"
-            @input="(value: string) => (data.phoneNumber = value)"
+            v-model="phoneNumber"
           />
         </div>
       </WindowSection>

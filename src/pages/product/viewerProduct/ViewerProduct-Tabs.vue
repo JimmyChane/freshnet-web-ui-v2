@@ -9,7 +9,14 @@
   const self = ref<HTMLDivElement>();
   const tabs = ref<(typeof TabVue)[]>();
 
-  const item = computed(() => props.items.find((item) => item.isSelected()));
+  const item = computed(() =>
+    props.items.find((item) => {
+      if (typeof item.isSelected === "function") {
+        return item.isSelected();
+      }
+      return false;
+    }),
+  );
 
   watch(() => item, onItemChange);
 

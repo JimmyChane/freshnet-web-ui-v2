@@ -3,7 +3,7 @@
   import ListServices from "./ListServices.vue";
   import Empty from "@/components/Empty.vue";
   import PageService from "@/pages/service/PageService.vue";
-  import { ServiceState, map } from "@/data/service/ServiceState";
+  import { LIST, ServiceState, map } from "@/data/service/ServiceState";
   import IconGrid from "@/assets/icon/grid-000000.svg";
   import IconList from "@/assets/icon/list-000000.svg";
   import IconDetail from "@/assets/icon/detail-000000.svg";
@@ -116,7 +116,7 @@
 
   function invalidateList() {
     const xServices = Array.isArray(props.services) ? props.services : [];
-    ServiceState.map((state) => {
+    LIST.map((state) => {
       filterList(xServices, state.key);
     });
 

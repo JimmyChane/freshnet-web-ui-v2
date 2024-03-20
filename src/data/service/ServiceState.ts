@@ -51,7 +51,7 @@ export const REJECTED = new ServiceState(
   "#d94136",
 );
 
-const LIST = [PENDING, WAITING, COMPLETED, REJECTED];
+export const LIST = [PENDING, WAITING, COMPLETED, REJECTED];
 
 export function findByKey(key: string): ServiceState | undefined {
   return LIST.find((state) => state.key === key);

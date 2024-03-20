@@ -11,7 +11,10 @@
   import { useWindowStore } from "@/stores/window.store";
 
   const props = defineProps<{
-    database?: Object;
+    database: {
+      name: string;
+      collections: { name: string; documents: { _id: string }[] }[];
+    };
   }>();
 
   const isSelfExpand = ref(false);

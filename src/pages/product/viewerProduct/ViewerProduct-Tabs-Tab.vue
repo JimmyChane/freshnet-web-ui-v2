@@ -1,17 +1,24 @@
 <script setup lang="ts">
+  import { computed } from "vue";
   import type { Tab } from "./Tab";
 
-  defineProps<{ item: Tab }>();
+  const props = defineProps<{ item: Tab }>();
+
+  const isSelected = computed(() => {
+    if (typeof props.item.isSelected === "function") {
+      return props.item.isSelected();
+    }
+
+    return false;
+  });
+
+  const styleClass = computed(() => {
+    return isSelected.value ? "Tabs-Tab-isSelected" : "Tabs-Tab-isDeselected";
+  });
 </script>
 
 <template>
-  <button
-    :class="[
-      'Tabs-Tab',
-      item.isSelected() ? 'Tabs-Tab-isSelected' : 'Tabs-Tab-isDeselected',
-      'transition',
-    ]"
-  >
+  <button :class="['Tabs-Tab', styleClass, 'transition']">
     {{ item.title }}
   </button>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import Actionbar from "@/components/actionbar/Actionbar.vue";
   import Selector from "@/components/selector/Selector.vue";
-  import { ServiceState } from "@/data/service/ServiceState";
-  import PanelItemCustomer from "@/pages/manage/PanelItem-Customer.vue";
+  import { LIST, ServiceState } from "@/data/service/ServiceState";
+  import PanelItemCustomer from "@/pages/manage/components/PanelItem-Customer.vue";
   import SectionVue from "./PanelService-Info-Section.vue";
   import LabelVue from "./PanelService-Info-Label.vue";
   import BelongingVue from "./ItemBelonging.vue";
@@ -76,7 +76,7 @@
   const isPhoneNumber = computed(() => !!phoneNumberStr.value);
 
   const stateMenus = computed(() => {
-    return ServiceState.map((state) => {
+    return LIST.map((state) => {
       return {
         key: state.key,
         title: state.title,

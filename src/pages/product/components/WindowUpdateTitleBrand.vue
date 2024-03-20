@@ -6,8 +6,14 @@
   import { useBrandStore } from "@/data-stores/brand.store";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import type { Product } from "@/data/product/Product";
+  import { Brand } from "@/data/brand/Brand";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{
+    popupWindow: PopupWindow<{
+      product: Product;
+    }>;
+  }>();
 
   const data = ref<{ title: string; brandId: string }>({
     title: "",
@@ -15,7 +21,7 @@
   });
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const input = computed(() => props.popupWindow.input);
+  const input = computed(() => props.popupWindow.data);
   const product = computed(() => input.value?.product ?? "");
   const title = computed(() => data.value?.title ?? "");
   const brandId = computed(() => data.value?.brandId ?? "");
@@ -32,15 +38,16 @@
   });
 
   const brandMenus = computed(() => {
-    return [{ _id: "", title: "None" }, ...useBrandStore().items].map(
-      (item) => {
-        return {
-          key: item.id,
-          title: item.title,
-          icon: item.icon?.toUrl() ?? "",
-        };
-      },
-    );
+    return [
+      new Brand({ _id: "", title: "None" }),
+      ...useBrandStore().items,
+    ].map((item) => {
+      return {
+        key: item.id,
+        title: item.title,
+        icon: item.icon?.toUrl() ?? "",
+      };
+    });
   });
 
   function clickConfirm() {

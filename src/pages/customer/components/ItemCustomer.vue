@@ -6,6 +6,8 @@
   import IconOrder from "@/assets/icon/order-505050.svg";
   import { computed, onMounted, ref, watch } from "vue";
   import PanelItemsItemButton from "@/pages/manage/components/PanelItems-ItemButton.vue";
+  import type { Group } from "@/data/Group";
+  import type { CustomerDevice } from "@/data/customer/CustomerDevice";
 
   const emits = defineEmits<{ click: [void]; clickRemove: [void] }>();
   const props = withDefaults(
@@ -13,7 +15,7 @@
     { selected: false },
   );
 
-  const itemDeviceGroups = ref<unknown[]>([]);
+  const itemDeviceGroups = ref<Group<string, CustomerDevice>[]>([]);
 
   const name = computed(() => props.item?.name);
   const phoneNumber = computed(() => props.item?.phoneNumber);
@@ -66,9 +68,9 @@
       >
         <LabelDevice
           v-for="group of itemDeviceGroups"
-          :key="group.categoryKey"
-          :categoryKey="group.categoryKey"
-          :count="group.devices.length"
+          :key="group.parent"
+          :categoryKey="group.parent"
+          :count="group.items.length"
         />
         <Label
           v-if="services.length"

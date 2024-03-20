@@ -72,9 +72,9 @@ export function getBackground(key: string): Image | undefined {
 }
 
 interface CategoryData {
-  _id: string;
-  key: string;
-  title: string;
+  _id?: string;
+  key?: string;
+  title?: string;
   icon?: any;
   background?: any;
 }

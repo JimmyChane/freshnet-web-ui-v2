@@ -6,21 +6,14 @@
     type ServiceBelongingData,
   } from "@/data/service/ServiceBelonging";
   import { onMounted, ref, watch } from "vue";
+  import { TimeNowGetter } from "@/data/TimeNowGetter";
 
-  const TimeGetter = {
-    lastNowTime: 0,
-    getTimeNow() {
-      let timeNow = Date.now();
-      while (timeNow <= this.lastNowTime) timeNow++;
-      this.lastNowTime = timeNow;
-      return timeNow;
-    },
-  };
+  const timeGetter = new TimeNowGetter();
 
   function getNewBelongingTemplate(): ServiceBelongingData {
     const data = new ServiceBelonging();
     data.quantity = 0;
-    data.time = TimeGetter.getTimeNow();
+    data.time = timeGetter.get();
 
     return data;
   }
@@ -42,7 +35,7 @@
   function onReset() {
     const values = optArray(props.values).map((value) => {
       const data = new ServiceBelonging(value).toData();
-      data.time = TimeGetter.getTimeNow();
+      data.time = timeGetter.get();
 
       return data;
     });
@@ -78,7 +71,7 @@
 
   function getResults() {
     const results = belongings.value.filter((belonging) => {
-      if (belonging.time === 0) belonging.time = TimeGetter.getTimeNow();
+      if (belonging.time === 0) belonging.time = timeGetter.get();
 
       return belonging.title?.trim() && belonging.quantity;
     });

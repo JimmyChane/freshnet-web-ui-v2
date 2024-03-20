@@ -1,18 +1,22 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
   import TextArea from "@/components/input/InputTextArea.vue";
-  import { Customer } from "@/data/customer/Customer";
+  import {
+    Customer,
+    Requirement as CustomerRequirement,
+  } from "@/data/customer/Customer";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
+import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{ popupWindow: PopupWindow<Customer> }>();
 
-  const Requirement = ref(Customer.Requirement);
+  const Requirement = ref(CustomerRequirement);
   const data = ref({ description: "" });
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const item = computed(() => props.popupWindow.item);
+  const item = computed(() => props.popupWindow.data);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
 

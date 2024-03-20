@@ -13,6 +13,7 @@ import { ProductBundle } from "@/data/product/ProductBundle";
 import { Specification } from "@/data/specification/Specification";
 import { Image } from "@/data/Image";
 import { optString, trimText } from "@/U";
+import type { Group } from "@/data/Group";
 
 export const useProductStore = defineStore("product", () => {
   const dataLoader = new DataLoader<Product>(1000 * 60 * 10) // 10min
@@ -47,30 +48,25 @@ export const useProductStore = defineStore("product", () => {
     }
     return item;
   }
-  async function getGroupsByCategory() {
+  async function getGroupsByCategory(): Promise<Group<Category, Product>[]> {
     const items = await getItems();
 
     const categoryOther = await useCategoryStore().getItemOfKey(
       Category.Key.Other,
     );
 
-    interface Group {
-      category?: Category;
-      items: Product[];
-    }
-
-    const groups: Group[] = [];
+    const groups: Group<Category, Product>[] = [];
     for (const item of items) {
       let category = await item.fetchCategory();
       if (!category) category = categoryOther;
       let categoryId = category?.id ?? "";
 
       let group = groups.find((group) => {
-        return group.category?.id === categoryId;
+        return group.parent?.id === categoryId;
       });
 
       if (!group) {
-        groups.push((group = { category, items: [] }));
+        groups.push((group = { parent: category, items: [] }));
       }
 
       group.items.push(item);
@@ -81,21 +77,16 @@ export const useProductStore = defineStore("product", () => {
   async function getGroupsByBrand() {
     const items: Product[] = await getItems();
 
-    interface Group {
-      brand: Brand | null | undefined;
-      items: Product[];
-    }
-
-    const groups: Group[] = [];
+    const groups: Group<Brand, Product>[] = [];
     for (const item of items) {
       let group = groups.find((group) => {
-        const brandId = group.brand?.id ?? "";
+        const brandId = group.parent?.id ?? "";
         return brandId === item.brandId;
       });
 
       let brand: Brand | null | undefined = await item.fetchBrand();
       if (!group) {
-        groups.push((group = { brand, items: [] }));
+        groups.push((group = { parent: brand, items: [] }));
       }
 
       group.items.push(item);

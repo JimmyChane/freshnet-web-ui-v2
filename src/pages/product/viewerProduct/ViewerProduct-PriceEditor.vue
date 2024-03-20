@@ -13,12 +13,12 @@
   const priceNormal = computed(() => {
     const normal = props.product?.getPriceNormal() ?? null;
     if (normal && normal.value >= 0) return normal;
-    return new ProductPrice().fromData();
+    return new ProductPrice();
   });
   const pricePromotion = computed(() => {
     const promotion = props.product?.getPricePromotion() ?? null;
     if (promotion && promotion.value >= 0) return promotion;
-    return new ProductPrice().fromData();
+    return new ProductPrice();
   });
 </script>
 

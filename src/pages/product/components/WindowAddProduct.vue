@@ -10,6 +10,7 @@
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import type { Menu } from "@/stores/popup-menu/PopupMenu";
+  import type { Product } from "@/data/product/Product";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 
@@ -23,7 +24,6 @@
   const title = ref("");
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const input = computed(() => props.popupWindow.input);
 
   watch(
     () => isShowing.value,

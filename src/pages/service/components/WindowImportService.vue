@@ -14,8 +14,13 @@
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { PENDING, ServiceState, map } from "@/data/service/ServiceState";
   import { Customer } from "@/data/customer/Customer";
+  import type { Service } from "@/data/service/Service";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{
+    popupWindow: PopupWindow<{
+      showService: (service: Service | null) => void;
+    }>;
+  }>();
 
   const data = ref<{
     time?: number;
@@ -98,7 +103,7 @@
     useServiceStore()
       .importItem({ data: data.value })
       .then((service) => {
-        props.popupWindow.showService(service);
+        props.popupWindow.data.showService(service);
         props.popupWindow.close();
       })
       .catch((error) => {

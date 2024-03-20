@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import PHE from "@/data/Print";
+  import { printElement } from "@/data/Print";
   import {
     computed,
     onBeforeMount,
@@ -36,7 +36,7 @@
     }
   }
   function print() {
-    if (canvas.value) PHE.printElement(canvas.value);
+    if (canvas.value) printElement(canvas.value);
   }
   function listenerResize() {
     invalidateCard();

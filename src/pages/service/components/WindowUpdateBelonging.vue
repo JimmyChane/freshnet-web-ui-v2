@@ -7,11 +7,18 @@
   import type { ServiceBelongingData } from "@/data/service/ServiceBelonging";
 
   const props = defineProps<{
-    popupWindow: PopupWindow<ServiceBelongingData[]>;
+    popupWindow: PopupWindow<{
+      belongings: ServiceBelongingData[];
+      onConfirm: (
+        accept: () => void,
+        reject: () => void,
+        belongings: ServiceBelongingData[],
+      ) => void;
+    }>;
   }>();
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const values = computed(() => props.popupWindow.data);
+  const values = computed(() => props.popupWindow.data.belongings);
 
   const BelongingListEdit = ref();
 
@@ -20,7 +27,7 @@
 
     const accept = () => props.popupWindow.close();
     const reject = () => {};
-    props.popupWindow.onConfirm(accept, reject, belongings);
+    props.popupWindow.data.onConfirm(accept, reject, belongings);
   }
   function focus() {
     BelongingListEdit.value.focus();

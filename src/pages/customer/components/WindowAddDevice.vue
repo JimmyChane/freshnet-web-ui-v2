@@ -12,10 +12,11 @@
   import { Specification } from "@/data/specification/Specification";
   import type { Menu } from "@/components/selector/Selector3/Menu";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
+  import { Category } from "@/data/category/Category";
+  import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{ popupWindow: PopupWindow<Customer> }>();
 
-  const Requirement = ref(Customer.Requirement);
   const data = ref<{
     description: string;
     categoryKey: string;
@@ -31,14 +32,14 @@
   });
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const item = computed(() => props.popupWindow.item);
+  const item = computed(() => props.popupWindow.data);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
 
   const categoryMenus = computed(() => {
-    const menus: Menu[] = [
-      { key: "none", title: "None" },
-      ...useCategoryStore().items.map((item) => item),
+    const menus = [
+      new Category({ key: "none", title: "None" }),
+      ...useCategoryStore().items,
     ];
 
     return menus.map((item) => ({

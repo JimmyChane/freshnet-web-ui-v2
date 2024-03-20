@@ -6,7 +6,10 @@
   import { Service } from "@/data/service/Service";
   import { ServiceEvent } from "@/data/service/ServiceEvent";
   import {
+    INFO,
     INITIAL,
+    PURCHASE,
+    QUOTATION,
     ServiceEventMethod,
   } from "@/data/service/ServiceEventMethod";
   import IconTrash from "@/assets/icon/trash-000000.svg";
@@ -174,12 +177,11 @@
   }
 
   function methodContext(property: string) {
-    if (props.event.isInfo())
-      return (ServiceEventMethod.INFO as Record<string, any>)[property];
+    if (props.event.isInfo()) return (INFO as Record<string, any>)[property];
     if (props.event.isQuotation())
-      return (ServiceEventMethod.QUOTATION as Record<string, any>)[property];
+      return (QUOTATION as Record<string, any>)[property];
     if (props.event.isPurchase())
-      return (ServiceEventMethod.PURCHASE as Record<string, any>)[property];
+      return (PURCHASE as Record<string, any>)[property];
     return null;
   }
 

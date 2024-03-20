@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  const emits = defineEmits<{ clickFile: [FileList] }>();
+  const emits = defineEmits<{ clickFile: [FileList | null] }>();
 </script>
 
 <template>

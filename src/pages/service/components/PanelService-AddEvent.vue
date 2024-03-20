@@ -2,7 +2,10 @@
   import chroma from "chroma-js";
   import MenuVue from "@/components/menu/Menu.vue";
   import AddImage from "./PanelService-AddEvent-AddImage.vue";
-  import { ServiceEventMethod } from "@/data/service/ServiceEventMethod";
+  import {
+    QUOTATION,
+    ServiceEventMethod,
+  } from "@/data/service/ServiceEventMethod";
   import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { useServiceStore } from "@/data-stores/service.store";
@@ -18,7 +21,7 @@
   const eventImagePreviews = ref([]);
 
   const nameOfUser = ref("unknown");
-  const eventMethod = ref(ServiceEventMethod.QUOTATION.key);
+  const eventMethod = ref(QUOTATION.key);
   const eventDescription = ref("");
   const eventStatus = ref("");
   const eventAmount = ref(0);

@@ -19,6 +19,7 @@
   import { useWindowStore } from "@/stores/window.store";
   import PanelItemCustomer from "@/pages/manage/components/PanelItem-Customer.vue";
   import PanelItemSection from "@/pages/manage/components/PanelItem-Section.vue";
+  import { ServiceCustomer } from "@/data/service/ServiceCustomer";
 
   const emits = defineEmits<{
     clickItemClose: [void];
@@ -30,7 +31,7 @@
   const props = defineProps<{ item?: Customer }>();
 
   const top = ref({ showShadow: false });
-  const devices = ref<CustomerDevice[]>([]);
+  const devices = ref<{ deviceId: string; device?: CustomerDevice }[]>([]);
   const isLoadingDevices = ref(false);
 
   const isWide = computed(() => useWindowStore().innerWidth > 600);
@@ -139,7 +140,7 @@
         :rightMenus="menus"
       >
         <PanelItemCustomer
-          v-if="item"
+          v-if="item instanceof ServiceCustomer"
           :customer="item"
           :isEditable="item.isModifiable()"
           @click-edit="(item) => $emit('click-item-customer-update', { item })"
@@ -150,10 +151,12 @@
         <PanelItemSection
           title="Description"
           v-if="id"
-          :menus="{
-            icon: IconEdit,
-            click: () => $emit('click-item-description-update', { item }),
-          }"
+          :menus="[
+            {
+              icon: IconEdit,
+              click: () => $emit('click-item-description-update', { item }),
+            },
+          ]"
         >
           <span v-if="description">{{ description }}</span>
           <PanelCustomerEmpty v-else />
@@ -162,10 +165,12 @@
         <PanelItemSection
           title="Owned Devices"
           v-if="isFromStoreCustomer"
-          :menus="{
-            icon: IconAdd,
-            click: () => $emit('click-item-device-add', { item }),
-          }"
+          :menus="[
+            {
+              icon: IconAdd,
+              click: () => $emit('click-item-device-add', { item }),
+            },
+          ]"
         >
           <div class="PanelCustomer-section-devices">
             <ItemDevice

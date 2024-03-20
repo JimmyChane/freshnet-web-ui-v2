@@ -6,15 +6,17 @@
   import { computed, onMounted, ref, watch } from "vue";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { useCustomerStore } from "@/data-stores/customer.store";
+  import type { CustomerDevice } from "@/data/customer/CustomerDevice";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{
+    popupWindow: PopupWindow<{ customer: Customer; device: CustomerDevice }>;
+  }>();
 
-  const Requirement = ref(Customer.Requirement);
   const data = ref({ description: "" });
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const customer = computed(() => props.popupWindow.customer);
-  const device = computed(() => props.popupWindow.device);
+  const customer = computed(() => props.popupWindow.data.customer);
+  const device = computed(() => props.popupWindow.data.device);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
 

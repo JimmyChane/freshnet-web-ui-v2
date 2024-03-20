@@ -4,9 +4,18 @@
   import IconMinus from "@/assets/icon/minus-black.svg";
   import IconPlus from "@/assets/icon/plus-black.svg";
 
-  withDefaults(defineProps<{ collection?: Object; isExpand?: boolean }>(), {
-    isExpand: false,
-  });
+  withDefaults(
+    defineProps<{
+      collection: {
+        name: string;
+        documents: { _id: string }[];
+      };
+      isExpand?: boolean;
+    }>(),
+    {
+      isExpand: false,
+    },
+  );
 </script>
 
 <template>

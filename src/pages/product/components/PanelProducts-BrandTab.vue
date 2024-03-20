@@ -1,14 +1,8 @@
 <script setup lang="ts">
   import { computed } from "vue";
+  import type { TabMenu } from "./CategoryTab";
 
-  interface Menu {
-    title: string;
-    count: number;
-    isSelected: (menu: this) => void;
-    click: (menu: this) => void;
-  }
-
-  const props = defineProps<{ menu: Menu }>();
+  const props = defineProps<{ menu: TabMenu }>();
 
   const title = computed(() => props.menu.title);
   const count = computed(() => props.menu.count);

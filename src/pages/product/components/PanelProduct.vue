@@ -13,6 +13,7 @@
   import { copyText, getOrigin, openLink } from "@/U";
   import { useSnackbarStore } from "@/stores/snackbar/snackbar.store";
   import { usePopupWindowStore } from "@/stores/popup-window/popup-window.store";
+  import type { Menu } from "@/stores/popup-menu/PopupMenu";
 
   const router = useRouter();
 
@@ -46,55 +47,61 @@
 
   const openedWindowCount = computed(() => usePopupWindowStore().items.length);
   const actionbarLeftMenus = computed(() => {
-    return {
-      key: "close",
-      title: "Close",
-      icon: IconClose,
-      click: () => emits("click-dismiss"),
-    };
-  });
-  const actionbarRightMenus = computed(() => {
-    if (!props.product) return [];
     return [
+      {
+        key: "close",
+        title: "Close",
+        icon: IconClose,
+        click: () => emits("click-dismiss"),
+      },
+    ];
+  });
+  const actionbarRightMenus = computed<Menu[]>(() => {
+    if (!props.product) return [];
+
+    const menus: Menu[] = [
       {
         key: "view",
         title: "View Product in Display",
         icon: IconView,
         isHidden: true,
-        click: () => clickView(),
+        click: (menu) => clickView(),
       },
       {
         key: "copy",
         title: "Copy Product Link",
         icon: IconCopyDark,
-        click: () => clickCopyLink(),
+        click: (menu) => clickCopyLink(),
       },
-      props.isEditable
-        ? {
-            key: "print",
-            title: "Print Product Catalog",
-            icon: IconPrinter,
-            isHidden: true,
-            click: () => {
-              router.push({
-                path: "/product/export",
-                query: { productId: props.product.id },
-              });
-            },
-          }
-        : null,
-      props.isEditable
-        ? {
-            key: "delete",
-            title: "Delete Product",
-            icon: IconTrash,
-            isHidden: true,
-            click: () => {
-              emits("click-productRemove", { product: props.product });
-            },
-          }
-        : null,
     ];
+
+    if (props.isEditable) {
+      menus.push({
+        key: "print",
+        title: "Print Product Catalog",
+        icon: IconPrinter,
+        isHidden: true,
+        click: (menu) => {
+          if (props.product)
+            router.push({
+              path: "/product/export",
+              query: { productId: props.product.id },
+            });
+        },
+      });
+      menus.push({
+        key: "delete",
+        title: "Delete Product",
+        icon: IconTrash,
+        isHidden: true,
+        click: (menu) => {
+          if (props.product)
+            emits("click-productRemove", { product: props.product });
+        },
+      });
+    }
+
+    return menus;
   });
 
   function clickCopyLink() {

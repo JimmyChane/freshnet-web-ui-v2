@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import ItemOrderAction from "./ItemOrder-Action.vue";
-  import { Order } from "@/data/order/Order";
+  import { Order, OrderStatus } from "@/data/order/Order";
   import { format } from "date-fns";
   import IconSuccessGreen from "@/assets/icon/success-green.svg";
   import IconSuccessWhite from "@/assets/icon/success-white.svg";
@@ -21,14 +21,18 @@
   );
 
   const isStatusPending = computed(
-    () => props.order.status === Order.Status.Pending,
+    () => props.order.status === OrderStatus.Pending,
   );
   const isStatusCompleted = computed(
-    () => props.order.status === Order.Status.Completed,
+    () => props.order.status === OrderStatus.Completed,
   );
 
   const dateCreated = computed(() => {
-    return format(new Date(props.order.createdAt), "hh:mmaaa dd/LL/yyyy");
+    const date =
+      props.order.createdAt === undefined
+        ? new Date()
+        : new Date(props.order.createdAt);
+    return format(date, "hh:mmaaa dd/LL/yyyy");
   });
   const customer = computed(() => props.order.customer);
 

@@ -6,7 +6,7 @@
   import ButtonLogin from "./components/ButtonLogin.vue";
   import Logo from "@/assets/logo/freshnet-enterprise-logo.svg";
   import IconHamburgerMenu from "@/assets/icon/hamburgerMenu-000000.svg";
-  import { computed, onMounted, ref } from "vue";
+  import { computed, onMounted, ref, watch } from "vue";
   import { useLoginStore } from "@/stores/login.store";
   import { useRoute, useRouter } from "vue-router";
   import { useNavigationStore } from "@/stores/navigation/navigation.store";
@@ -23,14 +23,19 @@
 
   const isLoading = computed(() => useLoginStore().isLoading);
 
-  const username = ref();
-  const password = ref();
+  const username = ref("");
+  const password = ref("");
+
+  watch([username.value], () => {
+    if (username.value.includes(""))
+      username.value = username.value.trim().replace(" ", "");
+  });
 
   function clickLogin() {
     const redirect = route.query.redirect?.toString() ?? "/home";
 
-    const xUsername = username.value.value;
-    const xPassword = password.value.value;
+    const xUsername = username.value;
+    const xPassword = password.value;
     usernameErrorText.value = "";
     passwordErrorText.value = "";
 
@@ -89,26 +94,19 @@
       <form class="PageLogin-content" @submit.prevent="clickLogin()">
         <Input
           class="PageLogin-input"
-          ref="username"
           label="Username"
           type="text"
           :autocorrect="'off'"
           :autocapitalize="'none'"
-          @input="
-            (comp) => {
-              let value = comp.value;
-              if (value.includes(''))
-                comp.value = value.trim().replace(' ', '');
-            }
-          "
+          v-model="username"
           :isRequired="true"
           :error="usernameErrorText"
         />
         <Input
           class="PageLogin-input"
-          ref="password"
           label="Password"
           type="password"
+          v-model="password"
           :isRequired="true"
           :error="passwordErrorText"
         />

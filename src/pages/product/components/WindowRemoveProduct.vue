@@ -1,13 +1,16 @@
 <script setup lang="ts">
   import PanelAction from "@/components/panel/PanelAction.vue";
+  import type { Product } from "@/data/product/Product";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed } from "vue";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{
+    popupWindow: PopupWindow<{ product: Product; title: string }>;
+  }>();
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const input = computed(() => props.popupWindow.input);
-  const product = computed(() => input.value?.product ?? null);
+  const input = computed(() => props.popupWindow.data);
+  const product = computed(() => input.value?.product ?? undefined);
   const title = computed(() => product.value?.title ?? "");
 </script>
 

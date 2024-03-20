@@ -4,17 +4,18 @@
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, ref } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
+  import type { CustomerDevice } from "@/data/customer/CustomerDevice";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
-
-  const Requirement = ref(Customer.Requirement);
+  const props = defineProps<{
+    popupWindow: PopupWindow<{ customer: Customer; device: CustomerDevice }>;
+  }>();
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const param = computed(() => props.popupWindow.param);
+  const item = computed(() => props.popupWindow.data);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
-  const customer = computed(() => param.value?.customer);
-  const device = computed(() => param.value?.device);
+  const customer = computed(() => item.value?.customer);
+  const device = computed(() => item.value?.device);
 
   function clickOk() {
     useCustomerStore()
@@ -37,7 +38,7 @@
     @click-cancel="() => popupWindow.close()"
     @click-ok="() => clickOk()"
   >
-    <div class="WindowRemoveDevice-body" v-if="param">
+    <div class="WindowRemoveDevice-body" v-if="item">
       <div class="WindowRemoveDevice-description" v-if="device.description">
         <span class="WindowRemoveDevice-description-header">Description</span>
         <span class="WindowRemoveDevice-description-body">{{

@@ -15,13 +15,13 @@
     if (!props.product) return;
     const normal = props.product.getPriceNormal();
     if (normal && normal.value >= 0) return normal;
-    new ProductPrice().fromData();
+    new ProductPrice();
   });
   const pricePromotion = computed(() => {
     if (!props.product) return;
     const promotion = props.product.getPricePromotion();
     if (promotion && promotion.value >= 0) return promotion;
-    new ProductPrice().fromData();
+    new ProductPrice();
   });
 
   const title = computed(() => {

@@ -3,13 +3,11 @@
 
   const props = defineProps<{ item: Record<string, any> }>();
 
-  const itemKeys = computed(() => {
-    return keys(props.item);
-  });
+  const itemKeys = computed(() => keys(props.item));
 
   function shouldIncludeNextLine(item: Record<string, any>, key: string) {
     return (
-      (isArray(item) && key < itemKeys.value.length - 1) ||
+      (Array.isArray(item) && key.length < itemKeys.value.length - 1) ||
       (isObject(item) &&
         itemKeys.value.indexOf(key) !== itemKeys.value.length - 1)
     );

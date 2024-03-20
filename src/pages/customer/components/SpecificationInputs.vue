@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import ItemSpec from "./ItemSpecificationInput.vue";
   import Selector4 from "@/components/selector/Selector4.vue";
-  import { Type } from "@/data/specification/Specification";
+  import { Specification, Type } from "@/data/specification/Specification";
   import { useSpecificationStore } from "@/data-stores/specification.store";
   import { computed, onMounted, ref, watch } from "vue";
 
@@ -9,7 +9,7 @@
     items: () => [],
   });
 
-  const list = ref<any[]>([]);
+  const list = ref<Specification[]>([]);
 
   const KeyNone = computed(() => "none");
   const SpecKey = computed(() => Type.Key);
@@ -19,7 +19,7 @@
   ]);
   const SpecificationMenus = computed((c) => {
     return [
-      { key: KeyNone.value, title: "None" },
+      { key: KeyNone.value, title: "None" } as Type,
       ...useSpecificationStore().items.map((item) => item),
     ]
       .map((item) => ({
@@ -47,10 +47,10 @@
     },
   );
 
-  function addItem(item) {
+  function addItem(item: Specification) {
     list.value.push(item);
   }
-  function removeItem(item) {
+  function removeItem(item: Specification) {
     list.value.splice(list.value.indexOf(item), 1);
   }
 
@@ -64,7 +64,7 @@
     <div class="SpecificationInputs-contents">
       <ItemSpec
         v-for="item in list"
-        :key="item.key"
+        :key="item.typeKey"
         :item="item"
         @input-content="(value) => (item.content = value)"
         @click-remove="(item) => removeItem(item)"
@@ -72,7 +72,9 @@
     </div>
     <Selector4
       :menus="SpecificationMenus"
-      @click-menu="(menu) => addItem({ content: '', typeKey: menu.key })"
+      @click-menu="
+        (menu) => addItem(new Specification({ key: menu.key, content: '' }))
+      "
     />
   </div>
 </template>

@@ -39,10 +39,12 @@
       const focusableElements = document.querySelectorAll(
         "input:not([disabled]), textarea:not([disabled])",
       );
-      const currentIndex = Array.from(focusableElements).indexOf(target);
+      const currentIndex = Array.from(focusableElements).indexOf(
+        target as HTMLElement,
+      );
       const nextIndex = (currentIndex + 1) % focusableElements.length;
 
-      const nextElement = focusableElements[nextIndex];
+      const nextElement = focusableElements[nextIndex] as HTMLElement;
       nextElement.focus();
     }
   }

@@ -10,12 +10,10 @@
     clickCancel: [void];
     clickOk: [void];
   }>();
-  const props = defineProps<{ popupWindow: PopupWindow }>();
-
-  const Requirement = ref(Customer.Requirement);
+  const props = defineProps<{ popupWindow: PopupWindow<Customer> }>();
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const item = computed(() => props.popupWindow.item);
+  const item = computed(() => props.popupWindow.data);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
 

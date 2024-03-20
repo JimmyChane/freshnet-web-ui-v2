@@ -3,20 +3,20 @@
   import WindowSection from "./WindowSection.vue";
   import SpecificationInputs from "./SpecificationInputs.vue";
   import { Customer } from "@/data/customer/Customer";
-  import { CustomerDeviceSpecification } from "@/data/customer/CustomerDeviceSpecification";
+  import {
+    CustomerDeviceSpecification,
+    type CustomerDeviceSpecificationData,
+  } from "@/data/customer/CustomerDeviceSpecification";
   import type { PopupWindow } from "@/stores/popup-window/PopupWindow";
   import { computed, onMounted, ref, watch } from "vue";
   import { useCustomerStore } from "@/data-stores/customer.store";
 
   const props = defineProps<{ popupWindow: PopupWindow }>();
 
-  const Requirement = ref(Customer.Requirement);
-  const data = ref<{ specifications: CustomerDeviceSpecification[] }>({
-    specifications: [],
-  });
+  const data = ref<CustomerDeviceSpecificationData[]>([]);
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const param = computed(() => props.popupWindow.param);
+  const param = computed(() => props.popupWindow.data);
   const isLoading = computed(() => useCustomerStore().isLoading);
   const isClickable = computed(() => !useCustomerStore().isLoading);
   const customer = computed(() => param.value?.customer ?? undefined);
@@ -34,15 +34,15 @@
   });
 
   function invalidateData() {
-    data.value.specifications = specifications.value.map((specification) => {
-      return new CustomerDeviceSpecification().fromData(specification).toData();
+    data.value = specifications.value.map((specification) => {
+      return new CustomerDeviceSpecification(specification).toData();
     });
   }
   function clickOk() {
     useCustomerStore()
       .updateDeviceSpecifications({
         _id: device.value.id,
-        specifications: data.value.specifications,
+        specifications: data.value,
       })
       .then((item) => props.popupWindow.close());
   }
@@ -63,7 +63,7 @@
   >
     <div class="WindowUpdateDeviceSpecifications-body">
       <WindowSection class="WindowUpdateDeviceSpecifications-description">
-        <SpecificationInputs :items="data.specifications" />
+        <SpecificationInputs :items="data" />
       </WindowSection>
     </div>
   </PanelAction>

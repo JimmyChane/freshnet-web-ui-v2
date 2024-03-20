@@ -6,21 +6,31 @@
   import { Specification } from "@/data/specification/Specification";
   import { optArray } from "@/U";
   import { CustomerDeviceSpecification } from "@/data/customer/CustomerDeviceSpecification";
+  import type { Product } from "@/data/product/Product";
 
-  const props = defineProps<{ popupWindow: PopupWindow }>();
+  const props = defineProps<{
+    popupWindow: PopupWindow<{
+      product?: Product;
+      specifications?: Specification[];
+      onConfirm: (data: {
+        product?: Product;
+        specifications: Specification[];
+      }) => void;
+    }>;
+  }>();
 
   const data = ref<{ specifications: Specification[] }>({ specifications: [] });
 
   const isShowing = computed(() => props.popupWindow.isShowing);
-  const input = computed(() => props.popupWindow.input);
-  const product = computed(() => input.value?.product ?? null);
+  const input = computed(() => props.popupWindow.data);
+  const product = computed(() => input.value?.product ?? undefined);
   const inputSpecifications = computed(() => {
     return optArray(input.value?.specifications);
   });
   const specifications = computed(() => data.value?.specifications ?? []);
 
   function clickConfirm() {
-    props.popupWindow.onConfirm({
+    props.popupWindow.data.onConfirm({
       product: product.value,
       specifications: specifications.value,
     });
@@ -35,9 +45,7 @@
         return specification;
       })
       .map((specification) => {
-        return new CustomerDeviceSpecification()
-          .fromData(specification)
-          .toData();
+        return new Specification(specification).toData();
       });
   });
 </script>
