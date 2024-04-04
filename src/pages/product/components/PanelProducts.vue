@@ -88,7 +88,7 @@
 
   const iconEmpty = computed(() => ProductIcon);
 
-  const isLayoutThin = computed(() => useWindowStore().innerWidth < 550);
+  const isLayoutThin = computed(() => useWindowStore().width < 550);
   const layoutMode = computed(() => ItemProduct.Mode.Grid);
 
   const queryProductId = computed(() => route.query.productId);

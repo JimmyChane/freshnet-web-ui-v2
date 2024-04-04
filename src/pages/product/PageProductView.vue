@@ -20,7 +20,7 @@
   const product = ref<Product>();
 
   const isLoading = computed(() => useProductStore().isLoading);
-  const isOver1200px = computed(() => useWindowStore().innerWidth > 1200);
+  const isOver1200px = computed(() => useWindowStore().width > 1200);
   const productId = computed(() => route.query.productId);
 
   watch(() => productId.value, invalidate);

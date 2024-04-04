@@ -34,7 +34,7 @@
   const devices = ref<{ deviceId: string; device?: CustomerDevice }[]>([]);
   const isLoadingDevices = ref(false);
 
-  const isWide = computed(() => useWindowStore().innerWidth > 600);
+  const isWide = computed(() => useWindowStore().width > 600);
   const menus = computed(() => {
     const menus = [];
 

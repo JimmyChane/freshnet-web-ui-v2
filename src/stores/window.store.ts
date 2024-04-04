@@ -1,20 +1,28 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { tryOnMounted, useWindowSize } from '@vueuse/core';
+import { defineStore } from 'pinia';
+import { computed, ref, watch } from 'vue';
 
-export const useWindowStore = defineStore("window", () => {
-  const innerWidth = ref(0);
-  const innerHeight = ref(0);
+export const useWindowStore = defineStore('window', () => {
+  // screen width
+  const width = ref(0);
+  const isSmallerThanTablet = computed(() => width.value <= 650);
+  const isLargerThanMobile = computed(() => width.value >= 650);
+  const isLargerThanTablet = computed(() => width.value > 1200);
 
-  window.addEventListener("resize", invalidateWindow);
-
-  function invalidateWindow() {
-    innerWidth.value = window.innerWidth;
-    innerHeight.value = window.innerHeight;
+  function onScreenWidth(windowWidth: number) {
+    width.value = windowWidth;
   }
-  invalidateWindow();
+
+  tryOnMounted(() => {
+    const { width } = useWindowSize();
+    watch(() => width.value, onScreenWidth);
+    onScreenWidth(width.value);
+  });
 
   return {
-    innerWidth: computed(() => innerWidth.value),
-    innerHeight: computed(() => innerHeight.value),
+    width: computed(() => width.value),
+    isSmallerThanTablet,
+    isLargerThanMobile,
+    isLargerThanTablet,
   };
 });

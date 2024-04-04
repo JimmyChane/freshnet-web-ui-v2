@@ -18,7 +18,7 @@
   const isDrawer = computed(() => navigationStore.isDrawer());
   const isExpand = computed(() => navigationStore.isExpanded());
   const toggleButtonVisible = computed(() => {
-    return navigationStore.isThin() || windowStore.innerWidth > MIN_WIDTH;
+    return navigationStore.isThin() || windowStore.width > MIN_WIDTH;
   });
 
   function toggleCollapse() {

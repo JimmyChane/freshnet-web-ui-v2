@@ -19,7 +19,7 @@
   const scrollTop = ref(0);
   const isActionbarExpand = ref(false);
 
-  const windowWidth = computed(() => useWindowStore().innerWidth);
+  const windowWidth = computed(() => useWindowStore().width);
 
   const isWide = computed(() => windowWidth.value > 600);
 

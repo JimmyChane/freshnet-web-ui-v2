@@ -53,8 +53,8 @@
 
   const results = ref<Service[]>([]);
 
-  const isOver350 = computed(() => useWindowStore().innerWidth > 350);
-  const isOver550 = computed(() => useWindowStore().innerWidth > 550);
+  const isOver350 = computed(() => useWindowStore().width > 350);
+  const isOver550 = computed(() => useWindowStore().width > 550);
 
   const tabLayoutMenus = computed(() => {
     return props.stateMenus.map((stateMenu) => {

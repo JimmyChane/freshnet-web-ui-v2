@@ -24,7 +24,7 @@
   );
 
   const isWide = computed(
-    () => useWindowStore().innerWidth > props.wideWidthThreshold,
+    () => useWindowStore().width > props.wideWidthThreshold,
   );
   const drawerEdge = computed(() => Edge.RIGHT);
   const drawerMode = computed(() => {

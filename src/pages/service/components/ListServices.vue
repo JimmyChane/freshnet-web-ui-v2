@@ -36,7 +36,7 @@
   ]);
   const itemSelected = ref<Service>();
 
-  const isOver460px = computed(() => useWindowStore().innerWidth > 460);
+  const isOver460px = computed(() => useWindowStore().width > 460);
 
   const isGridView = computed(() => props.layoutMode === Mode.Grid);
   const isListView = computed(() => props.layoutMode === Mode.List);

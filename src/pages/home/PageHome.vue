@@ -16,8 +16,7 @@
 
   const scrollTop = ref(0);
 
-  const innerWidth = computed(() => windowStore.innerWidth);
-  const isWide = computed(() => innerWidth.value > 800);
+  const isWide = computed(() => windowStore.width > 800);
   const isDrawer = computed(() => false);
   const isThin = computed(() => isWide.value || isDrawer.value);
   const classes = computed(() => {

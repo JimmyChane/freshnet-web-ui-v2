@@ -42,7 +42,7 @@
   const imageIsFetching = ref(false);
   const imageTransitionEnabled = ref(false);
 
-  const isThin = computed(() => useWindowStore().innerWidth < 550);
+  const isThin = computed(() => useWindowStore().width < 550);
   const imageIsShowing = computed(() => {
     return imageIsFetching.value ? !!imageUrl.value : true;
   });

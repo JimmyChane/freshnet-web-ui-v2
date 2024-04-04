@@ -25,7 +25,7 @@
     () => expands.value.length >= collections.value.length,
   );
   const areCollapsed = computed(() => expands.value.length === 0);
-  const isWide = computed(() => useWindowStore().innerWidth > 500);
+  const isWide = computed(() => useWindowStore().width > 500);
 
   function addExpand(name: string) {
     expands.value.push(name);

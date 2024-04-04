@@ -25,7 +25,7 @@
 
   const searchText = ref("");
 
-  const isOver550px = computed(() => useWindowStore().innerWidth > 550);
+  const isOver550px = computed(() => useWindowStore().width > 550);
   const paths = computed(() => usePageStore().paths);
   const lastPath = computed(() => {
     if (!Array.isArray(paths.value)) return "";
