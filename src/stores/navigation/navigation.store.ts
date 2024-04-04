@@ -125,16 +125,16 @@ export const useNavigationStore = defineStore("navigation", () => {
   function isThin(): boolean {
     if (isDrawer()) return false;
 
-    const { innerWidth } = useWindowStore();
+    const windowStore = useWindowStore();
 
     if (getCurrentLayout() === Layout.WIDE) {
-      return innerWidth <= MIN_WIDTH;
+      return windowStore.width <= MIN_WIDTH;
     }
     return getCurrentLayout() === Layout.THIN;
   }
 
   function isDrawer(): boolean {
-    return useWindowStore().innerWidth <= 600;
+    return useWindowStore().width <= 600;
   }
 
   function isNone(): boolean {
