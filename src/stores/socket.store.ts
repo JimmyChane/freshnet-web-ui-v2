@@ -1,17 +1,17 @@
-import { defineStore } from "pinia";
-import { computed, ref, watch } from "vue";
-import { useServiceStore } from "@/data-stores/service.store";
-import socketIo, { Socket } from "socket.io-client";
-import { getOriginApi } from "@/data/server/Server";
-import { useLoginStore } from "./login.store";
+import { defineStore } from 'pinia';
+import { computed, ref, watch } from 'vue';
+import { useServiceStore } from '@/data-stores/service.store';
+import socketIo, { Socket } from 'socket.io-client';
+import { getOriginApi } from '@/data/Server';
+import { useLoginStore } from './login.store';
 
-export const useSocketStore = defineStore("socket", () => {
+export const useSocketStore = defineStore('socket', () => {
   const socket = ref<Socket>();
   const isConnected = computed(() => socket.value?.connected);
   function notify(body: { manager: string; key: string; content: any }) {
     const { manager, key, content } = body;
     switch (manager) {
-      case "service":
+      case 'service':
         useServiceStore().socketNotify({ key, content });
         break;
     }
@@ -21,14 +21,14 @@ export const useSocketStore = defineStore("socket", () => {
 
     const option: Record<string, any> = {
       extraHeaders: {
-        authorization: window.localStorage.getItem("userToken"),
+        authorization: window.localStorage.getItem('userToken'),
       },
     };
     const xSocket = socketIo(getOriginApi(), option)
-      .on("connect", () => console.info("Socket", "Connected"))
-      .on("connect_error", () => console.info("Socket", "Connect Error"))
-      .on("disconnect", (reason) => console.info("Socket", "Disconnected"))
-      .on("notify", (body) => notify(body));
+      .on('connect', () => console.info('Socket', 'Connected'))
+      .on('connect_error', () => console.info('Socket', 'Connect Error'))
+      .on('disconnect', (reason) => console.info('Socket', 'Disconnected'))
+      .on('notify', (body) => notify(body));
     socket.value = xSocket;
   }
   function close() {

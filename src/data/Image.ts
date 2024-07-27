@@ -1,31 +1,28 @@
-import { getOriginApi, serverRes } from "@/data/server/Server";
-import { Filename } from "./Filename";
-import { trimId } from "@/U";
+import { getOriginApi, serverRes } from '@/data/Server';
+import { Filename } from './Filename';
+import { trimId } from '@/utils/U';
 
 export enum StorageType {
-  Gcloud = "gcloudstorage-type1",
-  Gdrive = "gdrive-type2",
+  Gcloud = 'gcloudstorage-type1',
+  Gdrive = 'gdrive-type2',
 }
 export enum Method {
-  Local = "local",
-  Link = "link",
-  StorageImage = "storage-image",
+  Local = 'local',
+  Link = 'link',
+  StorageImage = 'storage-image',
 }
 
-export function dimensionToQuery(
-  width: number = 0,
-  height: number = 0,
-): string {
+export function dimensionToQuery(width: number = 0, height: number = 0): string {
   width = width > 0 ? width : 0;
   height = height > 0 ? height : 0;
 
   if (width !== 0 && height === 0) return `width=${width}`;
   if (width === 0 && height !== 0) return `height=${height}`;
   if (width > 0 && height > 0) return `width=${width}&height=${height}`;
-  return "";
+  return '';
 }
 
-interface ImageData {
+export interface ImageData {
   method: string;
   path: string;
 }
@@ -58,15 +55,13 @@ export class Image {
     const method = this.method;
     const path = this.path;
 
-    if (!method || !path) return "";
+    if (!method || !path) return '';
     if (method === Method.Local) {
       let resPath = path;
-      if (resPath.startsWith("."))
-        resPath = resPath.substring(1, resPath.length);
-      if (resPath.startsWith("/"))
-        resPath = resPath.substring(1, resPath.length);
-      if (resPath.startsWith("resource/")) {
-        resPath = resPath.substring("resource/".length, resPath.length);
+      if (resPath.startsWith('.')) resPath = resPath.substring(1, resPath.length);
+      if (resPath.startsWith('/')) resPath = resPath.substring(1, resPath.length);
+      if (resPath.startsWith('resource/')) {
+        resPath = resPath.substring('resource/'.length, resPath.length);
         return serverRes(resPath);
       }
 
@@ -74,15 +69,15 @@ export class Image {
     }
     if (method === Method.Link) return path;
     if (method === Method.StorageImage) {
-      const prefix = "/api/image/name/";
+      const prefix = '/api/image/name/';
       const name = path.substring(prefix.length, path.length);
       const filename = new Filename(name);
       const dimensionQuery = dimensionToQuery(width, height);
-      const query = dimensionQuery.length ? `?${dimensionQuery}` : "";
+      const query = dimensionQuery.length ? `?${dimensionQuery}` : '';
       return `${getOriginApi()}/image/name/${filename.toString()}${query}`;
     }
 
-    return "";
+    return '';
   }
 
   async fetchColor(): Promise<any> {

@@ -1,18 +1,17 @@
-import { defineStore } from "pinia";
-import { CustomerRequest } from "@/data/customer/CustomerRequest";
-import { Customer, type CustomerData } from "@/data/customer/Customer";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { computed, ref } from "vue";
-import { useOrderStore } from "./order.store";
-import { useDeviceStore } from "./device.store";
-import { useServiceStore } from "@/data-stores/service.store";
-import { ServiceCustomer } from "@/data/service/ServiceCustomer";
-import { OrderCustomer } from "@/data/order/OrderCustomer";
-import { optString } from "@/U";
+import { defineStore } from 'pinia';
+import { Customer, CustomerRequest, type CustomerData } from '@/data/Customer';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { computed, ref } from 'vue';
+import { useOrderStore } from './order.store';
+import { useDeviceStore } from './device.store';
+import { useServiceStore } from '@/data-stores/service.store';
+import { ServiceCustomer } from '@/data/ServiceCustomer';
+import { OrderCustomer } from '@/data/OrderCustomer';
+import { optString } from '@/utils/U';
 
-export const useCustomerStore = defineStore("customer", () => {
+export const useCustomerStore = defineStore('customer', () => {
   const dataLoader = new DataLoader<Customer>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))
@@ -36,8 +35,8 @@ export const useCustomerStore = defineStore("customer", () => {
   async function getItems() {
     return dataLoader.data();
   }
-  async function getItemOfId(id = "") {
-    if (typeof id !== "string") return null;
+  async function getItemOfId(id = '') {
+    if (typeof id !== 'string') return null;
     const items: Customer[] = await getItems();
     return items.find((item) => item.id === id) ?? null;
   }
@@ -51,9 +50,7 @@ export const useCustomerStore = defineStore("customer", () => {
     return results;
   }
   async function generateCustomersAcross() {
-    const cloneCustomer = (
-      customer: Customer | ServiceCustomer | OrderCustomer,
-    ) => {
+    const cloneCustomer = (customer: Customer | ServiceCustomer | OrderCustomer) => {
       return new Customer(customer.toData());
     };
 
@@ -62,17 +59,15 @@ export const useCustomerStore = defineStore("customer", () => {
       customer.cachedServices = [];
       customer.cachedOrders = [];
     }
-    const optCustomer = (
-      eCustomer?: Customer | ServiceCustomer | OrderCustomer,
-    ) => {
+    const optCustomer = (eCustomer?: Customer | ServiceCustomer | OrderCustomer) => {
       if (!eCustomer) return;
 
       let customer = customers.find((customer) => {
         const eName = optString(customer.name);
-        const ePhoneNumberValue = customer.phoneNumber?.value ?? "";
+        const ePhoneNumberValue = customer.phoneNumber?.value ?? '';
 
         const name = optString(eCustomer.name);
-        const phoneNumberValue = eCustomer.phoneNumber?.value ?? "";
+        const phoneNumberValue = eCustomer.phoneNumber?.value ?? '';
 
         return eName === name && ePhoneNumberValue === phoneNumberValue;
       });
@@ -119,11 +114,7 @@ export const useCustomerStore = defineStore("customer", () => {
     phoneNumber: string;
   }) {
     const { _id, name, phoneNumber } = arg;
-    const api = await CustomerRequest.updateNamePhoneNumber(
-      _id,
-      name,
-      phoneNumber,
-    );
+    const api = await CustomerRequest.updateNamePhoneNumber(_id, name, phoneNumber);
     const content = api.optObjectContent();
     const inputItem = new Customer(content);
     return list.value.updateItemById(inputItem.id, (item) => {
@@ -133,10 +124,7 @@ export const useCustomerStore = defineStore("customer", () => {
     });
   }
 
-  async function updateDescriptionOfId(arg: {
-    _id: string;
-    description: string;
-  }) {
+  async function updateDescriptionOfId(arg: { _id: string; description: string }) {
     const { _id, description } = arg;
     const api = await CustomerRequest.updateDescription(_id, description);
     const content = api.optObjectContent();
@@ -169,9 +157,7 @@ export const useCustomerStore = defineStore("customer", () => {
     getDevicesByIds: (ids: string[]) => useDeviceStore().getItemsOfIds(ids),
     addDevice: (arg: any) => useDeviceStore().addItem(arg),
     removeDevice: (arg: any) => useDeviceStore().removeItemOfId(arg),
-    updateDeviceSpecifications: (arg: any) =>
-      useDeviceStore().updateSpecificationsOfId(arg),
-    updateDeviceDescription: (arg: any) =>
-      useDeviceStore().updateDescriptionOfId(arg),
+    updateDeviceSpecifications: (arg: any) => useDeviceStore().updateSpecificationsOfId(arg),
+    updateDeviceDescription: (arg: any) => useDeviceStore().updateDescriptionOfId(arg),
   };
 });

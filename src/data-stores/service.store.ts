@@ -1,39 +1,40 @@
-import { defineStore } from "pinia";
-import { Service } from "@/data/service/Service";
-import { computed, ref } from "vue";
-import { ServiceRequest } from "@/data/service/ServiceRequest";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { ServiceCustomer } from "@/data/service/ServiceCustomer";
-import { ServiceImage } from "@/data/service/ServiceImage";
-import { ServiceEvent } from "@/data/service/ServiceEvent";
-import {
-  Label as ServiceLabel,
-  URGENT,
-  WARRANTY,
-} from "@/data/service/ServiceLabel";
-import { ServiceBelonging } from "@/data/service/ServiceBelonging";
+import { defineStore } from 'pinia';
+import { Service, ServiceRequest } from '@/data/Service';
+import { computed, ref } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { ServiceCustomer } from '@/data/ServiceCustomer';
+import { ServiceImage } from '@/data/ServiceImage';
+import { ServiceEvent } from '@/data/ServiceEvent';
+import { URGENT, WARRANTY } from '@/data/ServiceLabel';
+import { ServiceBelonging } from '@/data/ServiceBelonging';
+import type { ServiceStateId } from '@/data/ServiceState';
 
 const Notify = {
-  ItemAdd: "item-add",
-  ItemRemove: "item-remove",
-  ItemImageAdd: "item-image-add",
-  ItemImageRemove: "item-image-remove",
-  ItemEventAdd: "item-event-add",
-  ItemEventRemove: "item-event-remove",
-  ItemEventImageAdd: "item-event-image-add",
-  ItemEventImageRemove: "item-event-image-remove",
-  ItemEventDescriptionUpdate: "item-event-description-update",
-  ItemLabelAdd: "item-label-add",
-  ItemLabelRemove: "item-label-remove",
-  ItemStateUpdate: "item-state-update",
-  ItemDescriptionUpdate: "item-description-update",
-  ItemBelongingsUpdate: "item-belongings-update",
-  ItemCustomerUpdate: "item-customer-update",
+  ItemAdd: 'item-add',
+  ItemRemove: 'item-remove',
+  ItemImageAdd: 'item-image-add',
+  ItemImageRemove: 'item-image-remove',
+  ItemEventAdd: 'item-event-add',
+  ItemEventRemove: 'item-event-remove',
+  ItemEventImageAdd: 'item-event-image-add',
+  ItemEventImageRemove: 'item-event-image-remove',
+  ItemEventDescriptionUpdate: 'item-event-description-update',
+  ItemLabelAdd: 'item-label-add',
+  ItemLabelRemove: 'item-label-remove',
+  ItemStateUpdate: 'item-state-update',
+  ItemDescriptionUpdate: 'item-description-update',
+  ItemBelongingsUpdate: 'item-belongings-update',
+  ItemCustomerUpdate: 'item-customer-update',
 };
 
-export const useServiceStore = defineStore("service", () => {
+interface Group {
+  customer?: ServiceCustomer;
+  items: Service[];
+}
+
+export const useServiceStore = defineStore('service', () => {
   const dataLoader = new DataLoader<Service>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))
@@ -54,16 +55,11 @@ export const useServiceStore = defineStore("service", () => {
   async function getItems() {
     return dataLoader.data();
   }
-  async function getItemOfId(id = "") {
+  async function getItemOfId(id = '') {
     let items: Service[] = await getItems();
     return items.find((service) => service.id === id);
   }
   async function getGroupsByCustomer() {
-    interface Group {
-      customer?: ServiceCustomer;
-      items: Service[];
-    }
-
     const items: Service[] = await getItems();
     const groups: Group[] = items.reduce((groups: Group[], item: Service) => {
       let group: Group | undefined = groups.find((group: Group) => {
@@ -95,7 +91,7 @@ export const useServiceStore = defineStore("service", () => {
   async function addItem(arg: { data: any }) {
     const { data } = arg;
     if (!data) return null;
-    if (!data) throw new Error("invalid data");
+    if (!data) throw new Error('invalid data');
 
     const content = (await ServiceRequest.add(data)).optObjectContent();
     const inputItem = new Service(content);
@@ -107,7 +103,7 @@ export const useServiceStore = defineStore("service", () => {
     return list.value.removeItemById(id);
   }
 
-  async function updateStateOfId(arg: { serviceID: string; state: string }) {
+  async function updateStateOfId(arg: { serviceID: string; state: ServiceStateId }) {
     const { serviceID, state } = arg;
 
     (await ServiceRequest.updateState(serviceID, state)).getContent();
@@ -116,10 +112,7 @@ export const useServiceStore = defineStore("service", () => {
       item.state = state;
     });
   }
-  async function updateDescriptionOfId(arg: {
-    serviceID: string;
-    description: string;
-  }) {
+  async function updateDescriptionOfId(arg: { serviceID: string; description: string }) {
     const { serviceID, description } = arg;
 
     const api = await ServiceRequest.updateDescription(serviceID, description);
@@ -129,10 +122,7 @@ export const useServiceStore = defineStore("service", () => {
       item.description = description;
     });
   }
-  async function updateBelongingsOfId(arg: {
-    serviceID: string;
-    belongings: any[];
-  }) {
+  async function updateBelongingsOfId(arg: { serviceID: string; belongings: any[] }) {
     const { serviceID, belongings } = arg;
     const api = await ServiceRequest.updateBelongings(serviceID, belongings);
     const content = api.optObjectContent();
@@ -173,7 +163,7 @@ export const useServiceStore = defineStore("service", () => {
     eventTime: number;
     imageFiles: FileList | null;
   }) {
-    const { serviceID = "", eventTime = 0, imageFiles = [] } = arg;
+    const { serviceID = '', eventTime = 0, imageFiles = [] } = arg;
 
     const formData = new FormData();
     if (imageFiles instanceof FileList) {
@@ -182,11 +172,7 @@ export const useServiceStore = defineStore("service", () => {
       }
     }
 
-    const api = await ServiceRequest.addEventImage(
-      serviceID,
-      eventTime,
-      formData,
-    );
+    const api = await ServiceRequest.addEventImage(serviceID, eventTime, formData);
     const content = api.optObjectContent();
 
     const id: string = content.id;
@@ -231,30 +217,21 @@ export const useServiceStore = defineStore("service", () => {
   async function updateEventDescription(arg: any) {
     const { serviceID, time, description } = arg;
 
-    const api = await ServiceRequest.updateEventDescription(
-      serviceID,
-      time,
-      description,
-    );
+    const api = await ServiceRequest.updateEventDescription(serviceID, time, description);
     const content = api.getContent();
     const { id: outputId, event } = content;
     const outputEvent = new ServiceEvent(event);
     return list.value.updateItemById(outputId, (item) => {
       if (!item) return;
-      const foundEvent: ServiceEvent | undefined = item.events.find(
-        (event: ServiceEvent) => {
-          return event.timestamp?.time === outputEvent.timestamp?.time;
-        },
-      );
+      const foundEvent: ServiceEvent | undefined = item.events.find((event: ServiceEvent) => {
+        return event.timestamp?.time === outputEvent.timestamp?.time;
+      });
       if (foundEvent) {
         foundEvent.description = outputEvent.description;
       }
     });
   }
-  async function updateUrgentOfId(arg: {
-    serviceID: string;
-    isUrgent: boolean;
-  }) {
+  async function updateUrgentOfId(arg: { serviceID: string; isUrgent: boolean }) {
     const label = URGENT.toData();
     if (arg.isUrgent) {
       return addLabelToId({ serviceID: arg.serviceID, label });
@@ -262,10 +239,7 @@ export const useServiceStore = defineStore("service", () => {
       return removeLabelFromId({ serviceID: arg.serviceID, label });
     }
   }
-  async function updateWarrantyOfId(arg: {
-    serviceID: string;
-    isWarranty: boolean;
-  }) {
+  async function updateWarrantyOfId(arg: { serviceID: string; isWarranty: boolean }) {
     const label = WARRANTY.toData();
     if (arg.isWarranty) {
       return addLabelToId({ serviceID: arg.serviceID, label });
@@ -280,8 +254,8 @@ export const useServiceStore = defineStore("service", () => {
     const inputItem = new Service(content);
     return list.value.updateItemById(inputItem.id, (item) => {
       if (!item) return;
-      if (label.title === "Urgent") item.setUrgent(inputItem.isUrgent());
-      if (label.title === "Warranty") item.setWarranty(inputItem.isUrgent());
+      if (label.title === 'Urgent') item.setUrgent(inputItem.isUrgent());
+      if (label.title === 'Warranty') item.setWarranty(inputItem.isUrgent());
     });
   }
   async function removeLabelFromId(arg: { serviceID: string; label: any }) {
@@ -304,10 +278,7 @@ export const useServiceStore = defineStore("service", () => {
     const api = await ServiceRequest.addImageTemp(formData);
     return api.optArrayContent();
   }
-  async function addImageToId(arg: {
-    serviceID: string;
-    imageFiles: FileList | null;
-  }) {
+  async function addImageToId(arg: { serviceID: string; imageFiles: FileList | null }) {
     const { serviceID, imageFiles } = arg;
 
     const formData = new FormData();
@@ -344,18 +315,10 @@ export const useServiceStore = defineStore("service", () => {
       });
     });
   }
-  async function removeEventImage(arg: {
-    serviceID: string;
-    eventTime: number;
-    image: any;
-  }) {
-    const { serviceID = "", eventTime = 0, image } = arg;
+  async function removeEventImage(arg: { serviceID: string; eventTime: number; image: any }) {
+    const { serviceID = '', eventTime = 0, image } = arg;
 
-    const api = await ServiceRequest.removeEventImage(
-      serviceID,
-      eventTime,
-      image,
-    );
+    const api = await ServiceRequest.removeEventImage(serviceID, eventTime, image);
     const content = api.getContent();
 
     const id = content.id;
@@ -445,7 +408,7 @@ export const useServiceStore = defineStore("service", () => {
       });
     }
     if (key === Notify.ItemEventImageAdd) {
-      const { id, eventTime, items: dataImages, fail_count } = content;
+      const { id, eventTime, items: dataImages, fail_count: _fail_count } = content;
       list.value.updateItemById(id, (item) => {
         if (!item) return;
 
@@ -492,16 +455,16 @@ export const useServiceStore = defineStore("service", () => {
       const { id, label } = content;
       list.value.updateItemById(id, (item) => {
         if (!item) return;
-        if (label.title === "Urgent") item.setUrgent(true);
-        if (label.title === "Warranty") item.setWarranty(true);
+        if (label.title === 'Urgent') item.setUrgent(true);
+        if (label.title === 'Warranty') item.setWarranty(true);
       });
     }
     if (key === Notify.ItemLabelRemove) {
       const { id, label } = content;
       list.value.updateItemById(id, (item) => {
         if (!item) return;
-        if (label.title === "Urgent") item.setUrgent(false);
-        if (label.title === "Warranty") item.setWarranty(false);
+        if (label.title === 'Urgent') item.setUrgent(false);
+        if (label.title === 'Warranty') item.setWarranty(false);
       });
     }
     if (key === Notify.ItemStateUpdate) {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  defineProps<{ tintColor: string }>();
+defineProps<{ tintColor: string }>();
 </script>
 
 <template>

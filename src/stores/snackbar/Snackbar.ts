@@ -1,5 +1,5 @@
-import { useSnackbarStore } from "./snackbar.store";
-import { TimeNowGetter } from "@/data/TimeNowGetter";
+import { useSnackbarStore } from './snackbar.store';
+import { TimeNowGetter } from '@/data/TimeNowGetter';
 const keyGetter = new TimeNowGetter();
 
 export interface SnackbarAction {

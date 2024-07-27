@@ -1,12 +1,12 @@
-import { Snackbar, type SnackbarOption } from "@/stores/snackbar/Snackbar";
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { Snackbar, type SnackbarOption } from '@/stores/snackbar/Snackbar';
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 
-export const useSnackbarStore = defineStore("snackbar", () => {
+export const useSnackbarStore = defineStore('snackbar', () => {
   const items = ref<Snackbar[]>([]);
 
   function show(option: string | SnackbarOption) {
-    if (typeof option === "string") option = { text: option };
+    if (typeof option === 'string') option = { text: option };
     items.value.push(new Snackbar(option).show());
   }
 

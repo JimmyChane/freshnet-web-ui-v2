@@ -1,12 +1,11 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { Ps2Request } from "@/data/ps2/Ps2Request";
-import { Ps2Disc } from "@/data/ps2/Ps2Disc";
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { Ps2Disc, Ps2Request } from '@/data/Ps2Disc';
 
-export const usePs2Store = defineStore("ps2", () => {
+export const usePs2Store = defineStore('ps2', () => {
   const dataLoader = new DataLoader<Ps2Disc>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))

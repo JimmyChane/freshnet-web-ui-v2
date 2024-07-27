@@ -1,10 +1,10 @@
-import { computed, ref } from "vue";
-import { defineStore } from "pinia";
-import { Processor } from "@/stores/tools/Processor";
-import { LoginRequest } from "@/data/login/LoginRequest";
-import { User } from "@/data/user/User";
+import { computed, ref } from 'vue';
+import { defineStore } from 'pinia';
+import { Processor } from '@/utils/Processor';
+import { LoginRequest } from '@/data/Login';
+import { User, UserType } from '@/data/User';
 
-const storageTokenKey = "userToken";
+const storageTokenKey = 'userToken';
 function getToken() {
   return window.localStorage.getItem(storageTokenKey);
 }
@@ -15,11 +15,11 @@ function deleteToken() {
   return window.localStorage.removeItem(storageTokenKey);
 }
 
-export const useLoginStore = defineStore("login", () => {
+export const useLoginStore = defineStore('login', () => {
   const userNone = new User({
-    username: "",
-    name: "",
-    userType: User.Type.None,
+    username: '',
+    name: '',
+    userType: UserType.None,
   });
 
   const lastModified = ref(Date.now());
@@ -38,12 +38,12 @@ export const useLoginStore = defineStore("login", () => {
   }
 
   async function refresh() {
-    return loader.value.acquire("refresh", async () => {
+    return loader.value.acquire('refresh', async () => {
       await getUser();
     });
   }
   async function login(arg: { username: string; password: string }) {
-    return loader.value.acquire("login", async () => {
+    return loader.value.acquire('login', async () => {
       try {
         deleteToken();
         const api = await LoginRequest.login({
@@ -63,7 +63,7 @@ export const useLoginStore = defineStore("login", () => {
     });
   }
   async function logout() {
-    return loader.value.acquire("logout", async () => {
+    return loader.value.acquire('logout', async () => {
       try {
         deleteToken();
         user.value = userNone;
@@ -78,7 +78,7 @@ export const useLoginStore = defineStore("login", () => {
     });
   }
   async function getUser() {
-    return loader.value.acquire("getUser", async () => {
+    return loader.value.acquire('getUser', async () => {
       try {
         const token = getToken();
         if (!token) {
@@ -110,7 +110,7 @@ export const useLoginStore = defineStore("login", () => {
 
         return xUser;
       } catch (error: any) {
-        if (error.message === "not signed in") {
+        if (error.message === 'not signed in') {
           if (user.value !== userNone) {
             user.value = userNone;
             lastModified.value = Date.now();
@@ -122,21 +122,14 @@ export const useLoginStore = defineStore("login", () => {
       }
     });
   }
-  async function changePassword(arg: {
-    passwordVerify: string;
-    passwordNew: string;
-  }) {
-    return loader.value.acquire("changePassword", async () => {
+  async function changePassword(arg: { passwordVerify: string; passwordNew: string }) {
+    return loader.value.acquire('changePassword', async () => {
       if (!user.value?.username) {
-        throw new Error("cannot find username with current user");
+        throw new Error('cannot find username with current user');
       }
       const username = user.value.username;
       const { passwordVerify, passwordNew } = arg;
-      const api = await LoginRequest.updatePassword(
-        username,
-        passwordVerify,
-        passwordNew,
-      );
+      const api = await LoginRequest.updatePassword(username, passwordVerify, passwordNew);
       const { token } = api.optObjectContent();
       const outputUser = onNewCredentail({ token, user: user.value });
 

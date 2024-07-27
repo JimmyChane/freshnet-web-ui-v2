@@ -1,42 +1,42 @@
 <script setup lang="ts">
-  import { Image } from "@/data/Image";
-  import { ServiceImage } from "@/data/service/ServiceImage";
-  import ImageView from "./ImageView.vue";
-  import { computed } from "vue";
+import { Image } from '@/data/Image';
+import { ServiceImage } from '@/data/ServiceImage';
+import ImageView from './ImageView.vue';
+import { computed } from 'vue';
 
-  type MyImage = string | Image | ServiceImage;
+type MyImage = string | Image | ServiceImage;
 
-  const props = withDefaults(
-    defineProps<{
-      width?: number;
-      height?: number;
-      images: MyImage | MyImage[];
-    }>(),
-    { width: 0, height: 0, images: () => [] },
-  );
+const props = withDefaults(
+  defineProps<{
+    width?: number;
+    height?: number;
+    images: MyImage | MyImage[];
+  }>(),
+  { width: 0, height: 0, images: () => [] },
+);
 
-  const parsedImages = computed(() => {
-    return (Array.isArray(props.images) ? props.images : [props.images])
-      .filter((image) => {
-        return image instanceof Image || image instanceof ServiceImage;
-      })
-      .reduce((images: MyImage[], image, index, sources) => {
-        if (index < 4) images.push(image);
-        return images;
-      }, []);
-  });
-  const parsedImage = computed(() =>
-    parsedImages.value.length === 1 ? parsedImages.value[0] : undefined,
-  );
+const parsedImages = computed(() => {
+  return (Array.isArray(props.images) ? props.images : [props.images])
+    .filter((image) => {
+      return image instanceof Image || image instanceof ServiceImage;
+    })
+    .reduce((images: MyImage[], image, index, sources) => {
+      if (index < 4) images.push(image);
+      return images;
+    }, []);
+});
+const parsedImage = computed(() =>
+  parsedImages.value.length === 1 ? parsedImages.value[0] : undefined,
+);
 
-  const cssWidth = computed(() => `${props.width}px`);
-  const cssHeight = computed(() => `${props.height}px`);
-  const cssBorderRadius = computed(() => "4px");
-  const cssGridTemplateAreas = computed(() => {
-    if (parsedImages.value.length === 2) return '"img0 img1"';
-    if (parsedImages.value.length === 3) return '"img0 img1" "img2 img2"';
-    return '"img0 img1" "img2 img3"';
-  });
+const cssWidth = computed(() => `${props.width}px`);
+const cssHeight = computed(() => `${props.height}px`);
+const cssBorderRadius = computed(() => '4px');
+const cssGridTemplateAreas = computed(() => {
+  if (parsedImages.value.length === 2) return '"img0 img1"';
+  if (parsedImages.value.length === 3) return '"img0 img1" "img2 img2"';
+  return '"img0 img1" "img2 img3"';
+});
 </script>
 
 <template>
@@ -75,14 +75,14 @@
 </template>
 
 <style lang="scss" scoped>
-  .ImageViews {
-    display: grid;
-    gap: 1px;
-    overflow: hidden;
-  }
-  .ImageViews-item {
-    object-fit: cover;
-    overflow: hidden;
-    object-fit: cover;
-  }
+.ImageViews {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+}
+.ImageViews-item {
+  object-fit: cover;
+  overflow: hidden;
+  object-fit: cover;
+}
 </style>

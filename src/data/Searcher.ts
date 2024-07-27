@@ -31,7 +31,7 @@ export default class Searcher<T extends Countable> {
     }, []);
   }
 
-  onSplitString(str: string = ""): string[] {
+  onSplitString(str: string = ''): string[] {
     return str
       .toLowerCase()
       .split(/[\s,]+/)
@@ -44,7 +44,7 @@ export default class Searcher<T extends Countable> {
         const result = this.onCountItem(item, strs);
         if (result.count > 0) results.push(result);
       } catch (error) {
-        console.error("skip search item", error);
+        console.error('skip search item', error);
       }
       return results;
     }, [] as SearchResult<T>[]);
@@ -73,11 +73,9 @@ export default class Searcher<T extends Countable> {
   }
 
   search(str: string | string[]): T[] {
-    if (typeof str !== "string") return [];
+    if (typeof str !== 'string') return [];
 
-    const strs = Array.isArray(str)
-      ? this.onSplitStrings(str)
-      : this.onSplitString(str);
+    const strs = Array.isArray(str) ? this.onSplitStrings(str) : this.onSplitString(str);
     const results = this.onCountItems(this.items, strs);
     const sortedResults = this.onSortResults(results);
 

@@ -1,21 +1,20 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { Product } from "@/data/product/Product";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { ProductRequest } from "@/data/product/ProductRequest";
-import { useCategoryStore } from "./category.store";
-import { Category } from "@/data/category/Category";
-import { Brand } from "@/data/brand/Brand";
-import { ProductPrices } from "@/data/product/ProductPrices";
-import { ProductBundle } from "@/data/product/ProductBundle";
-import { Specification } from "@/data/specification/Specification";
-import { Image } from "@/data/Image";
-import { optString, trimText } from "@/U";
-import type { Group } from "@/data/Group";
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { Product, ProductRequest } from '@/data/Product';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { useCategoryStore } from './category.store';
+import { Category } from '@/data/Category';
+import { Brand } from '@/data/Brand';
+import { ProductPrices } from '@/data/ProductPrices';
+import { ProductBundle } from '@/data/ProductBundle';
+import { Specification } from '@/data/Specification';
+import { Image } from '@/data/Image';
+import { optString, trimText } from '@/utils/U';
+import type { Group } from '@/data/Group';
 
-export const useProductStore = defineStore("product", () => {
+export const useProductStore = defineStore('product', () => {
   const dataLoader = new DataLoader<Product>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))
@@ -51,15 +50,13 @@ export const useProductStore = defineStore("product", () => {
   async function getGroupsByCategory(): Promise<Group<Category, Product>[]> {
     const items = await getItems();
 
-    const categoryOther = await useCategoryStore().getItemOfKey(
-      Category.Key.Other,
-    );
+    const categoryOther = await useCategoryStore().getItemOfKey(Category.Key.Other);
 
     const groups: Group<Category, Product>[] = [];
     for (const item of items) {
       let category = await item.fetchCategory();
       if (!category) category = categoryOther;
-      let categoryId = category?.id ?? "";
+      let categoryId = category?.id ?? '';
 
       let group = groups.find((group) => {
         return group.parent?.id === categoryId;
@@ -80,7 +77,7 @@ export const useProductStore = defineStore("product", () => {
     const groups: Group<Brand, Product>[] = [];
     for (const item of items) {
       let group = groups.find((group) => {
-        const brandId = group.parent?.id ?? "";
+        const brandId = group.parent?.id ?? '';
         return brandId === item.brandId;
       });
 
@@ -96,7 +93,7 @@ export const useProductStore = defineStore("product", () => {
   }
   async function addItem(arg: { data: any }) {
     const { data } = arg;
-    if (!data) throw new Error("data not valid");
+    if (!data) throw new Error('data not valid');
     const api = await ProductRequest.addItem(data);
     const inputItem = new Product(api.optObjectContent());
     return list.value.addItem(inputItem);
@@ -117,18 +114,14 @@ export const useProductStore = defineStore("product", () => {
       item.title = optString(content.title);
     });
   }
-  async function updateDescriptionOfId(arg: {
-    id: string;
-    description: string;
-  }) {
+  async function updateDescriptionOfId(arg: { id: string; description: string }) {
     const { id, description } = arg;
     const api = await ProductRequest.updateDescription(id, description);
     const content = api.optObjectContent();
     return list.value.updateItemById(content.productId, (item) => {
       if (!item) return;
       const { description } = content;
-      item.description =
-        typeof description === "string" ? description.trim() : "";
+      item.description = typeof description === 'string' ? description.trim() : '';
     });
   }
   async function updateBrandIdOfId(arg: { id: string; brandId: string }) {
@@ -149,10 +142,7 @@ export const useProductStore = defineStore("product", () => {
       item.setCategoryId(content.categoryId);
     });
   }
-  async function updateAvailabilityOfId(arg: {
-    id: string;
-    isAvailable: boolean;
-  }) {
+  async function updateAvailabilityOfId(arg: { id: string; isAvailable: boolean }) {
     const { id, isAvailable } = arg;
     const api = await ProductRequest.updateAvailability(id, isAvailable);
     const content = api.optObjectContent();
@@ -161,10 +151,7 @@ export const useProductStore = defineStore("product", () => {
       if (item.stock) item.stock.isAvailable = content.isAvailable;
     });
   }
-  async function updateSecondHandOfId(arg: {
-    id: string;
-    isSecondHand: boolean;
-  }) {
+  async function updateSecondHandOfId(arg: { id: string; isSecondHand: boolean }) {
     const { id, isSecondHand } = arg;
     const api = await ProductRequest.updateSecondHand(id, isSecondHand);
     const content = api.optObjectContent();
@@ -175,10 +162,7 @@ export const useProductStore = defineStore("product", () => {
   }
   async function updatePriceOfId(arg: { id: string; price: any }) {
     const { id, price } = arg;
-    const api = await ProductRequest.updatePrice(
-      id,
-      new ProductPrices(price).toData(),
-    );
+    const api = await ProductRequest.updatePrice(id, new ProductPrices(price).toData());
 
     const content = api.optObjectContent();
     return list.value.updateItemById(content.productId, (item) => {
@@ -192,9 +176,7 @@ export const useProductStore = defineStore("product", () => {
     const content = api.optObjectContent();
     return list.value.updateItemById(content.productId, (item) => {
       if (!item) return;
-      item.addBundle(
-        new ProductBundle({ title: trimText(content.bundle.title) }),
-      );
+      item.addBundle(new ProductBundle({ title: trimText(content.bundle.title) }));
     });
   }
   async function removeBundleOfId(arg: { id: string; bundle: any }) {
@@ -234,16 +216,10 @@ export const useProductStore = defineStore("product", () => {
       item.addSpecification(content.specification);
     });
   }
-  async function removeSpecificationOfId(arg: {
-    id: string;
-    specification: any;
-  }) {
+  async function removeSpecificationOfId(arg: { id: string; specification: any }) {
     const { id } = arg;
     let { specification } = arg;
-    specification =
-      specification instanceof Specification
-        ? specification.toData()
-        : specification;
+    specification = specification instanceof Specification ? specification.toData() : specification;
     specification.type = specification.key;
     const api = await ProductRequest.removeSpecification(id, specification);
     const content = api.optObjectContent();
@@ -252,10 +228,7 @@ export const useProductStore = defineStore("product", () => {
       item.removeSpecification(content.specification);
     });
   }
-  async function updateSpecificationsOfId(arg: {
-    id: string;
-    specifications: any[];
-  }) {
+  async function updateSpecificationsOfId(arg: { id: string; specifications: any[] }) {
     const { id, specifications } = arg;
     const api = await ProductRequest.updateSpecifications(id, specifications);
     const content = api.optObjectContent();

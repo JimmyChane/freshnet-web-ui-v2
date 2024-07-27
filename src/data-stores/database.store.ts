@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { DatabaseRequest } from "@/data/database/DatabaseRequest";
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { DatabaseRequest } from '@/data/Database';
 
-export const useDatabaseStore = defineStore("database", () => {
+export const useDatabaseStore = defineStore('database', () => {
   const lastModified = ref(0);
   const dataLoader = new DataLoader<any>(1000 * 5) // 5sec
     .processor(() => processor.value as Processor | undefined)
@@ -20,23 +20,28 @@ export const useDatabaseStore = defineStore("database", () => {
     })
     .getData(() => baseInfo.value);
   const baseInfo = ref<any>(null);
-  const items = ref<{ name: string }[]>([]);
+  const items = ref<
+    {
+      name: string;
+      collections: { name: string; documents: { _id: string }[] }[];
+    }[]
+  >([]);
   const processor = ref(new Processor());
 
   async function refresh() {
-    return processor.value.acquire("refresh", async () => {
+    return processor.value.acquire('refresh', async () => {
       dataLoader.doTimeout();
       await loadBaseInfo();
     });
   }
 
   async function loadBaseInfo() {
-    return processor.value.acquire("loadBaseInfo", async () => {
+    return processor.value.acquire('loadBaseInfo', async () => {
       return dataLoader.data();
     });
   }
   async function loadDatabases() {
-    return processor.value.acquire("loadDatabases", async () => {
+    return processor.value.acquire('loadDatabases', async () => {
       try {
         items.value = [];
         lastModified.value = Date.now();
@@ -57,7 +62,7 @@ export const useDatabaseStore = defineStore("database", () => {
     });
   }
   async function loadCollections(arg: { database: any }) {
-    return processor.value.acquire("loadCollections", async () => {
+    return processor.value.acquire('loadCollections', async () => {
       const { database } = arg;
       const api = await DatabaseRequest.collections(database);
       const collections = api.optArrayContent().map((collection: any) => {
@@ -76,7 +81,7 @@ export const useDatabaseStore = defineStore("database", () => {
     });
   }
   async function loadDocuments(arg: { database: any; collection: string }) {
-    return processor.value.acquire("loadDocuments", async () => {
+    return processor.value.acquire('loadDocuments', async () => {
       const { database, collection } = arg;
       const api = await DatabaseRequest.documents(database, collection);
       const documents = api.optArrayContent();
@@ -91,14 +96,14 @@ export const useDatabaseStore = defineStore("database", () => {
   }
 
   async function imports(arg: { json: any }) {
-    return processor.value.acquire("imports", async () => {
+    return processor.value.acquire('imports', async () => {
       const { json } = arg;
-      const api = await DatabaseRequest.import({ content: json });
+      await DatabaseRequest.import({ content: json });
       throw new Error();
     });
   }
   async function exportDatabase(arg: { database: any }) {
-    return processor.value.acquire("exportDatabase", async () => {
+    return processor.value.acquire('exportDatabase', async () => {
       const { database } = arg;
       return (await DatabaseRequest.export(database)).getContent();
     });
@@ -107,26 +112,24 @@ export const useDatabaseStore = defineStore("database", () => {
   async function findDatabase(arg: {
     database: any;
   }): Promise<{ name: string; collections: any[] }> {
-    return processor.value.acquire("findDatabase", async () => {
+    return processor.value.acquire('findDatabase', async () => {
       const { database } = arg;
       const dbFound = items.value.find((db: { name: string }) => {
         return db.name === database;
       });
-      if (!dbFound) throw new Error("database not found");
+      if (!dbFound) throw new Error('database not found');
 
       return dbFound;
     });
   }
   async function findCollection(arg: { database: any; collection: string }) {
-    return processor.value.acquire("findCollection", async () => {
+    return processor.value.acquire('findCollection', async () => {
       const { database, collection } = arg;
       const dbFound = await findDatabase({ database });
-      const collectionFound = dbFound.collections.find(
-        (dbCollection: { name: string }) => {
-          return dbCollection.name === collection;
-        },
-      );
-      if (!collectionFound) throw new Error("collection not found");
+      const collectionFound = dbFound.collections.find((dbCollection: { name: string }) => {
+        return dbCollection.name === collection;
+      });
+      if (!collectionFound) throw new Error('collection not found');
 
       return collectionFound;
     });

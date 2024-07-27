@@ -1,14 +1,13 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { DeviceRequest } from "@/data/customer/DeviceRequest";
-import { CustomerDevice } from "@/data/customer/CustomerDevice";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { Customer } from "@/data/customer/Customer";
-import { useCustomerStore } from "./customer.store";
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { CustomerDevice, DeviceRequest } from '@/data/CustomerDevice';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { Customer } from '@/data/Customer';
+import { useCustomerStore } from './customer.store';
 
-export const useDeviceStore = defineStore("device", () => {
+export const useDeviceStore = defineStore('device', () => {
   const dataLoader = new DataLoader<CustomerDevice>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))
@@ -31,8 +30,8 @@ export const useDeviceStore = defineStore("device", () => {
   async function getItems() {
     return dataLoader.data();
   }
-  async function getItemOfId(id = "") {
-    if (typeof id !== "string") return null;
+  async function getItemOfId(id = '') {
+    if (typeof id !== 'string') return null;
     const items: CustomerDevice[] = await getItems();
     return items.find((item) => item.id === id) ?? null;
   }
@@ -82,10 +81,7 @@ export const useDeviceStore = defineStore("device", () => {
     return list.value.removeItemByItem(item);
   }
 
-  async function updateSpecificationsOfId(arg: {
-    _id: string;
-    specifications: any[];
-  }) {
+  async function updateSpecificationsOfId(arg: { _id: string; specifications: any[] }) {
     const { _id, specifications } = arg;
     const api = await DeviceRequest.updateSpecification({
       content: { _id, specifications },
@@ -97,10 +93,7 @@ export const useDeviceStore = defineStore("device", () => {
       item.specifications = inputItem.specifications;
     });
   }
-  async function updateDescriptionOfId(arg: {
-    _id: string;
-    description: string;
-  }) {
+  async function updateDescriptionOfId(arg: { _id: string; description: string }) {
     const { _id, description } = arg;
     const api = await DeviceRequest.updateDescription({
       content: { _id, description },

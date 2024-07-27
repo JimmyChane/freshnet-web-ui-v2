@@ -1,6 +1,6 @@
-import { optString, textContains } from "@/U";
+import { optString, textContains } from '@/utils/U';
 
-interface PhoneNumberData {
+export interface PhoneNumberData {
   value: string;
 }
 
@@ -20,11 +20,7 @@ export class PhoneNumber {
   toString(): string {
     let value = optString(this.value);
 
-    const spliceString = (
-      text: string,
-      index: number,
-      count: number = 1,
-    ): string => {
+    const spliceString = (text: string, index: number, count: number = 1): string => {
       if (count <= 0) return text;
       if (index === 0) return text.slice(index + count, text.length);
       if (text.length <= index + count) return text.slice(0, index);

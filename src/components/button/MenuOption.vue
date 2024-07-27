@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  import { computed } from "vue";
-  import MenuIcon from "@/components/menu/MenuIcon.vue";
-  import chroma from "chroma-js";
+import { computed } from 'vue';
+import MenuIcon from '@/components/menu/MenuIcon.vue';
+import chroma from 'chroma-js';
 
-  import IconOptionLight from "@/assets/icon/option-FFFFFF.svg";
-  import IconOptionDark from "@/assets/icon/option-000000.svg";
-  import type { Menu } from "@/stores/popup-menu/PopupMenu";
-  import { isColorDark } from "@/U";
+import IconOptionLight from '@/assets/icon/option-FFFFFF.svg';
+import IconOptionDark from '@/assets/icon/option-000000.svg';
+import type { Menu } from '@/stores/popup-menu/PopupMenu';
+import { isColorDark } from '@/utils/U';
 
-  const props = withDefaults(
-    defineProps<{
-      menus?: Menu[];
-      primaryColor: chroma.Color;
-    }>(),
-    {
-      primaryColor: () => chroma("ffffff"),
-    },
-  );
+const props = withDefaults(
+  defineProps<{
+    menus?: Menu[];
+    primaryColor: chroma.Color;
+  }>(),
+  {
+    primaryColor: () => chroma('ffffff'),
+  },
+);
 
-  const isDark = computed(() => isColorDark(props.primaryColor, 60));
+const isDark = computed(() => isColorDark(props.primaryColor, 60));
 </script>
 
 <template>

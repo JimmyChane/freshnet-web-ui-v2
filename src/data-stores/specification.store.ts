@@ -1,12 +1,11 @@
-import { defineStore } from "pinia";
-import { SpecificationRequest } from "@/data/specification/SpecificationRequest";
-import { Type } from "@/data/specification/Specification";
-import { computed, ref } from "vue";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
+import { defineStore } from 'pinia';
+import { SpecificationRequest, Type } from '@/data/Specification';
+import { computed, ref } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
 
-export const useSpecificationStore = defineStore("specification", () => {
+export const useSpecificationStore = defineStore('specification', () => {
   const dataLoader = new DataLoader<Type>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))

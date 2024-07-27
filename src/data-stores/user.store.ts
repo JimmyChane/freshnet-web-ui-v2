@@ -1,13 +1,12 @@
-import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { UserRequest } from "@/data/user/UserRequest";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { User } from "@/data/user/User";
-import { useLoginStore } from "@/stores/login.store";
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { User, UserRequest } from '@/data/User';
+import { useLoginStore } from '@/stores/login.store';
 
-export const useUserStore = defineStore("user", () => {
+export const useUserStore = defineStore('user', () => {
   const dataLoader = new DataLoader<User>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))
@@ -35,10 +34,7 @@ export const useUserStore = defineStore("user", () => {
     const users: User[] = await getUsers();
     return users.find((user) => user.username === username);
   }
-  async function updateTypeOfUserByUsername(arg: {
-    username: string;
-    userType: string;
-  }) {
+  async function updateTypeOfUserByUsername(arg: { username: string; userType: string }) {
     try {
       const user = await useLoginStore().getUser();
 
@@ -69,12 +65,7 @@ export const useUserStore = defineStore("user", () => {
 
     if (!user.isTypeAdmin()) throw new Error();
 
-    const api = await UserRequest.add(
-      arg.username,
-      arg.name,
-      arg.passwordNew,
-      arg.passwordRepeat,
-    );
+    const api = await UserRequest.add(arg.username, arg.name, arg.passwordNew, arg.passwordRepeat);
     const content = api.getObjectContent();
     const newUser = new User(content);
     list.value.addItem(newUser);
@@ -87,7 +78,7 @@ export const useUserStore = defineStore("user", () => {
 
     const api = await UserRequest.remove(arg.username);
     const content = api.getStringContent();
-    if (content !== "ok") throw new Error();
+    if (content !== 'ok') throw new Error();
     list.value.removeItemById(arg.username);
     return true;
   }

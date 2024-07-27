@@ -1,8 +1,8 @@
-import { replace } from "@/U";
-import { defineStore } from "pinia";
-import { useRoute, useRouter } from "vue-router";
+import { replace } from '@/utils/U';
+import { defineStore } from 'pinia';
+import { useRoute, useRouter } from 'vue-router';
 
-export const useRouteStore = defineStore("route", () => {
+export const useRouteStore = defineStore('route', () => {
   const route = useRoute();
   const router = useRouter();
 

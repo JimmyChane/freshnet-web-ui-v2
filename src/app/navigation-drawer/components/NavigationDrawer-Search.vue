@@ -1,21 +1,21 @@
 <script setup lang="ts">
-  import ButtonIcon from "@/components/button/ButtonIcon.vue";
-  import GlobalSearch from "@/app/search/GlobalSearch.vue";
-  import SearchIcon from "@/assets/icon/search-000000.svg";
-  import { ref } from "vue";
-  import { useNavigationStore } from "@/stores/navigation/navigation.store";
+import ButtonIcon from '@/components/button/ButtonIcon.vue';
+import GlobalSearch from '@/app/search/GlobalSearch.vue';
+import SearchIcon from '@/assets/icon/search-000000.svg';
+import { ref } from 'vue';
+import { useNavigationStore } from '@/stores/navigation.store';
 
-  withDefaults(defineProps<{ isWide: boolean }>(), { isWide: false });
+withDefaults(defineProps<{ isWide: boolean }>(), { isWide: false });
 
-  const navigationStore = useNavigationStore();
+const navigationStore = useNavigationStore();
 
-  const globalsearch = ref();
+const globalsearch = ref();
 
-  function focus() {
-    globalsearch.value.focus();
-  }
+function focus() {
+  globalsearch.value.focus();
+}
 
-  defineExpose({ focus });
+defineExpose({ focus });
 </script>
 
 <template>
@@ -41,20 +41,20 @@
 </template>
 
 <style lang="scss" scoped>
-  .NavigationDrawer-Search {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: auto;
-    .NavigationDrawer-Search-comp {
-      --background-color: hsl(0, 0%, 94%);
-      --border-radius: 0.8rem;
-      --border: 1px solid hsla(0, 0%, 0%, 0.15);
-      --border-focus: 1px solid hsla(0, 0%, 0%, 0.15);
-      --dropdown-height: calc(100dvh - 10rem);
-    }
+.NavigationDrawer-Search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: auto;
+  .NavigationDrawer-Search-comp {
+    --background-color: hsl(0, 0%, 94%);
+    --border-radius: 0.8rem;
+    --border: 1px solid hsla(0, 0%, 0%, 0.15);
+    --border-focus: 1px solid hsla(0, 0%, 0%, 0.15);
+    --dropdown-height: calc(100dvh - 10rem);
   }
-  .NavigationDrawer-Search[isWide="true"] {
-    margin: 0 0.7rem;
-  }
+}
+.NavigationDrawer-Search[isWide='true'] {
+  margin: 0 0.7rem;
+}
 </style>

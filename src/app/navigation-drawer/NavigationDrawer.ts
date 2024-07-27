@@ -1,4 +1,4 @@
-import type { GroupAsset, IconAsset } from "@/U";
+import type { GroupAsset, IconAsset } from '@/utils/U';
 
 export interface NavigationParent {
   key: string;

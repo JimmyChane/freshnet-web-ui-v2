@@ -1,14 +1,13 @@
-import { defineStore } from "pinia";
-import { Order, OrderStatus } from "@/data/order/Order";
-import { OrderRequest } from "@/data/order/OrderRequest";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { computed, ref } from "vue";
-import { OrderCustomer } from "@/data/order/OrderCustomer";
-import { ServiceCustomer } from "@/data/service/ServiceCustomer";
+import { defineStore } from 'pinia';
+import { Order, OrderRequest, OrderStatus } from '@/data/Order';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { computed, ref } from 'vue';
+import { OrderCustomer } from '@/data/OrderCustomer';
+import { ServiceCustomer } from '@/data/ServiceCustomer';
 
-export const useOrderStore = defineStore("order", () => {
+export const useOrderStore = defineStore('order', () => {
   const dataLoader = new DataLoader<Order>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))
@@ -40,10 +39,7 @@ export const useOrderStore = defineStore("order", () => {
     const groups: Group[] = items.reduce((groups: Group[], item: Order) => {
       let group: Group | undefined = groups.find((group: Group) => {
         if (group.customer === item.customer) return true;
-        if (
-          group.customer instanceof ServiceCustomer &&
-          item.customer instanceof ServiceCustomer
-        ) {
+        if (group.customer instanceof ServiceCustomer && item.customer instanceof ServiceCustomer) {
           return group.customer.isEqual(item.customer);
         }
       });
@@ -106,11 +102,11 @@ export const useOrderStore = defineStore("order", () => {
     });
   }
 
-  async function updateToPendingOfId(id = "") {
+  async function updateToPendingOfId(id = '') {
     const status = OrderStatus.Pending;
     return updateStatusOfId({ id, status });
   }
-  async function updateToCompletedOfId(id = "") {
+  async function updateToCompletedOfId(id = '') {
     const status = OrderStatus.Completed;
     return updateStatusOfId({ id, status });
   }

@@ -1,8 +1,8 @@
-import { serverIcon } from "@/data/server/Server";
-import { defineStore } from "pinia";
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-import { useLoginStore } from "./login.store";
+import { serverIcon } from '@/data/Server';
+import { defineStore } from 'pinia';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useLoginStore } from './login.store';
 import {
   type GroupAsset,
   type IconAsset,
@@ -12,12 +12,12 @@ import {
   parseGroup2s,
   parseIcon,
   parseKey,
-} from "@/U";
-import { IconPack } from "@/data/icon-pack/IconPack";
+} from '@/utils/U';
+import { IconPack } from '@/data/IconPack';
 
 export class NavPage {
-  key: string = "";
-  title: string = "";
+  key: string = '';
+  title: string = '';
   icon: IconAsset | null = null;
   userPermissions: unknown[] = [];
   groups: NavViewGroup[] = [];
@@ -44,8 +44,8 @@ export class NavPage {
   }
 }
 export class NavView {
-  key: string = "";
-  title: string = "";
+  key: string = '';
+  title: string = '';
   icon: IconAsset | null = null;
 
   setKey(key: string) {
@@ -62,9 +62,9 @@ export class NavView {
   }
 }
 export class NavViewGroup {
-  key: string = "";
-  title: string = "";
-  icon: unknown = "";
+  key: string = '';
+  title: string = '';
+  icon: unknown = '';
   values: GroupAsset[] = [];
   children: unknown;
   userPermissions: unknown[] = [];
@@ -117,7 +117,7 @@ export class NavViewGroup {
   }
 }
 
-export const usePageStore = defineStore("page", () => {
+export const usePageStore = defineStore('page', () => {
   const route = useRoute();
 
   const managedPages: {
@@ -129,85 +129,64 @@ export const usePageStore = defineStore("page", () => {
     _groups?: () => GroupAsset[];
   }[] = [
     {
-      key: "home",
-      title: "Home",
-      icon: new IconPack(serverIcon("home-FFFFFF"), serverIcon("home-000000")),
+      key: 'home',
+      title: 'Home',
+      icon: new IconPack(serverIcon('home-FFFFFF'), serverIcon('home-000000')),
     },
     {
-      key: "product",
-      title: "Search",
-      icon: new IconPack(
-        serverIcon("magnifying-glass"),
-        serverIcon("magnifying-glass"),
-      ),
+      key: 'product',
+      title: 'Search',
+      icon: new IconPack(serverIcon('magnifying-glass'), serverIcon('magnifying-glass')),
     },
     {
-      key: "print",
-      title: "Printing",
-      icon: new IconPack(
-        serverIcon("paper-FFFFFF"),
-        serverIcon("paper-000000"),
-      ),
+      key: 'print',
+      title: 'Printing',
+      icon: new IconPack(serverIcon('paper-FFFFFF'), serverIcon('paper-000000')),
     },
     {
-      key: "manage",
-      title: "Manage",
-      icon: new IconPack(
-        serverIcon("manage-FFFFFF"),
-        serverIcon("manage-000000"),
-      ),
+      key: 'manage',
+      title: 'Manage',
+      icon: new IconPack(serverIcon('manage-FFFFFF'), serverIcon('manage-000000')),
       _children() {
         return [
           {
-            key: "profile",
-            title: "Your Profile",
-            icon: new IconPack(
-              serverIcon("profile-FFFFFF"),
-              serverIcon("profile-000000"),
-            ),
+            key: 'profile',
+            title: 'Your Profile',
+            icon: new IconPack(serverIcon('profile-FFFFFF'), serverIcon('profile-000000')),
           },
         ];
       },
       _groups() {
         return [
           {
-            key: "record",
-            title: "Record",
+            key: 'record',
+            title: 'Record',
             children: [
               {
-                key: "customer",
-                title: "Customers",
-                icon: new IconPack(
-                  serverIcon("customers-FFFFFF"),
-                  serverIcon("customers-000000"),
-                ),
+                key: 'customer',
+                title: 'Customers',
+                icon: new IconPack(serverIcon('customers-FFFFFF'), serverIcon('customers-000000')),
 
-                userPermissions: ["admin", "staff"],
+                userPermissions: ['admin', 'staff'],
               },
               {
-                key: "service",
-                title: "Services",
-                icon: new IconPack(
-                  serverIcon("service-FFFFFF"),
-                  serverIcon("service-000000"),
-                ),
-                userPermissions: ["admin", "staff"],
+                key: 'service',
+                title: 'Services',
+                icon: new IconPack(serverIcon('service-FFFFFF'), serverIcon('service-000000')),
+                userPermissions: ['admin', 'staff'],
               },
               {
-                key: "order",
-                title: "Orders",
-                icon: new IconPack(
-                  serverIcon("order-FFFFFF"),
-                  serverIcon("order-000000"),
-                ),
-                userPermissions: ["admin", "staff"],
+                key: 'order',
+                title: 'Orders',
+                icon: new IconPack(serverIcon('order-FFFFFF'), serverIcon('order-000000')),
+                userPermissions: ['admin', 'staff'],
               },
             ],
           },
         ];
       },
 
-      userPermissions: ["admin", "staff"],
+      userPermissions: ['admin', 'staff'],
     },
   ];
 
@@ -218,21 +197,18 @@ export const usePageStore = defineStore("page", () => {
     if (pages.length < 1) return [];
 
     const listGroup1 = pages.map((page) => {
-      const navPage = new NavPage()
-        .setKey(page.key)
-        .setTitle(page.title)
-        .setIcon(page.icon);
+      const navPage = new NavPage().setKey(page.key).setTitle(page.title).setIcon(page.icon);
       if (page.userPermissions) {
         navPage.setUserPermissions(page.userPermissions);
       }
 
       const returnParsedGroups = parseGroup2s([
         {
-          key: "",
-          title: "",
-          values: typeof page._children === "function" ? page._children() : [],
+          key: '',
+          title: '',
+          values: typeof page._children === 'function' ? page._children() : [],
         },
-        ...(typeof page._groups === "function" ? page._groups() : []),
+        ...(typeof page._groups === 'function' ? page._groups() : []),
       ])
         .map((obj) => {
           return obj.setIsLink(true).setIsQuery(false);
@@ -246,9 +222,7 @@ export const usePageStore = defineStore("page", () => {
               return isPassed(user, value.userPermissions);
             })
             .map((value: GroupAsset) => {
-              const navView = new NavView()
-                .setKey(value.key)
-                .setTitle(value.title);
+              const navView = new NavView().setKey(value.key).setTitle(value.title);
               if (value.icon) navView.setIcon(value.icon);
 
               return navView;
@@ -284,11 +258,11 @@ export const usePageStore = defineStore("page", () => {
 
     return listGroup1;
   });
-  const paths = computed(() => route.path.split("/").filter((path) => path));
+  const paths = computed(() => route.path.split('/').filter((path) => path));
   const currentPaths = computed(() => {
     let { fullPath } = route;
 
-    const questionMarkIndex = fullPath.indexOf("?");
+    const questionMarkIndex = fullPath.indexOf('?');
     if (questionMarkIndex !== -1) {
       fullPath = fullPath.substring(0, questionMarkIndex);
     }
@@ -297,11 +271,11 @@ export const usePageStore = defineStore("page", () => {
   });
   const currentPageKey = computed(() => {
     const paths = currentPaths.value;
-    return paths.length > 0 ? paths[0] : "";
+    return paths.length > 0 ? paths[0] : '';
   });
   const currentViewKey = computed(() => {
     const paths = currentPaths.value;
-    return paths.length > 1 ? paths[1] : "";
+    return paths.length > 1 ? paths[1] : '';
   });
 
   return {

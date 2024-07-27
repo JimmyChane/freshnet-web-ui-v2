@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import Label from "./GlobalSearch-Item-Label.vue";
-  withDefaults(defineProps<{ labels?: string[] }>(), { labels: () => [] });
+import Label from './GlobalSearch-Item-Label.vue';
+withDefaults(defineProps<{ labels?: string[] }>(), { labels: () => [] });
 </script>
 
 <template>
@@ -12,10 +12,10 @@
 </template>
 
 <style lang="scss" scoped>
-  .GlobalSearch-Item-Labels {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.2em;
-  }
+.GlobalSearch-Item-Labels {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.2em;
+}
 </style>

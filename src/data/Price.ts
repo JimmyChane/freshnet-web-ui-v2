@@ -1,9 +1,9 @@
-export const DefaultCurrency = "RM";
+export const DefaultCurrency = 'RM';
 
 export function parse(any: Price | number | string | any): Price {
   if (any instanceof Price) return any;
-  if (typeof any === "number") return new Price(any);
-  if (typeof any === "string") {
+  if (typeof any === 'number') return new Price(any);
+  if (typeof any === 'string') {
     const currencyParses = [];
     const amountParsed = parseAmount(any);
 
@@ -14,10 +14,7 @@ export function parse(any: Price | number | string | any): Price {
       any = any.substring(currencyParsed.indexEnd, any.length);
     }
 
-    return new Price(
-      amountParsed,
-      currencyParses.length ? currencyParses[0].value : "",
-    );
+    return new Price(amountParsed, currencyParses.length ? currencyParses[0].value : '');
   }
 
   return new Price();
@@ -33,19 +30,19 @@ export function parseCurrency(content: string): {
   return {
     indexStart,
     indexEnd,
-    value: indexStart === -1 ? "" : content.substring(indexStart, indexEnd),
+    value: indexStart === -1 ? '' : content.substring(indexStart, indexEnd),
   };
 }
 
 export function parseAmount(content: string): number {
-  let valueString = "";
+  let valueString = '';
   let hasNumberFront = false;
   let hasNumberBack = false;
   let hasDot = false;
   for (let i = 0; i < content.length; i++) {
     let char = content.charAt(i);
 
-    if (char === " ") {
+    if (char === ' ') {
       if (hasDot || hasNumberFront || hasNumberBack) break;
       continue;
     }
@@ -58,9 +55,9 @@ export function parseAmount(content: string): number {
       continue;
     }
 
-    if (char === ".") {
+    if (char === '.') {
       if (hasDot) break;
-      valueString += ".";
+      valueString += '.';
       hasDot = true;
       continue;
     }
@@ -72,43 +69,34 @@ export function parseAmount(content: string): number {
 }
 
 export class Price {
-  private _amount: number;
-  private _currency: string;
+  readonly amount: number;
+  readonly currency: string;
 
-  constructor(amount: number = 0, currency: string = "RM") {
-    this._currency =
-      currency.trim().replace(" ", "").toUpperCase() || DefaultCurrency;
-    this._amount = isNaN(amount) ? 0 : Number(amount);
-  }
-
-  get amount(): number {
-    return this._amount;
-  }
-
-  get currency(): string {
-    return this._currency;
+  constructor(amount: number = 0, currency: string = 'RM') {
+    this.currency = currency.trim().replace(' ', '').toUpperCase() || DefaultCurrency;
+    this.amount = isNaN(amount) ? 0 : Number(amount);
   }
 
   compare(item: Price): number {
-    return this._amount - item._amount;
+    return this.amount - item.amount;
   }
 
   plus(any: Price | number | string | any): Price {
     const price = parse(any);
-    return new Price(this._amount + price._amount, this._currency);
+    return new Price(this.amount + price.amount, this.currency);
   }
 
   minus(any: Price | number | string | any): Price {
     const price = parse(any);
-    return new Price(this._amount - price._amount, this._currency);
+    return new Price(this.amount - price.amount, this.currency);
   }
 
   toString(): string {
     const { amount, currency } = this;
 
     let text = amount.toFixed(2);
-    let dotIndex = text.indexOf(".") - 3;
-    let minusIndex = text.indexOf("-") + 1;
+    let dotIndex = text.indexOf('.') - 3;
+    let minusIndex = text.indexOf('-') + 1;
     while (dotIndex > minusIndex) {
       const part1 = `${text.substring(0, dotIndex)}`;
       const part2 = `${text.substring(dotIndex, text.length)}`;

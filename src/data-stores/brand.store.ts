@@ -1,12 +1,11 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { Brand } from "@/data/brand/Brand";
-import { BrandRequest } from "@/data/brand/BrandRequest";
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { Brand, BrandRequest } from '@/data/Brand';
 
-export const useBrandStore = defineStore("brand", () => {
+export const useBrandStore = defineStore('brand', () => {
   const dataLoader = new DataLoader<Brand>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))

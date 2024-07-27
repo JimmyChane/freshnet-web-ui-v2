@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  withDefaults(defineProps<{ isSelected?: boolean }>(), {
-    isSelected: false,
-  });
+withDefaults(defineProps<{ isSelected?: boolean }>(), {
+  isSelected: false,
+});
 </script>
 
 <template>

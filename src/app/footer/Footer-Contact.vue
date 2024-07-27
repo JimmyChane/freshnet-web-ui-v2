@@ -1,25 +1,25 @@
 <script setup lang="ts">
-  import { computed } from "vue";
-  import type { Contact } from "@/data/contact/Contact";
+import { computed } from 'vue';
+import type { Contact } from '@/data/Contact';
 
-  const props = defineProps<{ contact: Contact }>();
+const props = defineProps<{ contact: Contact }>();
 
-  const title = computed(() => props.contact.title);
-  const subtitle = computed(() => props.contact.subtitle);
-  const links = computed(() => props.contact.links);
+const title = computed(() => props.contact.title);
+const subtitle = computed(() => props.contact.subtitle);
+const links = computed(() => props.contact.links);
 
-  const parsedLinks = computed(() => {
-    return links.value.map((link) => {
-      return {
-        icon: link.socialMedia?.icon,
-        href: link.toHtmlHref(),
-        target: link.toHtmlTarget(),
-      };
-    });
+const parsedLinks = computed(() => {
+  return links.value.map((link) => {
+    return {
+      icon: link.socialMedia?.icon,
+      href: link.toHtmlHref(),
+      target: link.toHtmlTarget(),
+    };
   });
-  const primaryLink = computed(() => {
-    return parsedLinks.value.length ? parsedLinks.value[0] : null;
-  });
+});
+const primaryLink = computed(() => {
+  return parsedLinks.value.length ? parsedLinks.value[0] : null;
+});
 </script>
 
 <template>
@@ -53,71 +53,71 @@
 </template>
 
 <style lang="scss" scoped>
-  .Footer-Contact {
-    width: 100%;
-    gap: 1rem;
+.Footer-Contact {
+  width: 100%;
+  gap: 1rem;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  .Footer-Contact-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: center;
+
+    font-weight: 400;
+    text-align: start;
+    .Footer-Contact-title {
+      font-size: 0.9rem;
+    }
+
+    .Footer-Contact-primaryLink {
+      color: inherit;
+      text-decoration: inherit;
+      font-size: inherit;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .Footer-Contact-subtitle {
+      font-size: 1rem;
+      opacity: 1;
+    }
+  }
+
+  .Footer-Contact-links {
+    gap: 0.1rem;
 
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-start;
-
-    .Footer-Contact-header {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      align-items: flex-start;
-      justify-content: center;
-
-      font-weight: 400;
-      text-align: start;
-      .Footer-Contact-title {
-        font-size: 0.9rem;
-      }
-
-      .Footer-Contact-primaryLink {
-        color: inherit;
-        text-decoration: inherit;
-        font-size: inherit;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-      .Footer-Contact-subtitle {
-        font-size: 1rem;
-        opacity: 1;
-      }
-    }
-
-    .Footer-Contact-links {
-      gap: 0.1rem;
+    .Footer-Contact-link {
+      --size: 2.5rem;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
 
       display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
       align-items: center;
-      justify-content: flex-start;
-      .Footer-Contact-link {
-        --size: 2.5rem;
+      justify-content: center;
+      .Footer-Contact-icon {
+        --size: 1.2rem;
         width: var(--size);
         height: var(--size);
-        border-radius: 50%;
+      }
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .Footer-Contact-icon {
-          --size: 1.2rem;
-          width: var(--size);
-          height: var(--size);
-        }
-
-        &:hover {
-          background: hsla(0, 0%, 0%, 0.1);
-        }
+      &:hover {
+        background: hsla(0, 0%, 0%, 0.1);
       }
     }
   }
+}
 </style>

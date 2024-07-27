@@ -1,18 +1,12 @@
-import { TimeNowGetter } from "@/data/TimeNowGetter";
-import { defineStore } from "pinia";
-import { defineAsyncComponent, ref } from "vue";
-import type {
-  PopupWindow,
-  PopupWindowOption,
-  RemovePopupWindowOption,
-} from "./PopupWindow";
-import type { WindowRemoveOption } from "@/components/window/WindowRemove";
+import { TimeNowGetter } from '@/data/TimeNowGetter';
+import { defineStore } from 'pinia';
+import { defineAsyncComponent, ref } from 'vue';
+import type { PopupWindow, PopupWindowOption, RemovePopupWindowOption } from './PopupWindow';
+import type { WindowRemoveOption } from '@/components/window/WindowRemove';
 
-const WindowRemove = defineAsyncComponent(
-  () => import("@/components/window/WindowRemove.vue"),
-);
+const WindowRemove = defineAsyncComponent(() => import('@/components/window/WindowRemove.vue'));
 
-export const usePopupWindowStore = defineStore("popupWindow", () => {
+export const usePopupWindowStore = defineStore('popupWindow', () => {
   const keyGetter = new TimeNowGetter();
 
   const items = ref<any[]>([]);

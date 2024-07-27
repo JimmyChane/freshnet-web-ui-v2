@@ -1,34 +1,31 @@
 <script setup lang="ts">
-  import ItemMenu from "./Selector3/ItemMenu.vue";
-  import { computed, onMounted, watch } from "vue";
-  import { type Menu } from "./Selector3/Menu";
-  import { optArray, optString } from "@/U";
+import ItemMenu, { type Menu } from './ItemMenu.vue';
+import { computed, onMounted, watch } from 'vue';
+import { optArray, optString } from '@/utils/U';
 
-  const emits = defineEmits<{ clickMenu: [Menu] }>();
-  const props = withDefaults(
-    defineProps<{ menus?: any[]; defaultKey?: string; selectedKey?: string }>(),
-    { defaultKey: "", selectedKey: "" },
-  );
+const emits = defineEmits<{ clickMenu: [Menu] }>();
+const props = withDefaults(
+  defineProps<{ menus?: any[]; defaultKey?: string; selectedKey?: string }>(),
+  { defaultKey: '', selectedKey: '' },
+);
 
-  const Menus = computed(() => optArray(props.menus).map((menu) => menu));
-  const DefaultKey = computed(() => optString(props.defaultKey));
-  const DefaultMenu = computed(() =>
-    Menus.value.find((menu) => menu.key === DefaultKey.value),
-  );
+const Menus = computed(() => optArray(props.menus).map((menu) => menu));
+const DefaultKey = computed(() => optString(props.defaultKey));
+const DefaultMenu = computed(() => Menus.value.find((menu) => menu.key === DefaultKey.value));
 
-  watch(() => DefaultMenu.value, invalidateDefaultMenu);
+watch(() => DefaultMenu.value, invalidateDefaultMenu);
 
-  onMounted(() => {
-    invalidateDefaultMenu();
-  });
+onMounted(() => {
+  invalidateDefaultMenu();
+});
 
-  function invalidateDefaultMenu() {
-    setSelectedMenu(DefaultMenu.value);
-  }
+function invalidateDefaultMenu() {
+  setSelectedMenu(DefaultMenu.value);
+}
 
-  function setSelectedMenu(menu: Menu) {
-    if (menu) emits("clickMenu", menu);
-  }
+function setSelectedMenu(menu: Menu) {
+  if (menu) emits('clickMenu', menu);
+}
 </script>
 
 <template>
@@ -46,25 +43,25 @@
 </template>
 
 <style lang="scss" scoped>
-  .Selector3-separator {
-    min-width: 1px;
-    height: 100%;
-    max-height: calc(100% - 0.8rem);
-    background: hsl(0, 0%, 90%);
-    margin-left: 0.8rem;
-    margin-right: 0.8rem;
-  }
-  .Selector3 {
+.Selector3-separator {
+  min-width: 1px;
+  height: 100%;
+  max-height: calc(100% - 0.8rem);
+  background: hsl(0, 0%, 90%);
+  margin-left: 0.8rem;
+  margin-right: 0.8rem;
+}
+.Selector3 {
+  display: flex;
+  flex-direction: column;
+  .Selector3-menus {
+    overflow-x: auto;
     display: flex;
-    flex-direction: column;
-    .Selector3-menus {
-      overflow-x: auto;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 0.2rem;
-    }
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.2rem;
   }
+}
 </style>

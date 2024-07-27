@@ -1,12 +1,11 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { DataLoader } from "./tools/DataLoader";
-import { Processor } from "@/stores/tools/Processor";
-import { List } from "./tools/List";
-import { Category } from "@/data/category/Category";
-import { CategoryRequest } from "@/data/category/CategoryRequest";
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import { DataLoader } from '@/utils/DataLoader';
+import { Processor } from '@/utils/Processor';
+import { List } from '@/utils/List';
+import { Category, CategoryRequest } from '@/data/Category';
 
-export const useCategoryStore = defineStore("category", () => {
+export const useCategoryStore = defineStore('category', () => {
   const dataLoader = new DataLoader<Category>(1000 * 60 * 10) // 10min
     .processor(() => processor.value as Processor | undefined)
     .setData((data) => list.value.clear().addItems(data))

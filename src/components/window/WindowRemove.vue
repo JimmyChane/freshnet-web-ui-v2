@@ -1,22 +1,28 @@
 <script setup lang="ts">
-  import Actionbar from "@/components/actionbar/Actionbar.vue";
-  import WindowBottom from "./WindowBottom.vue";
-  import { type PopupWindow } from "@/stores/popup-window/PopupWindow";
-  import { computed } from "vue";
-  import type { WindowRemoveOption } from "./WindowRemove";
+import Actionbar from '@/components/actionbar/Actionbar.vue';
+import WindowBottom from './WindowBottom.vue';
+import { type PopupWindow } from '@/stores/popup-window/PopupWindow';
+import { computed } from 'vue';
 
-  const props = defineProps<{
-    popupWindow: PopupWindow<WindowRemoveOption>;
-  }>();
+export interface WindowRemoveOption<T = any> {
+  title?: string;
+  message?: string;
+  data?: T;
+  onConfirm: (accept: () => void, reject: () => void) => void;
+}
 
-  const title = computed(() => props.popupWindow.data.title);
-  const message = computed(() => props.popupWindow.data.message);
+const props = defineProps<{
+  popupWindow: PopupWindow<WindowRemoveOption>;
+}>();
 
-  function onOK() {
-    const accept = () => props.popupWindow.close();
-    const reject = () => {};
-    props.popupWindow.data.onConfirm(accept, reject);
-  }
+const title = computed(() => props.popupWindow.data.title);
+const message = computed(() => props.popupWindow.data.message);
+
+function onOK() {
+  const accept = () => props.popupWindow.close();
+  const reject = () => {};
+  props.popupWindow.data.onConfirm(accept, reject);
+}
 </script>
 
 <template>
@@ -27,34 +33,31 @@
       <span class="WindowRemove-body">{{ message }}</span>
     </div>
 
-    <WindowBottom
-      @click-cancel="() => popupWindow.close()"
-      @click-ok="() => onOK()"
-    />
+    <WindowBottom @click-cancel="() => popupWindow.close()" @click-ok="() => onOK()" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .WindowRemove {
-    position: relative;
+.WindowRemove {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .WindowRemove-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: none;
+  }
+  .WindowRemove-main {
     width: 100%;
     display: flex;
     flex-direction: column;
-
-    .WindowRemove-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: none;
-    }
-    .WindowRemove-main {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 1.8rem 2.5rem;
-      margin-bottom: 1.2rem;
-    }
+    padding: 1.8rem 2.5rem;
+    margin-bottom: 1.2rem;
   }
+}
 </style>

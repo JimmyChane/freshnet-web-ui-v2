@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { TimeNowGetter } from "@/data/TimeNowGetter";
-import { type Menu, type PopupMenu, Width, Corner } from "./PopupMenu";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { TimeNowGetter } from '@/data/TimeNowGetter';
+import { type Menu, type PopupMenu, Width, Corner } from './PopupMenu';
 
-export const usePopupMenuStore = defineStore("popupMenu", () => {
+export const usePopupMenuStore = defineStore('popupMenu', () => {
   const keyGetter = new TimeNowGetter();
 
   const items = ref<any[]>([]);

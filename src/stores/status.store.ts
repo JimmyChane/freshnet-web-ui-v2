@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import { useLoginStore } from "./login.store";
-import { computed, ref, watch } from "vue";
+import { defineStore } from 'pinia';
+import { useLoginStore } from './login.store';
+import { computed, ref, watch } from 'vue';
 
-export const useStatusStore = defineStore("status", () => {
+export const useStatusStore = defineStore('status', () => {
   const shouldShowStatus = ref(false);
 
   watch(() => useLoginStore().user, onUser);
