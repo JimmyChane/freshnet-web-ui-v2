@@ -11,12 +11,7 @@ import { Service } from '@/data/Service';
 import { computed } from 'vue';
 import { optArray } from '@/utils/U';
 import { ServicePrice } from '@/data/ServicePrice';
-
-export enum Mode {
-  Grid = 1,
-  List = 2,
-  Detail = 4,
-}
+import { Mode } from './ItemService';
 
 const emits = defineEmits<{ click: [void] }>();
 const props = withDefaults(

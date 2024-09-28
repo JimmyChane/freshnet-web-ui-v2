@@ -1,4 +1,4 @@
-import { Mode } from '@/dialog-components/service/item-service/ItemService.vue';
+import { Mode } from '@/dialog-components/service/item-service/ItemService';
 
 export enum SortMode {
   DateCreated = 1,

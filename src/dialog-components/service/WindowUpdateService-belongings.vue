@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BelongingListEditVue from './BelongingListEdit.vue';
+import BelongingListEditVue from '@/page-components/service/BelongingListEdit.vue';
 import type { ServiceBelongingData } from '@/data/ServiceBelonging';
 
 withDefaults(defineProps<{ belongings?: ServiceBelongingData[] }>(), {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Item } from '@/data/Item';
-import ItemSearchProduct from './ItemSearchProduct.vue';
 import { Product } from '@/data/Product';
+import ItemSearchProduct from '@/page-components/product/ItemSearchProduct.vue';
 
 defineProps<{ item: Item }>();
 </script>

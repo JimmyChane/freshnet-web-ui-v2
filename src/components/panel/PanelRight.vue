@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Drawer from '@/components/drawer/Drawer.vue';
 import BottomsheetWindow from '@/components/window/BottomsheetWindow.vue';
-import { Edge, Mode } from '@/components/drawer/Drawer.vue';
 import { computed, onMounted, watch } from 'vue';
 import { useWindowStore } from '@/stores/window.store';
+import { Edge, Mode } from '../drawer/Drawer';
 
 const emits = defineEmits<{
   clickCollapse: [void];

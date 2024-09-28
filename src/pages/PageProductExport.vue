@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import NavigationBar from '@/components/actionbar/NavigationBar.vue';
-import ExportButton from '@/page-components/product-export/PageProductExport-Export.vue';
-import LayoutOne from '@/page-components/product-export/PageProductExport-Layout-One.vue';
-import LayoutTwo from '@/page-components/product-export/PageProductExport-Layout-Two.vue';
-import PanelOption from '@/page-components/product-export/PageProductExport-PanelOption.vue';
+import ExportButton from '@/page-components/product/PageProductExport-Export.vue';
+import LayoutOne from '@/page-components/product/PageProductExport-Layout-One.vue';
+import LayoutTwo from '@/page-components/product/PageProductExport-Layout-Two.vue';
+import PanelOption from '@/page-components/product/PageProductExport-PanelOption.vue';
 import PrintContent from '@/components/PrintContent.vue';
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useLoginStore } from '@/stores/login.store';

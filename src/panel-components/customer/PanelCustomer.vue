@@ -2,8 +2,6 @@
 import Actionbar from '@/components/actionbar/Actionbar.vue';
 import Loading from '@/components/loading/Loading.vue';
 import Item from './PanelCustomer-Item.vue';
-import ItemService from '@/pages/service/item-service/ItemService.vue';
-import ItemDevice from './ItemDevice.vue';
 import PanelCustomerEmpty from './PanelCustomer-Empty.vue';
 import chroma from 'chroma-js';
 import { Customer } from '@/data/Customer';
@@ -17,9 +15,11 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useCustomerStore } from '@/data-stores/customer.store';
 import { CustomerDevice } from '@/data/CustomerDevice';
 import { useWindowStore } from '@/stores/window.store';
-import PanelItemCustomer from '@/page-components/manage/PanelItem-Customer.vue';
-import PanelItemSection from '@/page-components/manage/PanelItem-Section.vue';
 import { ServiceCustomer } from '@/data/ServiceCustomer';
+import ItemDevice from '@/page-components/customer/ItemDevice.vue';
+import ItemService from '@/dialog-components/service/item-service/ItemService.vue';
+import PanelItemCustomer from '../manage/PanelItem-Customer.vue';
+import PanelItemSection from '../manage/PanelItem-Section.vue';
 
 const emits = defineEmits<{
   clickItemClose: [void];

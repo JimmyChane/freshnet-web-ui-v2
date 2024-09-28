@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PanelAction from '@/components/panel/PanelAction.vue';
 import TypeSelector from '@/components/selector/TypeSelector.vue';
-import LayoutFindCustomer from './LayoutFindCustomer.vue';
 import BodyUser from './WindowUpdateService-user.vue';
 import BodyCustomer from './WindowUpdateService-customer.vue';
 import BodyDescription from './WindowUpdateService-description.vue';
@@ -14,6 +13,7 @@ import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { LIST, PENDING } from '@/data/ServiceState';
 import { Customer } from '@/data/Customer';
 import type { Service } from '@/data/Service';
+import LayoutFindCustomer from '@/page-components/service/LayoutFindCustomer.vue';
 
 const props = defineProps<{
   popupWindow: PopupWindow<{

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Actionbar from './PanelCustomers-Actionbar.vue';
-import ItemCustomer from './ItemCustomer.vue';
 import Empty from '@/components/Empty.vue';
 import PageCustomer from '@/pages/PageCustomer.vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
@@ -9,6 +8,7 @@ import { Customer } from '@/data/Customer';
 import { useRoute } from 'vue-router';
 import { useCustomerStore } from '@/data-stores/customer.store';
 import { optString } from '@/utils/U';
+import ItemCustomer from '@/page-components/customer/ItemCustomer.vue';
 
 const emits = defineEmits<{
   clickRefresh: [void];

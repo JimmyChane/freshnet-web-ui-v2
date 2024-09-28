@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PanelAction from '@/components/panel/PanelAction.vue';
-import BelongingListEditVue from './BelongingListEdit.vue';
+import BelongingListEditVue from '@/page-components/service/BelongingListEdit.vue';
 import { computed, onMounted, ref } from 'vue';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { useServiceStore } from '@/data-stores/service.store';

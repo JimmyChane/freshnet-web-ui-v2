@@ -4,7 +4,8 @@ import { format } from 'date-fns';
 import { SortMode, GroupMode } from './ListServicesOption';
 import { Service } from '@/data/Service';
 import { computed, ref, watch } from 'vue';
-import ItemService, { Mode } from '@/dialog-components/service/item-service/ItemService.vue';
+import ItemService from '@/dialog-components/service/item-service/ItemService.vue';
+import { Mode } from '@/dialog-components/service/item-service/ItemService';
 
 const emits = defineEmits<{ clickItem: [Service] }>();
 const props = withDefaults(

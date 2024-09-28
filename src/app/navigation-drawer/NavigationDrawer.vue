@@ -3,7 +3,6 @@ import DrawerVue from '@/components/drawer/Drawer.vue';
 import LeftNavHeader from './components/NavigationDrawer-Header.vue';
 import NavPage from './components/NavigationDrawer-NavPage.vue';
 import LeftNavLogin from './components/NavigationDrawer-Login.vue';
-import { Edge, Mode } from '@/components/drawer/Drawer.vue';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNavigationStore } from '@/stores/navigation.store';
@@ -11,6 +10,7 @@ import { usePageStore } from '@/stores/page.store';
 import { useRouteStore } from '@/stores/route.store';
 import type { NavigationGroup, NavigationParent, NavigationView } from './NavigationDrawer';
 import { optArray } from '@/utils/U';
+import { Edge, Mode } from '@/components/drawer/Drawer';
 
 const emits = defineEmits<{ clickLogout: [void] }>();
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import NavigationBar from '@/components/actionbar/NavigationBar.vue';
 import SearchInput from '@/components/search/SearchInput.vue';
-import ItemCustomerSearch from './ItemCustomerSearch.vue';
 import Searcher from '@/data/Searcher';
 import TabLayout from '@/components/tabLayout/TabLayout.vue';
 import IconAdd from '@/assets/icon/add-000000.svg';
@@ -12,6 +11,7 @@ import { Customer } from '@/data/Customer';
 import { optString } from '@/utils/U';
 import { useRouteStore } from '@/stores/route.store';
 import type { Tab } from '@/components/tabLayout/TabLayout-Tab.vue';
+import ItemCustomerSearch from '@/page-components/customer/ItemCustomerSearch.vue';
 
 const emits = defineEmits<{ clickItemAdd: [void]; clickRefresh: [void] }>();
 const props = withDefaults(defineProps<{ title?: string; items?: Customer[] }>(), {
