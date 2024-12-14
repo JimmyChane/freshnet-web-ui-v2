@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import IconArrowDown from '@/components/icon/IconArrowDown.vue';
 
+const emits = defineEmits<{ click: [void] }>();
+
 defineProps<{ isExpand?: boolean }>();
 </script>
 
 <template>
   <div class="Navigationleft-Clickable-Body" :isExpand="`${isExpand}`">
-    <button class="Navigationleft-Clickable-Body-button transition" @click="$emit('click')">
+    <button class="Navigationleft-Clickable-Body-button transition" @click="emits('click')">
       <IconArrowDown class="Navigationleft-Clickable-Body-button-icon" />
     </button>
   </div>

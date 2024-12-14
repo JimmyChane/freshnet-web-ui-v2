@@ -3,9 +3,20 @@ import PanelAction from '@/components/panel/PanelAction.vue';
 import Selector4 from '@/components/selector/Selector4.vue';
 import { useCategoryStore } from '@/data-stores/category.store';
 import type { Image } from '@/data/Image';
+import type { Product } from '@/data/Product';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
 import { computed, onMounted, ref } from 'vue';
+
+export interface DataContent {
+  product: Product;
+  categoryId: string;
+}
+
+export interface DataProps {
+  input: DataContent;
+  onConfirm(content: DataContent): void;
+}
 
 interface Menu {
   key: string;
@@ -13,12 +24,12 @@ interface Menu {
   icon?: Image;
 }
 
-const props = defineProps<{ popupWindow: PopupWindow }>();
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const outputCategoryId = ref('');
 
 const isShowing = computed(() => props.popupWindow.isShowing);
-const input = computed(() => props.popupWindow.data);
+const input = computed(() => props.popupWindow.data.input);
 const product = computed(() => input.value?.product ?? null);
 const categoryId = computed(() => input.value?.categoryId ?? '');
 const categories = computed(() => useCategoryStore().items);

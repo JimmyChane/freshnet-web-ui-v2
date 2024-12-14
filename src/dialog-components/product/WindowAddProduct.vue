@@ -11,7 +11,16 @@ import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
 import type { Menu } from '@/stores/popup-menu/PopupMenu';
 
-const props = defineProps<{ popupWindow: PopupWindow }>();
+export interface DataContent {
+  title: string;
+  brandId: string;
+  categoryId: string;
+}
+export interface DataProps {
+  onConfirm: (output: DataContent) => void;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const categoryMenus = ref<Menu[]>([]);
 const brandMenus = ref<Menu[]>([]);
@@ -87,7 +96,7 @@ function clickConfirm() {
   }
 
   const output = { title: xTitle, brandId, categoryId };
-  props.popupWindow.onConfirm(output);
+  props.popupWindow.data.onConfirm(output);
 }
 
 onMounted(() => {

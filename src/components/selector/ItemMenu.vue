@@ -22,7 +22,7 @@ const title = computed(() => props.item.title);
     class="ItemMenu transition"
     :class="[`ItemMenu-${isSelected ? 'selected' : 'deselected'}`]"
     :style="{ '--primary-color': color ? color : 'inherit' }"
-    @click="$emit('click')"
+    @click="emits('click')"
   >
     <img class="ItemMenu-icon" v-if="color" :src="color" />
     <span class="ItemMenu-title" v-if="title">{{ title }}</span>

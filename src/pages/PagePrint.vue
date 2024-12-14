@@ -102,7 +102,7 @@ const tab2 = ref<Tab>();
 
 const tabs0 = computed<Tab[]>(() => {
   return items.value.map((layer) => {
-    const tab = {
+    const tab: Tab = {
       title: layer.title,
       isSelected: () => tab === tab0.value,
       click: () => {
@@ -125,7 +125,7 @@ const tabs1 = computed<Tab[]>(() => {
   if (layer.items.length === 0) return [];
 
   return layer.items.map((layer) => {
-    const tab = {
+    const tab: Tab = {
       title: layer.title,
       isSelected: () => tab === tab1.value,
       click: () => (tab1.value = tab),

@@ -7,6 +7,7 @@ import {
   getYear,
   previousDay,
   endOfDay,
+  type Day,
 } from 'date-fns';
 import { optNumber, textContains } from '@/utils/U';
 
@@ -179,7 +180,7 @@ export class ServiceTimestamp {
 
   isWithinWeek(): boolean {
     const today = new Date();
-    const dayWeek = getDay(today);
+    const dayWeek: Day = getDay(today) as Day;
     const dayWeekPrevious = previousDay(today, dayWeek);
     const timeStartWeek = endOfDay(dayWeekPrevious);
     return this.time > timeStartWeek.getTime();

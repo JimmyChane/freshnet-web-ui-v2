@@ -4,6 +4,10 @@ import LeftNavClickableArrow from './NavigationDrawer-Clickable-Arrow.vue';
 import { type StyleValue, computed } from 'vue';
 import type { NavigationParent, NavigationView } from '../NavigationDrawer';
 
+const emits = defineEmits<{
+  clickOpen: [NavigationParent | NavigationView];
+}>();
+
 const props = defineProps<{
   item: NavigationParent | NavigationView;
   isSelected?: boolean;
@@ -48,7 +52,7 @@ const style = computed(() => {
     <LeftNavClickableArrow
       v-if="hasChildren && isWide"
       :isExpand="isSelected"
-      @click="() => $emit('click-open', item)"
+      @click="() => emits('clickOpen', item)"
     />
   </div>
 </template>

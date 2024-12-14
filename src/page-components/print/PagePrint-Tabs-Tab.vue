@@ -1,9 +1,5 @@
 <script setup lang="ts">
-interface Tab {
-  title: string;
-  isSelected: () => boolean;
-  click: (tab: this) => void;
-}
+import type { Tab } from '../product-view/ViewerProduct-Tabs-Tab.vue';
 
 const emits = defineEmits<{ click: [Tab] }>();
 defineProps<{ item: Tab }>();
@@ -13,12 +9,12 @@ defineProps<{ item: Tab }>();
   <button
     :class="[
       'Tabs-Tab',
-      item.isSelected() ? 'Tabs-Tab-isSelected' : 'Tabs-Tab-isDeselected',
+      item.isSelected?.() ? 'Tabs-Tab-isSelected' : 'Tabs-Tab-isDeselected',
       'transition',
     ]"
     @click="
       () => {
-        item.click(item);
+        item.click?.(item);
         emits('click', item);
       }
     "

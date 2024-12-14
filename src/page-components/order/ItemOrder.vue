@@ -38,7 +38,7 @@ const content = computed(() => props.order.content);
   <div
     :class="['ItemOrder', 'transition']"
     :isExpand="`${isExpand}`"
-    @click="$emit(isExpand ? 'onCollapse' : 'onExpand')"
+    @click="() => (isExpand ? emits('onCollapse') : emits('onExpand'))"
   >
     <div class="ItemOrder-main">
       <div class="ItemOrder-main-left">
@@ -74,7 +74,7 @@ const content = computed(() => props.order.content);
         v-if="isStatusCompleted"
         color="#f4a60d"
         text="Move to Pending"
-        @button-click="$emit('onPending')"
+        @button-click="emits('onPending')"
       />
       <ItemOrderAction
         v-if="isStatusPending"
@@ -82,14 +82,14 @@ const content = computed(() => props.order.content);
         :iconActive="IconSuccessWhite"
         color="#25ad86"
         text="Move to Completed"
-        @button-click="$emit('onComplete')"
+        @button-click="emits('onComplete')"
       />
       <ItemOrderAction
         :icon="IconTrashRed"
         :iconActive="IconTrashWhite"
         color="#DB4A2A"
         text=""
-        @button-click="$emit('onRemove')"
+        @button-click="emits('onRemove')"
       />
     </div>
   </div>

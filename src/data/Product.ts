@@ -220,11 +220,19 @@ export class Product implements Item {
     const texts: string[] = [];
     const specs = this.specifications
       .filter((specification) => {
+        if (specification.typeKey === undefined) return false;
+
         return FORMAT_SPECIFICATION_ORDERS.includes(specification.typeKey);
       })
       .sort((specification1, specification2) => {
-        const index1 = FORMAT_SPECIFICATION_ORDERS.indexOf(specification1.typeKey);
-        const index2 = FORMAT_SPECIFICATION_ORDERS.indexOf(specification2.typeKey);
+        const index1 =
+          specification1.typeKey === undefined
+            ? 0
+            : FORMAT_SPECIFICATION_ORDERS.indexOf(specification1.typeKey);
+        const index2 =
+          specification2.typeKey === undefined
+            ? 0
+            : FORMAT_SPECIFICATION_ORDERS.indexOf(specification2.typeKey);
 
         return index1 - index2;
       });
@@ -232,7 +240,7 @@ export class Product implements Item {
     // title
     const title = await this.fetchFullTitle();
     const colorSpecification = this.specifications.find((specification) => {
-      return specification.typeKey === Type.Key.Colour;
+      return specification.typeKey === TypeKey.Colour;
     });
     if (colorSpecification) {
       specs.splice(specs.indexOf(colorSpecification), 1);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emits = defineEmits<{ click: [void] }>();
+const emits = defineEmits<{ click: [void]; focus: [void] }>();
 
 withDefaults(
   defineProps<{
@@ -15,8 +15,8 @@ withDefaults(
   <button
     class="PanelItems-ItemButton transition"
     :isSelected="`${isSelected}`"
-    @click="$emit('click')"
-    @focus="$emit('focus')"
+    @click="emits('click')"
+    @focus="emits('focus')"
   >
     <div class="PanelItems-ItemButton-overlay transition"></div>
     <div class="PanelItems-ItemButton-color transition"></div>

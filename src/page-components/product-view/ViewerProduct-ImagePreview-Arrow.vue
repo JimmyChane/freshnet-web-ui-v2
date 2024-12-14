@@ -9,6 +9,8 @@ import { computed } from 'vue';
 import { isColorDark } from '@/utils/U';
 import { serverIcon } from '@/data/Server';
 
+const emits = defineEmits<{ click: [void] }>();
+
 const props = withDefaults(
   defineProps<{
     primaryColor?: Color;
@@ -47,7 +49,7 @@ const arrowIcon = computed(() =>
       left: isLeft ? '0' : 'unset',
       right: isRight ? '0' : 'unset',
     }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <IconDynamic
       class="ImagePreviewArrow-arrow transition"

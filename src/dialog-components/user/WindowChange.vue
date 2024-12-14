@@ -4,11 +4,15 @@ import Selector from '@/components/selector/Selector.vue';
 import { User, UserType } from '@/data/User';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { computed } from 'vue';
-import type { WindowChangeOption } from './WindowChange';
 
-const props = defineProps<{
-  popupWindow: PopupWindow<WindowChangeOption<{ user: User }>>;
-}>();
+export interface DataProps {
+  title?: string;
+  message?: string;
+  data: { user: User; userType: UserType };
+  onConfirm: (data: { user: User; userType: UserType }) => void;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const isShowing = computed(() => props.popupWindow.isShowing);
 const user = computed(() => props.popupWindow.data.data?.user);
@@ -20,7 +24,13 @@ const user = computed(() => props.popupWindow.data.data?.user);
     :isShowing="isShowing"
     @click-dismiss="() => popupWindow.close()"
     @click-cancel="() => popupWindow.close()"
-    @click-ok="() => popupWindow.data.onConfirm({ user, userType: popupWindow.userType })"
+    @click-ok="
+      () => {
+        if (user) {
+          popupWindow.data.onConfirm({ user, userType: popupWindow.data.data.userType });
+        }
+      }
+    "
   >
     <div class="PageUsers-window">
       <div class="PageUsers-window-main">

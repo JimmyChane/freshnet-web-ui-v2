@@ -6,15 +6,17 @@ import chroma, { type Color } from 'chroma-js';
 import { Image } from '@/data/Image';
 import { ServiceImage } from '@/data/ServiceImage';
 
+type ImageType = string | Image | ServiceImage;
+
 const emits = defineEmits<{
-  clickImage: [void];
-  clickAddImageFile: [void];
+  clickImage: [ImageType];
+  clickAddImageFile: [FileList];
 }>();
 
 const props = withDefaults(
   defineProps<{
     indexAt?: number;
-    images: (string | Image | ServiceImage)[];
+    images: ImageType[];
     isEditable?: boolean;
     primaryColor?: string | Color;
   }>(),
@@ -27,7 +29,7 @@ const isPrimaryColorDark = computed(() => {
   return chroma.deltaE(props.primaryColor.toString(), '000000') < 60;
 });
 
-function getKey(image: string | Image | ServiceImage) {
+function getKey(image: ImageType) {
   if (typeof image === 'string') return image;
   if (image instanceof Image || image instanceof ServiceImage) {
     return image.toUrl();
@@ -50,11 +52,15 @@ function getKey(image: string | Image | ServiceImage) {
         :image="image"
         :key="getKey(image)"
         :isSelected="index === indexAt"
-        @click="() => $emit('click-image', image)"
+        @click="() => emits('clickImage', image)"
       />
       <ProductViewerImageSelector
         v-if="isEditable"
-        @click-file="(files) => $emit('click-add-image-file', files)"
+        @click-file="
+          (files) => {
+            if (files) emits('clickAddImageFile', files);
+          }
+        "
       />
     </div>
   </div>

@@ -5,6 +5,8 @@ import SearchIcon from '@/assets/icon/search-000000.svg';
 import { ref } from 'vue';
 import { useNavigationStore } from '@/stores/navigation.store';
 
+const emits = defineEmits<{ expand: [void]; collapse: [void] }>();
+
 withDefaults(defineProps<{ isWide: boolean }>(), { isWide: false });
 
 const navigationStore = useNavigationStore();
@@ -34,8 +36,8 @@ defineExpose({ focus });
     <GlobalSearch
       class="NavigationDrawer-Search-comp"
       ref="globalsearch"
-      @expand="() => $emit('expand')"
-      @collapse="() => $emit('collapse')"
+      @expand="() => emits('expand')"
+      @collapse="() => emits('collapse')"
     />
   </div>
 </template>

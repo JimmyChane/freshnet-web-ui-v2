@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const emits = defineEmits<{ click: [void] }>();
+
 withDefaults(defineProps<{ target?: string; href?: string }>(), {
   target: '',
   href: '',
@@ -11,12 +13,12 @@ withDefaults(defineProps<{ target?: string; href?: string }>(), {
     class="FloatingButton"
     :target="target"
     :href="href"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <slot></slot>
   </a>
 
-  <button v-else class="FloatingButton" @click="() => $emit('click')">
+  <button v-else class="FloatingButton" @click="() => emits('click')">
     <slot></slot>
   </button>
 </template>

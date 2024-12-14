@@ -4,6 +4,8 @@ import Labels from './GlobalSearch-Item-Labels.vue';
 import { Brand } from '@/data/Brand';
 import { computed } from 'vue';
 
+const emits = defineEmits<{ click: [void] }>();
+
 const props = defineProps<{ item?: Brand }>();
 const icon = computed(() => props.item?.icon);
 const thumbnail = computed(() => icon.value?.toUrl() ?? '');
@@ -14,7 +16,7 @@ const title = computed(() => props.item?.title ?? '');
   <ItemSearch
     class="ItemSearchBrand"
     :to="{ path: '/product', query: { brand: item?.id } }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <div class="ItemSearchBrand-image" :class="[thumbnail ? '' : 'ItemSearchBrand-image-noImage']">
       <img class="ItemSearchBrand-icon" v-if="thumbnail" :src="thumbnail" />

@@ -8,7 +8,12 @@ import { computed, onMounted } from 'vue';
 import { useCategoryStore } from '@/data-stores/category.store';
 import PanelCustomerItem from '@/panel-components/customer/PanelCustomer-Item.vue';
 
-const emits = defineEmits<{ click: [void]; clickRemove: [void] }>();
+const emits = defineEmits<{
+  click: [void];
+  clickRemove: [CustomerDevice];
+  clickUpdateSpecifications: [CustomerDevice];
+  clickUpdateDescription: [CustomerDevice];
+}>();
 const props = withDefaults(defineProps<{ item?: CustomerDevice; selected?: boolean }>(), {
   selected: false,
 });
@@ -42,19 +47,25 @@ onMounted(() => {
               {
                 key: 'updateDescription',
                 title: 'Update Description',
-                interact: () => $emit('click-update-description', { item }),
+                interact: () => {
+                  if (item) emits('clickUpdateDescription', item);
+                },
               },
               {
                 key: 'updateSpecification',
                 title: 'Update Specifications',
-                interact: () => $emit('click-update-specifications', { item }),
+                interact: () => {
+                  if (item) emits('clickUpdateSpecifications', item);
+                },
               },
               {
                 key: 'delete',
                 title: 'Delete',
                 color: '#DB4A2A',
                 icon: IconTrash,
-                interact: () => $emit('click-remove', { item }),
+                interact: () => {
+                  if (item) emits('clickRemove', item);
+                },
               },
             ]"
             :icon="IconOption"

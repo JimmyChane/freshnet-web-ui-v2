@@ -38,7 +38,7 @@ const cTextColor = computed(() => {
     class="ItemOrder-Action transition"
     :style="{ '--primary-color': primaryColor, color: cTextColor }"
     @blur="focused = false"
-    @click="$emit('button-click')"
+    @click="() => emits('buttonClick')"
     @focus="focused = true"
     @mouseleave="hovered = false"
     @mouseover="hovered = true"

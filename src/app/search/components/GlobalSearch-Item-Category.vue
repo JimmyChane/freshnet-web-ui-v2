@@ -4,6 +4,8 @@ import Labels from './GlobalSearch-Item-Labels.vue';
 import { Category } from '@/data/Category';
 import { computed } from 'vue';
 
+const emits = defineEmits<{ click: [void] }>();
+
 const props = defineProps<{ item?: Category }>();
 const icon = computed(() => props.item?.icon);
 const thumbnail = computed(() => icon.value?.toUrl() ?? '');
@@ -14,7 +16,7 @@ const title = computed(() => props.item?.title ?? '');
   <ItemSearch
     class="ItemSearchCategory"
     :to="{ path: '/product', query: { category: item?.id } }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <div
       class="ItemSearchCategory-image"

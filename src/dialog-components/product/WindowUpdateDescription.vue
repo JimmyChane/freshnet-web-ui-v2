@@ -3,13 +3,19 @@ import PanelAction from '@/components/panel/PanelAction.vue';
 import TextArea from '@/components/input/InputTextArea.vue';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { computed, onMounted, ref } from 'vue';
+import type { Product } from '@/data/Product';
 
-const props = defineProps<{
-  popupWindow: PopupWindow<{
-    input: { product: string; description: string };
-    onConfirm: (data: { product: string; description: string }) => void;
-  }>;
-}>();
+export interface DataContent {
+  product: Product;
+  description: string;
+}
+
+export interface DataProps {
+  input: DataContent;
+  onConfirm: (data: DataContent) => void;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const data = ref({ description: '' });
 

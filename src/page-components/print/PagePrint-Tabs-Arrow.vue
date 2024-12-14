@@ -4,6 +4,8 @@ import IconArrowDownLight from '@/assets/icon/arrowDown-white.svg';
 import IconArrowDownDark from '@/assets/icon/arrowDown-black.svg';
 import { computed } from 'vue';
 
+const emits = defineEmits<{ click: [void] }>();
+
 const props = withDefaults(
   defineProps<{
     primaryColor?: Color;
@@ -38,7 +40,7 @@ const arrowIcon = computed(() => {
       left: direction === 'left' ? '1rem' : 'unset',
       right: direction === 'right' ? '1rem' : 'unset',
     }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <img class="PagePrintTabsArrow-arrow transition" :src="arrowIcon" />
   </button>

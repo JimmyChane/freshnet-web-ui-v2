@@ -6,6 +6,11 @@ import IconEdit from '@/assets/icon/edit-000000.svg';
 import { Product } from '@/data/Product';
 import { computed } from 'vue';
 import type { Color } from 'chroma-js';
+import type { ProductPrices } from '@/data/ProductPrices';
+
+const emits = defineEmits<{
+  clickProductPriceUpdate: [{ product: Product; price: ProductPrices }];
+}>();
 
 const props = defineProps<{ product?: Product; primaryColor?: Color }>();
 
@@ -31,10 +36,9 @@ const pricePromotion = computed(() => {
       title: 'Edit',
       icon: IconEdit,
       click: () => {
-        $emit('click-product-priceUpdate', {
-          product: product,
-          price: price,
-        });
+        if (product && price) {
+          emits('clickProductPriceUpdate', { product: product, price: price });
+        }
       },
     }"
   >

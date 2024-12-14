@@ -19,6 +19,8 @@ import { Ps2Disc } from '@/data/Ps2Disc';
 import { Service } from '@/data/Service';
 import { Item } from '@/data/Item';
 
+const emits = defineEmits<{ expand: [void]; collapse: [void] }>();
+
 defineProps<{ placeholder?: string }>();
 
 const loginStore = useLoginStore();
@@ -136,8 +138,8 @@ defineExpose({ focus });
     :list="searches"
     :placeholder="placeholder"
     @callback-search="(text) => search(text)"
-    @expand="() => $emit('expand')"
-    @collapse="() => $emit('collapse')"
+    @expand="() => emits('expand')"
+    @collapse="() => emits('collapse')"
     v-slot="{ collapse }"
   >
     <div class="GlobalSearch-item" v-for="x in searches" :key="x.item.getUnique()">

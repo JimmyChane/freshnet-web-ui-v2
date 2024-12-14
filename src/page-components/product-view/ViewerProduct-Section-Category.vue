@@ -6,6 +6,10 @@ import IconEdit from '@/assets/icon/edit-000000.svg';
 import type { Color } from 'chroma-js';
 import type { Product } from '@/data/Product';
 
+const emits = defineEmits<{
+  clickEdit: [{ product: Product; categoryId: string }];
+}>();
+
 const props = withDefaults(
   defineProps<{
     primaryColor: Color;
@@ -42,10 +46,9 @@ onMounted(() => invalidate());
       title: 'Edit',
       icon: IconEdit,
       click: () => {
-        $emit('click-edit', {
-          product,
-          categoryId: categoryId,
-        });
+        if (product) {
+          emits('clickEdit', { product, categoryId: categoryId });
+        }
       },
     }"
   >

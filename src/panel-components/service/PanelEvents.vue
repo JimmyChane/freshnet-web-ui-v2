@@ -30,7 +30,7 @@ const events = computed(() => {
         :service="service"
         :events="events"
         :actions="actions"
-        @click-item-delete="(event) => $emit('clickRemoveEvent', event)"
+        @click-item-delete="(event) => emits('clickRemoveEvent', event)"
       />
       <span class="PanelEvents-empty" v-if="!events.length">Empty Events</span>
     </div>

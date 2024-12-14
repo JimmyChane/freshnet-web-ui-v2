@@ -6,6 +6,10 @@ import type { Color } from 'chroma-js';
 import type { Product } from '@/data/Product';
 import { computed, onMounted, ref, watch } from 'vue';
 
+const emits = defineEmits<{
+  clickEdit: [{ product: Product; title: string; brandId: string }];
+}>();
+
 const props = withDefaults(
   defineProps<{
     primaryColor?: Color;
@@ -48,7 +52,11 @@ onMounted(() => invalidateProduct());
       class="ViewerProduct-button"
       v-if="allowEdit"
       :src="IconEdit"
-      @click="() => $emit('click-edit', { product, title: title, brandId: brandId })"
+      @click="
+        () => {
+          if (product) emits('clickEdit', { product, title: title, brandId: brandId });
+        }
+      "
     />
   </div>
 </template>

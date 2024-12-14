@@ -1,6 +1,7 @@
 <script setup lang="ts">
-/* __placeholder__ */
 import type { RouteLocationRaw } from 'vue-router';
+
+const emits = defineEmits<{ click: [void] }>();
 
 withDefaults(
   defineProps<{
@@ -19,7 +20,7 @@ withDefaults(
     v-if="href.length"
     :href="href"
     :target="target"
-    @click="$emit('click')"
+    @click="emits('click')"
   >
     <span>{{ text }}</span>
   </a>
@@ -28,12 +29,12 @@ withDefaults(
     class="ButtonText transition"
     v-else-if="to !== undefined"
     :to="to"
-    @click="$emit('click')"
+    @click="emits('click')"
   >
     <span>{{ text }}</span>
   </router-link>
 
-  <button class="ButtonText transition" v-else @click="$emit('click')">
+  <button class="ButtonText transition" v-else @click="emits('click')">
     <span>{{ text }}</span>
   </button>
 </template>

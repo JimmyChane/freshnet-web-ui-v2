@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const emits = defineEmits<{ click: [void] }>();
+
 withDefaults(defineProps<{ src?: string; text?: string }>(), {
   src: '',
   text: '',
@@ -6,7 +8,7 @@ withDefaults(defineProps<{ src?: string; text?: string }>(), {
 </script>
 
 <template>
-  <button class="ButtonIconText transition" @click="$emit('click')">
+  <button class="ButtonIconText transition" @click="() => emits('click')">
     <img class="ButtonIconText-icon" v-if="src.length > 0" :src="src" :alt="text" />
     <span v-if="text.length > 0">{{ text }}</span>
   </button>

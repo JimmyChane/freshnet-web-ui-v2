@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const emits = defineEmits<{ click: [void] }>();
+
 withDefaults(defineProps<{ title?: string; checked?: boolean }>(), {
   title: '',
   checked: false,
@@ -6,7 +8,7 @@ withDefaults(defineProps<{ title?: string; checked?: boolean }>(), {
 </script>
 
 <template>
-  <button class="ItemProductStockCheckbox transition" @click="$emit('click')">
+  <button class="ItemProductStockCheckbox transition" @click="emits('click')">
     <span>{{ title }}</span>
     <input type="checkbox" :checked="checked" />
   </button>

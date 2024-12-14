@@ -2,9 +2,10 @@
 import { computed } from 'vue';
 
 export interface Tab {
-  key: string;
+  key?: string;
   title: string;
-  isSelected?: () => boolean;
+  isSelected?(): boolean;
+  click?(tab: this): void;
 }
 
 const props = defineProps<{ item: Tab }>();

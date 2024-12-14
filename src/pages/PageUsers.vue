@@ -13,8 +13,12 @@ import { usePopupWindowStore } from '@/stores/popup-window/popup-window.store';
 import type { Menu } from '@/stores/popup-menu/PopupMenu';
 import { User } from '@/data/User';
 import ItemUser from '@/page-components/user/ItemUser.vue';
-import WindowAdd from '@/dialog-components/user/WindowAdd.vue';
-import WindowChange from '@/dialog-components/user/WindowChange.vue';
+import WindowAdd, {
+  type DataProps as WindowAddDataProps,
+} from '@/dialog-components/user/WindowAdd.vue';
+import WindowChange, {
+  type DataProps as WindowChangeDataProps,
+} from '@/dialog-components/user/WindowChange.vue';
 
 const isLoading = computed(() => useUserStore().isLoading);
 const isCurrentUserAdmin = computed(() => user.value?.isTypeAdmin() ?? false);
@@ -41,7 +45,7 @@ function onIntentRefresh() {
 }
 
 async function openWindowAdd() {
-  const popupWindow = await usePopupWindowStore().open({
+  const popupWindow = await usePopupWindowStore().open<WindowAddDataProps>({
     component: WindowAdd,
     data: {
       onConfirm: async (data: any) => {
@@ -87,11 +91,10 @@ async function openWindowRemove(user: User) {
   });
 }
 async function openWindowChange(user: User) {
-  const popupWindow = await usePopupWindowStore().open({
+  const popupWindow = await usePopupWindowStore().open<WindowChangeDataProps>({
     component: WindowChange,
     data: {
-      user,
-      userType: user.userType,
+      data: { user, userType: user.userType },
       onConfirm: async (data: any) => {
         try {
           const userTypeNumber = optNumber(Number.parseInt(data.userType), 0);

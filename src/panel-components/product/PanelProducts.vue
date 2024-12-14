@@ -66,7 +66,10 @@ class MenuGroup {
   }
 }
 
-const emits = defineEmits<{ clickProductAdd: [void] }>();
+const emits = defineEmits<{
+  clickProductAdd: [void];
+  clickSearch: [void];
+}>();
 withDefaults(defineProps<{ products?: Product[] }>(), {
   products: () => [],
 });
@@ -218,7 +221,7 @@ async function invalidate() {
   brandTabs.value = brandMenus.menus.map((menu) => {
     return {
       title: menu.title,
-      icon: menu.icon instanceof Image ? menu.icon?.toUrl() ?? '' : menu.icon,
+      icon: menu.icon instanceof Image ? (menu.icon?.toUrl() ?? '') : menu.icon,
       isSelected: (tab) => brandMenus.menu === menu,
       click: (tab) => {
         if (typeof menu.click === 'function') menu.click(menu);
@@ -290,7 +293,7 @@ onMounted(() => {
       :style="{ 'z-index': '2', 'margin-bottom': '0.5rem' }"
       :products="products"
       :rightMenus="initRightMenus"
-      @click-search="$emit('click-search')"
+      @click-search="emits('clickSearch')"
     />
 
     <div class="PanelProducts-body">

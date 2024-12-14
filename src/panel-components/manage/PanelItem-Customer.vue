@@ -3,8 +3,9 @@ import ButtonIcon from '@/components/button/ButtonIcon.vue';
 import IconHamburgerMenu from '@/assets/icon/hamburgerMenu-000000.svg';
 import { computed } from 'vue';
 import { ServiceCustomer } from '@/data/ServiceCustomer';
+import type { Customer } from '@/data/Customer';
 
-const emits = defineEmits<{ clickEdit: [void] }>();
+const emits = defineEmits<{ clickEdit: [ServiceCustomer] }>();
 const props = withDefaults(defineProps<{ customer: ServiceCustomer; isEditable?: boolean }>(), {
   isEditable: true,
 });
@@ -27,7 +28,7 @@ const phoneNumberStr = computed(() => phoneNumber.value?.toString() ?? '');
       :isEditable="`${isEditable}`"
       class="PanelItem-Customer-edit transition"
       :src="IconHamburgerMenu"
-      @click="() => $emit('click-edit', customer)"
+      @click="() => emits('clickEdit', customer)"
     />
   </div>
 </template>

@@ -11,9 +11,7 @@ const title = ref('');
 const emits = defineEmits<{ 'callback-click': [void]; click: [void] }>();
 const props = defineProps<{ item?: Product }>();
 
-const images = computed(() => {
-  return props.item?.images;
-});
+const images = computed(() => props.item?.images);
 
 watch(() => props.item, invalidate);
 
@@ -37,11 +35,11 @@ onMounted(invalidate);
   <ItemSearch
     class="ItemSearchProduct"
     :to="{ path: '/product', query: { productId: item?.id } }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <div
       class="ItemSearchProduct-image"
-      :class="[images?.length ?? 0 > 0 ? '' : 'ItemSearchProduct-image-noImage']"
+      :class="[(images?.length ?? 0 > 0) ? '' : 'ItemSearchProduct-image-noImage']"
     >
       <ImageViews class="ItemSearchProduct-thumbnail" :width="56" :height="56" :images="images" />
     </div>

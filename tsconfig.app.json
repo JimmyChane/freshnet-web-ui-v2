@@ -10,6 +10,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noUnusedLocals": true
+
+    "noUnusedLocals": false
   }
 }

@@ -10,7 +10,7 @@ const props = withDefaults(
   defineProps<{
     width?: number;
     height?: number;
-    images: MyImage | MyImage[];
+    images?: MyImage | MyImage[];
   }>(),
   { width: 0, height: 0, images: () => [] },
 );

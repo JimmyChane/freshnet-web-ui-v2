@@ -7,6 +7,8 @@ import { onMounted, ref, watch } from 'vue';
 import { useSettingStore } from '@/data-stores/setting.store';
 import type { Contact } from '@/data/Contact';
 
+const emits = defineEmits<{ clickScrollToTop: [void] }>();
+
 const props = withDefaults(
   defineProps<{
     product?: Product;
@@ -102,7 +104,7 @@ onMounted(() => invalidate());
       primaryColorHex="#2196f3"
       :toShrink="true"
     />
-    <ButtonTop :isHidden="parentScrollTop <= 10" @click="() => $emit('click-scrollToTop')" />
+    <ButtonTop :isHidden="parentScrollTop <= 10" @click="() => emits('clickScrollToTop')" />
   </div>
 </template>
 

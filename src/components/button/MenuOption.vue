@@ -8,10 +8,11 @@ import IconOptionDark from '@/assets/icon/option-000000.svg';
 import type { Menu } from '@/stores/popup-menu/PopupMenu';
 import { isColorDark } from '@/utils/U';
 
+const emits = defineEmits<{ show: [void]; hide: [void] }>();
 const props = withDefaults(
   defineProps<{
     menus?: Menu[];
-    primaryColor: chroma.Color;
+    primaryColor?: chroma.Color;
   }>(),
   {
     primaryColor: () => chroma('ffffff'),
@@ -25,7 +26,7 @@ const isDark = computed(() => isColorDark(props.primaryColor, 60));
   <MenuIcon
     :menus="menus"
     :src="isDark ? IconOptionLight : IconOptionDark"
-    @show="() => $emit('show')"
-    @hide="() => $emit('hide')"
+    @show="() => emits('show')"
+    @hide="() => emits('hide')"
   />
 </template>

@@ -6,15 +6,6 @@ export interface PopupWindowOption<T = any> {
   onOpened?: (popupWindow: this) => void;
   onClosed?: (popupWindow: this) => void;
 }
-export interface RemovePopupWindowOption<T = any> {
-  title?: string;
-  message?: string;
-
-  data?: T;
-  onOpened?: (popupWindow: PopupWindowOption<T>) => void;
-  onClosed?: (popupWindow: PopupWindowOption<T>) => void;
-  onConfirm: () => void;
-}
 
 export interface PopupWindow<T = any> {
   data: T;

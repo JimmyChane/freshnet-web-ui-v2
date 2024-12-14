@@ -7,6 +7,7 @@ import { isColorDark } from '@/utils/U';
 
 const Direction = { Left: 1, Right: 2 };
 
+const emits = defineEmits<{ click: [void] }>();
 const props = withDefaults(
   defineProps<{
     primaryColor: Object;
@@ -43,7 +44,7 @@ const arrowIcon = computed(() =>
       right: isRight ? '0' : 'unset',
     }"
     :isShowing="`${isShowing}`"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <img class="PanelProductsGroupArrow-arrow" :src="arrowIcon" />
   </button>

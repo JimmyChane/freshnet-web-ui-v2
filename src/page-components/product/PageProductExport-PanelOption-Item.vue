@@ -29,7 +29,9 @@ function clickMenu(key: string) {
     return item.title === menu.key;
   });
 
-  item?.click() ?? null;
+  if (item && 'click' in item && typeof item.click === 'function') {
+    item?.click() ?? null;
+  }
 }
 </script>
 

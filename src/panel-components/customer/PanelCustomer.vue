@@ -20,13 +20,29 @@ import ItemDevice from '@/page-components/customer/ItemDevice.vue';
 import ItemService from '@/dialog-components/service/item-service/ItemService.vue';
 import PanelItemCustomer from '../manage/PanelItem-Customer.vue';
 import PanelItemSection from '../manage/PanelItem-Section.vue';
+import type { CustomerDeviceSpecification } from '@/data/CustomerDeviceSpecification';
 
 const emits = defineEmits<{
   clickItemClose: [void];
   clickItemRemove: [Customer];
-  clickItemDeviceRemove: [void];
-  clickItemDeviceUpdateSpecifications: [void];
-  clickItemDeviceUpdateDescription: [void];
+  clickItemCustomerUpdate: [ServiceCustomer];
+  clickItemDescriptionUpdate: [Customer];
+  clickItemDeviceAdd: [Customer];
+  clickItemDeviceRemove: [{ item: Customer; device: CustomerDevice }];
+  clickItemDeviceUpdateSpecifications: [
+    {
+      item: Customer;
+      device: CustomerDevice;
+      specifications: CustomerDeviceSpecification[];
+    },
+  ];
+  clickItemDeviceUpdateDescription: [
+    {
+      item: Customer;
+      device: CustomerDevice;
+      description: string;
+    },
+  ];
 }>();
 const props = defineProps<{ item?: Customer }>();
 
@@ -126,7 +142,7 @@ async function invalidateDevices() {
           key: 'close',
           title: 'Close',
           icon: IconClose,
-          click: () => $emit('click-item-close', { item }),
+          click: () => emits('clickItemClose'),
         }"
         :rightMenus="menus"
       >
@@ -134,7 +150,7 @@ async function invalidateDevices() {
           v-if="item instanceof ServiceCustomer"
           :customer="item"
           :isEditable="item.isModifiable()"
-          @click-edit="(item) => $emit('click-item-customer-update', { item })"
+          @click-edit="(item) => emits('clickItemCustomerUpdate', item)"
         />
       </Actionbar>
 
@@ -145,7 +161,9 @@ async function invalidateDevices() {
           :menus="[
             {
               icon: IconEdit,
-              click: () => $emit('click-item-description-update', { item }),
+              click: () => {
+                if (item) emits('clickItemDescriptionUpdate', item);
+              },
             },
           ]"
         >
@@ -159,7 +177,9 @@ async function invalidateDevices() {
           :menus="[
             {
               icon: IconAdd,
-              click: () => $emit('click-item-device-add', { item }),
+              click: () => {
+                if (item) emits('clickItemDeviceAdd', item);
+              },
             },
           ]"
         >
@@ -169,27 +189,31 @@ async function invalidateDevices() {
               :key="deviceContext.deviceId"
               :item="deviceContext.device"
               @click-remove="
-                (param) =>
-                  $emit('click-item-device-remove', {
-                    item,
-                    device: param.item,
-                  })
+                (device) => {
+                  if (item) emits('clickItemDeviceRemove', { item, device });
+                }
               "
               @click-update-specifications="
-                (param) =>
-                  $emit('click-item-device-update-specifications', {
-                    item,
-                    device: param.item,
-                    specifications: param.item.specifications,
-                  })
+                (customerDevice) => {
+                  if (item) {
+                    emits('clickItemDeviceUpdateSpecifications', {
+                      item,
+                      device: customerDevice,
+                      specifications: customerDevice.specifications,
+                    });
+                  }
+                }
               "
               @click-update-description="
-                (param) =>
-                  $emit('click-item-device-update-description', {
-                    item,
-                    device: param.item,
-                    description: param.item.description,
-                  })
+                (param) => {
+                  if (item) {
+                    emits('clickItemDeviceUpdateDescription', {
+                      item,
+                      device: param,
+                      description: param.description,
+                    });
+                  }
+                }
               "
             />
           </div>

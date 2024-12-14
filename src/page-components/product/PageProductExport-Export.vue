@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const emits = defineEmits<{ click: [void] }>();
+</script>
+
 <template>
-  <button class="ExportExport transition" @click="() => $emit('click')">
+  <button class="ExportExport transition" @click="() => emits('click')">
     <span>Export</span>
   </button>
 </template>

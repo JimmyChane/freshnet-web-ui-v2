@@ -2,14 +2,37 @@
 import PanelProducts from '@/panel-components/product/PanelProducts.vue';
 import PanelProduct from '@/panel-components/product/PanelProduct.vue';
 import WindowSearch from '@/dialog-components/product/WindowSearch.vue';
-import WindowAddProduct from '@/dialog-components/product/WindowAddProduct.vue';
-import WindowRemoveProduct from '@/dialog-components/product/WindowRemoveProduct.vue';
-import WindowRemoveImage from '@/dialog-components/product/WindowRemoveImage.vue';
-import WindowUpdateTitleBrand from '@/dialog-components/product/WindowUpdateTitleBrand.vue';
-import WindowUpdatePrice from '@/dialog-components/product/WindowUpdatePrice.vue';
-import WindowUpdateDescription from '@/dialog-components/product/WindowUpdateDescription.vue';
-import WindowUpdateCategory from '@/dialog-components/product/WindowUpdateCategory.vue';
-import WindowUpdateSpecifications from '@/dialog-components/product/WindowUpdateSpecifications.vue';
+import WindowAddProduct, {
+  type DataProps as AddProductDataProps,
+} from '@/dialog-components/product/WindowAddProduct.vue';
+import WindowRemoveProduct, {
+  type DataContent as RemoveProductDataContent,
+  type DataProps as RemoveProductDataProps,
+} from '@/dialog-components/product/WindowRemoveProduct.vue';
+import WindowRemoveImage, {
+  type DataContent as RemoveImageDataContent,
+  type DataProps as RemoveImageDataProps,
+} from '@/dialog-components/product/WindowRemoveImage.vue';
+import WindowUpdateTitleBrand, {
+  type DataContent as UpdateTitleBrandDataContent,
+  type DataProps as UpdateTitleBrandDataProps,
+} from '@/dialog-components/product/WindowUpdateTitleBrand.vue';
+import WindowUpdatePrice, {
+  type DataContent as UpdatePriceDataContent,
+  type DataProps as UpdatePriceDataProps,
+} from '@/dialog-components/product/WindowUpdatePrice.vue';
+import WindowUpdateDescription, {
+  type DataContent as UpdateDescriptionDataContent,
+  type DataProps as UpdateDescriptionDataProps,
+} from '@/dialog-components/product/WindowUpdateDescription.vue';
+import WindowUpdateCategory, {
+  type DataContent as UpdateCategoryDataContent,
+  type DataProps as UpdateCategoryDataProps,
+} from '@/dialog-components/product/WindowUpdateCategory.vue';
+import WindowUpdateSpecifications, {
+  type DataContent as UpdateSpecificationsDataContent,
+  type DataProps as UpdateSpecificationsDataProps,
+} from '@/dialog-components/product/WindowUpdateSpecifications.vue';
 import PanelRight from '@/components/panel/PanelRight.vue';
 import { useCategoryStore } from '@/data-stores/category.store';
 import { useProductStore } from '@/data-stores/product.store';
@@ -21,6 +44,7 @@ import { useRouteStore } from '@/stores/route.store';
 import { usePopupWindowStore } from '@/stores/popup-window/popup-window.store';
 import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
 import { Layout, useNavigationStore } from '@/stores/navigation.store';
+import { optArray } from '@/utils/U';
 
 const stylePanelProducts = ref({});
 const stylePanelEmpty = ref({});
@@ -144,7 +168,7 @@ function invalidateStyle() {
   }
 }
 
-function delayOnPanelListened(callback = (isSamePreviously) => {}, delay = 700) {
+function delayOnPanelListened(callback = (isSamePreviously: boolean) => {}, delay = 700) {
   const isPreviousWide = panelListened.value.isWide;
   const isPreviousShowing = panelListened.value.isShowing;
 
@@ -203,15 +227,17 @@ async function clickSearch() {
 }
 
 async function clickAddProduct() {
-  const popupWindow = usePopupWindowStore().open({
+  const popupWindow = usePopupWindowStore().open<AddProductDataProps>({
     component: WindowAddProduct,
     data: {
       onConfirm: (output) => {
         useProductStore()
           .addItem({ data: output })
           .then((product) => {
-            popupWindow.close();
-            setProduct(product);
+            if (product) {
+              popupWindow.close();
+              setProduct(product);
+            }
           })
           .catch((error) => {
             useSnackbarStore().show('Product Creation Failed');
@@ -221,17 +247,17 @@ async function clickAddProduct() {
   });
 }
 
-async function clickRemoveProduct(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickRemoveProduct(input: RemoveProductDataContent) {
+  const popupWindow = usePopupWindowStore().open<RemoveProductDataProps>({
     component: WindowRemoveProduct,
     data: {
       input,
       onConfirm: (input) => {
         useProductStore()
-          .removeItemOfId({ id: input.productId })
+          .removeItemOfId({ id: input.product.id })
           .then(() => {
             popupWindow.close();
-            setProduct(null);
+            setProduct(undefined);
           })
           .catch((error) => {
             useSnackbarStore().show('Product Deletion Failed');
@@ -240,8 +266,8 @@ async function clickRemoveProduct(input) {
     },
   });
 }
-async function clickRemoveProductImage(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickRemoveProductImage(input: RemoveImageDataContent) {
+  const popupWindow = usePopupWindowStore().open<RemoveImageDataProps>({
     component: WindowRemoveImage,
     data: {
       input,
@@ -256,8 +282,8 @@ async function clickRemoveProductImage(input) {
   });
 }
 
-async function clickUpdateProductTitleBrand(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickUpdateProductTitleBrand(input: UpdateTitleBrandDataContent) {
+  const popupWindow = usePopupWindowStore().open<UpdateTitleBrandDataProps>({
     component: WindowUpdateTitleBrand,
     data: {
       input,
@@ -281,15 +307,14 @@ async function clickUpdateProductTitleBrand(input) {
     },
   });
 }
-async function clickUpdateProductPrice(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickUpdateProductPrice(input: UpdatePriceDataContent) {
+  const popupWindow = usePopupWindowStore().open<UpdatePriceDataProps>({
     component: WindowUpdatePrice,
     data: {
       input,
       onConfirm: (input) => {
-        const { product, price } = input;
         useProductStore()
-          .updatePriceOfId({ id: product.id, price })
+          .updatePriceOfId({ id: input.product?.id ?? '', price: input.price })
           .then((product) => popupWindow.close())
           .catch((error) => {
             useSnackbarStore().show('Cannot Update');
@@ -298,15 +323,14 @@ async function clickUpdateProductPrice(input) {
     },
   });
 }
-async function clickUpdateProductDescription(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickUpdateProductDescription(input: UpdateDescriptionDataContent) {
+  const popupWindow = usePopupWindowStore().open<UpdateDescriptionDataProps>({
     component: WindowUpdateDescription,
     data: {
       input,
       onConfirm: (input) => {
-        const { product, description } = input;
         useProductStore()
-          .updateDescriptionOfId({ id: product.id, description })
+          .updateDescriptionOfId({ id: input.product.id, description: input.description })
           .then((product) => popupWindow.close())
           .catch((error) => {
             useSnackbarStore().show('Cannot Update');
@@ -315,8 +339,8 @@ async function clickUpdateProductDescription(input) {
     },
   });
 }
-async function clickUpdateProductCategory(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickUpdateProductCategory(input: UpdateCategoryDataContent) {
+  const popupWindow = usePopupWindowStore().open<UpdateCategoryDataProps>({
     component: WindowUpdateCategory,
     data: {
       input,
@@ -332,17 +356,16 @@ async function clickUpdateProductCategory(input) {
     },
   });
 }
-async function clickUpdateProductSpecifications(input) {
-  const popupWindow = usePopupWindowStore().open({
+async function clickUpdateProductSpecifications(input: UpdateSpecificationsDataContent) {
+  const popupWindow = usePopupWindowStore().open<UpdateSpecificationsDataProps>({
     component: WindowUpdateSpecifications,
     data: {
       input,
       onConfirm: (input) => {
-        const { product, specifications } = input;
         useProductStore()
           .updateSpecificationsOfId({
-            id: product.id,
-            specifications: specifications.map((specification) => {
+            id: input.product?.id ?? '',
+            specifications: optArray(input.specifications).map((specification) => {
               return {
                 type: specification.typeKey,
                 content: specification.content,
@@ -381,8 +404,8 @@ onMounted(() => {
       titleEmpty="Select product to view"
       :isShowing="!!product"
       @click-collapse="() => setProduct(undefined)"
-      @on-isShowing="(isShowing) => invalidatePanelShowing(isShowing)"
-      @on-isWide="(isWide) => invalidatePanelWide(isWide)"
+      @on-showing="(isShowing) => invalidatePanelShowing(isShowing)"
+      @on-wide="(isWide) => invalidatePanelWide(isWide)"
     >
       <PanelProduct
         class="PageProduct-PanelProduct"

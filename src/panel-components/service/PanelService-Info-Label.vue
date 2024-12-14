@@ -2,6 +2,8 @@
 import { Label } from '@/data/ServiceLabel';
 import { computed } from 'vue';
 
+const emits = defineEmits<{ click: [void] }>();
+
 const props = withDefaults(defineProps<{ label: Label; isClickable?: boolean }>(), {
   isClickable: true,
 });
@@ -15,7 +17,7 @@ const title = computed(() => props.label.title);
     class="Label"
     :style="{ '--primary-color': `#${hexColor}` }"
     :isClickable="`${isClickable}`"
-    @click="$emit('click')"
+    @click="emits('click')"
   >
     <span class="transition">{{ title }}</span>
     <img class="transition" src="@/assets/icon/close-FFFFFF.svg" />

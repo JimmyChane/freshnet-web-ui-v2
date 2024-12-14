@@ -1,9 +1,11 @@
 <script setup lang="ts">
+const emits = defineEmits<{ click: [void] }>();
+
 defineProps<{ to: Object }>();
 </script>
 
 <template>
-  <router-link class="GlobalSearch-item transition" :to="to" @click.native="() => $emit('click')">
+  <router-link class="GlobalSearch-item transition" :to="to" @click.native="() => emits('click')">
     <slot></slot>
   </router-link>
 </template>

@@ -4,6 +4,10 @@ import { type Menu } from '../PopupMenu';
 import chroma from 'chroma-js';
 import { computed } from 'vue';
 
+const emits = defineEmits<{
+  click: [Menu];
+}>();
+
 const props = withDefaults(
   defineProps<{
     menu?: Menu;
@@ -39,7 +43,11 @@ const hasIcon = computed(() => optString(icon.value).length > 0);
     :isSelected="`${isSelected}`"
     :href="href"
     :target="target"
-    @click="() => $emit('click', menu)"
+    @click="
+      () => {
+        if (menu) emits('click', menu);
+      }
+    "
   >
     <img v-if="hasIcon" :src="icon" :alt="`Icon ${title}`" />
     <span>{{ title }}</span>
@@ -54,7 +62,11 @@ const hasIcon = computed(() => optString(icon.value).length > 0);
     }"
     :isSelected="`${isSelected}`"
     :to="to"
-    @click="() => $emit('click', menu)"
+    @click="
+      () => {
+        if (menu) emits('click', menu);
+      }
+    "
   >
     <img v-if="hasIcon" :src="icon" :alt="`Icon ${title}`" />
     <span>{{ title }}</span>
@@ -72,7 +84,11 @@ const hasIcon = computed(() => optString(icon.value).length > 0);
         : '',
     }"
     :isSelected="`${isSelected}`"
-    @click="() => $emit('click', menu)"
+    @click="
+      () => {
+        if (menu) emits('click', menu);
+      }
+    "
   >
     <img v-if="hasIcon" :src="icon" :alt="`Icon ${title}`" />
     <span>{{ title }}</span>

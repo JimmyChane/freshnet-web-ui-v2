@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ItemPrice from '../item/ItemPrice.vue';
 import ItemProductSpecification from '../item/ItemProductSpecification.vue';
-import ButtonImageAdd from './components/ButtonImageAdd.vue';
+import ButtonImageAdd from '@/page-components/service/ButtonAddImage.vue';
 import ToggleButton from '@/components/button/ToggleButton.vue';
 import MenuOption from '@/components/button/MenuOption.vue';
 import ButtonIcon from '@/components/button/ButtonIcon.vue';
@@ -10,7 +10,7 @@ import { Product } from '@/data/Product';
 import { onMounted, ref, watch } from 'vue';
 import { useProductStore } from '@/data-stores/product.store';
 import { Specification } from '@/data/Specification';
-import ButtonImage from '@/pages/service/components/ButtonImage.vue';
+import ButtonImage from '@/page-components/service/ButtonImage.vue';
 import type { Category } from '@/data/Category';
 import type { Brand } from '@/data/Brand';
 import type { Image } from '@/data/Image';
@@ -110,11 +110,15 @@ onMounted(() => {
             class="WindowProduct-image-add"
             @callback-result="
               (files) => {
-                useProductStore()
-                  .addImageOfId({ id: item.id, files })
-                  .then((product) => {
-                    item.data.images = item.data.images;
-                  });
+                if (item) {
+                  const pItem = item;
+
+                  useProductStore()
+                    .addImageOfId({ id: item.id, files })
+                    .then((product) => {
+                      pItem.images = product.images;
+                    });
+                }
               }
             "
           />

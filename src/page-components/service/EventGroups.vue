@@ -7,6 +7,8 @@ import { ServiceEvent } from '@/data/ServiceEvent';
 import { computed } from 'vue';
 import type { Action } from '@/panel-components/service/PanelService.vue';
 
+const emits = defineEmits<{ clickItemDelete: [ServiceEvent] }>();
+
 const props = withDefaults(
   defineProps<{
     service?: Service;
@@ -63,7 +65,7 @@ const groups = computed(() => {
         :service="service"
         :event="event"
         :actions="actions"
-        @callback-delete="(event) => $emit('click-item-delete', event)"
+        @callback-delete="(event) => emits('clickItemDelete', event)"
       />
     </div>
   </div>

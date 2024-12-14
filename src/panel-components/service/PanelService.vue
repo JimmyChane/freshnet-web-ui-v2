@@ -7,6 +7,10 @@ import chroma, { type Color } from 'chroma-js';
 import { Service } from '@/data/Service';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
+import type { ServiceBelonging } from '@/data/ServiceBelonging';
+import type { ServiceCustomer } from '@/data/ServiceCustomer';
+import type { ServiceEventData, ServiceEvent } from '@/data/ServiceEvent';
+import type { ServiceImage } from '@/data/ServiceImage';
 
 export interface Action {
   onClickClose: () => void;

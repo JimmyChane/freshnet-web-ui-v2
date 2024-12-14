@@ -25,9 +25,9 @@ withDefaults(
     v-if="href.length"
     :href="href"
     :target="target"
-    @click="$emit('click')"
-    @mouseover="(x) => $emit('mouseover', x)"
-    @mouseleave="(x) => $emit('mouseleave', x)"
+    @click="emits('click')"
+    @mouseover="(x) => emits('mouseover', x)"
+    @mouseleave="(x) => emits('mouseleave', x)"
   >
     <Icon class="ButtonIcon-icon" :src="src" :alt="alt" />
   </a>
@@ -46,9 +46,9 @@ withDefaults(
   <button
     class="ButtonIcon transition"
     v-else
-    @click="$emit('click')"
-    @mouseover="(x) => $emit('mouseover', x)"
-    @mouseleave="(x) => $emit('mouseleave', x)"
+    @click="emits('click')"
+    @mouseover="(x) => emits('mouseover', x)"
+    @mouseleave="(x) => emits('mouseleave', x)"
   >
     <Icon class="ButtonIcon-icon" :src="src" :alt="alt" />
   </button>

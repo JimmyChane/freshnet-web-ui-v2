@@ -79,11 +79,11 @@ export const PROMOTION = new Label('promotion', 'Promotion', '#FF8A00');
 export const OUT_OF_STOCK = new Label('outOfStock', 'Out of Stock', '#FF4B33');
 export const SECOND_HAND = new Label('secondHand', 'Second Hand', '#249696');
 
-const PROCESSOR_MAPS = {
+const PROCESSOR_MAPS: Record<string, string[]> = {
   intel: ['i9', 'i7', 'i5', 'i3', 'celeron', 'pentium'],
   amd: ['ryzen 7', 'ryzen 5', 'ryzen 3', 'althon silver'],
 };
-const RAM_MAPS = {
+const RAM_MAPS: Record<string, string[]> = {
   ddr3: [16, 8, 7, 6, 5, 4, 3, 2].map((x) => {
     return new Memory(x, GIGABYTE).toString();
   }),
@@ -106,7 +106,7 @@ const HDDS = [
     return new Memory(x, GIGABYTE).toString();
   }),
 ];
-const STORAGE_MAPS = { ssd: SSDS, hdd: HDDS };
+const STORAGE_MAPS: Record<string, string[]> = { ssd: SSDS, hdd: HDDS };
 
 const GRAPHICS = [
   `${INTEL.title} hd`,
@@ -124,22 +124,22 @@ const RESOLUTIONS = [
   new Resolution(1366, 768, 'hd', 'HD').toString(),
 ];
 
-export const SPECIFICATION_MAPS: Record<string, string[] | Record<string, string[]>> = {
-  processor: PROCESSOR_MAPS,
-  ram: RAM_MAPS,
-  size: SIZES,
-  resolution: RESOLUTIONS,
-  display: RESOLUTIONS,
-  storage: STORAGE_MAPS,
+export const SPECIFICATION_MAPS = {
+  [TypeKey.Processor]: PROCESSOR_MAPS,
+  [TypeKey.Ram]: RAM_MAPS,
+  [TypeKey.Size]: SIZES,
+  [TypeKey.Resolution]: RESOLUTIONS,
+  [TypeKey.Display]: RESOLUTIONS,
+  [TypeKey.Storage]: STORAGE_MAPS,
   graphic: GRAPHICS,
 };
 export const COLOR_MAPS: Record<string, string> = {
-  processor: '#276EB0',
-  ram: '#249696',
-  size: '#3B9511',
-  resolution: '#A11357',
-  display: '#A11357',
-  storage: '#276EB0',
+  [TypeKey.Processor]: '#276EB0',
+  [TypeKey.Ram]: '#249696',
+  [TypeKey.Size]: '#3B9511',
+  [TypeKey.Resolution]: '#A11357',
+  [TypeKey.Display]: '#A11357',
+  [TypeKey.Storage]: '#276EB0',
 };
 
 export function generateStockLabels(product?: Product): Label[] {
@@ -162,64 +162,116 @@ export function generateSpecificationLabels(
 
   const itemSpecificationsByMap = specifications.filter((itemSpec) => {
     const key = itemSpec.getKey();
+    if (key === undefined) return false;
     return Object.keys(SPECIFICATION_MAPS).includes(key);
   });
   const itemSpecifications = itemSpecificationsByMap.map((itemSpec) => {
     const key = itemSpec.getKey();
-    const compares = SPECIFICATION_MAPS[key];
+
+    if (key === undefined) return;
+
     const content = itemSpec.content.toLowerCase();
 
-    if ([TypeKey.Processor, TypeKey.Ram, TypeKey.Storage].includes(key as TypeKey)) {
-      for (const compareType of Object.keys(compares)) {
-        if (!content.includes(compareType)) {
-          continue;
+    switch (key) {
+      case TypeKey.Processor:
+        for (const key of Object.keys(PROCESSOR_MAPS)) {
+          if (!content.includes(key)) continue;
+
+          for (const key in PROCESSOR_MAPS) {
+            if (PROCESSOR_MAPS[key].includes(content)) {
+              return {
+                name: `${key}${content}`,
+                text: `${key} ${content}`.toUpperCase(),
+                color: COLOR_MAPS[key],
+              };
+            }
+          }
         }
-        for (const compare of compares[compareType]) {
+
+        break;
+      case TypeKey.Ram:
+        for (const key of Object.keys(RAM_MAPS)) {
+          if (!content.includes(key)) continue;
+
+          for (const key in RAM_MAPS) {
+            if (RAM_MAPS[key].includes(content)) {
+              return {
+                name: `${key}${content}`,
+                text: `${key} ${content}`.toUpperCase(),
+                color: COLOR_MAPS[key],
+              };
+            }
+          }
+        }
+
+        break;
+      case TypeKey.Storage:
+        for (const key of Object.keys(STORAGE_MAPS)) {
+          if (!content.includes(key)) continue;
+
+          for (const key in STORAGE_MAPS) {
+            if (STORAGE_MAPS[key].includes(content)) {
+              return {
+                name: `${key}${content}`,
+                text: `${key} ${content}`.toUpperCase(),
+                color: COLOR_MAPS[key],
+              };
+            }
+          }
+        }
+        break;
+      case TypeKey.Resolution:
+      case TypeKey.Display:
+        if (RESOLUTIONS.includes(content)) {
+          return {
+            name: content,
+            text: `${content}`.toUpperCase(),
+            color: COLOR_MAPS[key],
+          };
+        }
+        break;
+      case TypeKey.Size:
+        if (SIZES.includes(content)) {
+          return {
+            name: content,
+            text: `${content}"`,
+            color: COLOR_MAPS[key],
+          };
+        }
+
+        break;
+      case TypeKey.Graphic:
+        const reversedCompares = [].map((compare: any) => compare).reverse();
+        for (const compare of reversedCompares) {
           if (content.includes(compare)) {
             return {
-              name: `${compareType}${compare}`,
-              text: `${compareType} ${compare}`.toUpperCase(),
+              name: compare,
+              text: `${compare}`.toUpperCase(),
               color: COLOR_MAPS[key],
             };
           }
         }
-      }
+      default:
     }
 
-    if (key === TypeKey.Size) {
-      for (const compare of compares) {
-        if (content.includes(compare)) {
-          return {
-            name: compare,
-            text: `${compare}"`,
-            color: COLOR_MAPS[key],
-          };
-        }
+    const compares = (() => {
+      switch (key) {
+        case TypeKey.Processor:
+          return SPECIFICATION_MAPS.processor;
+        case TypeKey.Ram:
+          return SPECIFICATION_MAPS.ram;
+        case TypeKey.Size:
+          return SPECIFICATION_MAPS.size;
+        case TypeKey.Resolution:
+          return SPECIFICATION_MAPS.resolution;
+        case TypeKey.Display:
+          return SPECIFICATION_MAPS.display;
+        case TypeKey.Storage:
+          return SPECIFICATION_MAPS.storage;
+        default:
+          return undefined;
       }
-    } else if ([TypeKey.Resolution, TypeKey.Display].includes(key as TypeKey)) {
-      for (const compare of compares) {
-        if (content.includes(compare)) {
-          return {
-            name: compare,
-            text: `${compare}`.toUpperCase(),
-            color: COLOR_MAPS[key],
-          };
-        }
-      }
-    }
-
-    if (key === TypeKey.Graphic) {
-      const reversedCompares = compares.map((compare: any) => compare).reverse();
-      for (const compare of reversedCompares) {
-        if (content.includes(compare)) {
-          return {
-            name: compare,
-            text: `${compare}`.toUpperCase(),
-            color: COLOR_MAPS[key],
-          };
-        }
-      }
-    }
+    })();
   });
 
   return itemSpecifications.filter(

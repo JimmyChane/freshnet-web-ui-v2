@@ -12,7 +12,7 @@ import { useSettingStore } from '@/data-stores/setting.store';
 import { isColorDark } from '@/utils/U';
 import { generateSpecificationLabels, generateStockLabels } from '@/data/ProductPreset';
 
-const emits = defineEmits<{ click: [void] }>();
+const emits = defineEmits<{ click: [Product] }>();
 
 const primaryColorHex = ref('');
 const fullTitle = ref('');
@@ -127,7 +127,13 @@ onMounted(() => {
     }"
     :ref="item?.id"
     :isSelected="`${isSelected}`"
-    @click="$emit('click', item)"
+    @click="
+      () => {
+        if (item) {
+          emits('click', item);
+        }
+      }
+    "
   >
     <div class="ItemProduct-preview transition">
       <ImageView class="ItemProduct-preview-image" v-if="preview" :src="preview" />

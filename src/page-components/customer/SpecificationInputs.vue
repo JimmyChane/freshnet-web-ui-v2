@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ItemSpec from './ItemSpecificationInput.vue';
-import Selector4 from '@/components/selector/Selector4.vue';
+import Selector4, { type Menu as Selector4Menu } from '@/components/selector/Selector4.vue';
 import { Specification, Type, TypeKey } from '@/data/Specification';
 import { useSpecificationStore } from '@/data-stores/specification.store';
 import { computed, onMounted, ref, watch } from 'vue';
@@ -14,8 +14,11 @@ const list = ref<Specification[]>([]);
 const typeNone = computed<Type>(() => new Type({ key: 'none', title: 'None' }));
 
 const specKeys = computed(() => [typeNone.value.key, ...Object.values(TypeKey)]);
-const specificationMenus = computed(() => {
-  return [typeNone.value, ...useSpecificationStore().items.map((item) => item)]
+const specificationMenus = computed<Selector4Menu[]>(() => {
+  const specificationStore = useSpecificationStore();
+  const specifications = specificationStore.items;
+
+  return [typeNone.value, ...specifications.map((item) => item)]
     .map((item) => {
       return {
         key: item.key,
@@ -33,6 +36,13 @@ const specificationMenus = computed(() => {
     })
     .sort((menu1, menu2) => {
       return specKeys.value.indexOf(menu1.key) - specKeys.value.indexOf(menu2.key);
+    })
+    .map((item) => {
+      return {
+        key: item.key ?? '',
+        icon: item.icon,
+        title: item.title,
+      };
     });
 });
 

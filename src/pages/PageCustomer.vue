@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import Loading from '@/components/loading/Loading.vue';
 import WindowAddCustomer from '@/dialog-components/customer/WindowAddCustomer.vue';
-import WindowRemoveCustomer from '@/dialog-components/customer/WindowRemoveCustomer.vue';
+import WindowRemoveCustomer, {
+  type DataProps,
+} from '@/dialog-components/customer/WindowRemoveCustomer.vue';
 import WindowUpdateCustomer from '@/dialog-components/customer/WindowUpdateCustomer.vue';
 import WindowUpdateDescription from '@/dialog-components/customer/WindowUpdateDescription.vue';
 import WindowAddDevice from '@/dialog-components/customer/WindowAddDevice.vue';
@@ -17,6 +19,9 @@ import { useRoute } from 'vue-router';
 import { Customer } from '@/data/Customer';
 import { useRouteStore } from '@/stores/route.store';
 import { usePopupWindowStore } from '@/stores/popup-window/popup-window.store';
+import type { CustomerDevice } from '@/data/CustomerDevice';
+import type { CustomerDeviceSpecification } from '@/data/CustomerDeviceSpecification';
+import type { ServiceCustomer } from '@/data/ServiceCustomer';
 
 const panelListened = ref({ isWide: false });
 const items = ref<Customer[]>([]);
@@ -87,62 +92,63 @@ function clickClose() {
 function clickItemAdd() {
   usePopupWindowStore().open({ component: WindowAddCustomer });
 }
-function clickAddItemDevice(data) {
+function clickAddItemDevice(data: Customer) {
   usePopupWindowStore().open({
     component: WindowAddDevice,
-    data: data?.item ?? null,
+    data: data ?? null,
   });
 }
 
-function clickItemRemove(item) {
-  const data = { item };
-
-  usePopupWindowStore().open({
+function clickItemRemove(item: Customer) {
+  usePopupWindowStore().open<DataProps>({
     component: WindowRemoveCustomer,
-    data: data?.item ?? null,
-    onConfirm: () => {
-      if (data.id === queryCustomerId.value) {
-        clickClose();
-      }
-    },
+    data: { item: item },
   });
 }
-function clickRemoveItemDevice(data) {
+function clickRemoveItemDevice(data: { item: Customer; device: CustomerDevice }) {
   usePopupWindowStore().open({
     component: WindowRemoveDevice,
     data: data ? { customer: data.item, device: data.device } : null,
   });
 }
 
-function clickUpdateCustomer(data) {
+function clickUpdateCustomer(data: ServiceCustomer) {
   usePopupWindowStore().open({
     component: WindowUpdateCustomer,
-    data: data?.item ?? null,
+    data: data ?? null,
   });
 }
-function clickUpdateDescription(data) {
+function clickUpdateDescription(data: Customer) {
   usePopupWindowStore().open({
     component: WindowUpdateDescription,
-    data: data?.item ?? null,
+    data: data ?? null,
   });
 }
-function clickUpdateItemDeviceSpecifications(data) {
+function clickUpdateItemDeviceSpecifications(data: {
+  item: Customer;
+  device: CustomerDevice;
+  specifications: CustomerDeviceSpecification[];
+}) {
   usePopupWindowStore().open({
     component: WindowUpdateDeviceSpecifications,
     data: data
       ? {
-          customer: data.customer,
+          customer: data.item,
           device: data.device,
           specifications: data.specifications,
         }
       : null,
   });
 }
-function clickUpdateItemDeviceDescription(data) {
+function clickUpdateItemDeviceDescription(data: {
+  item: Customer;
+  device: CustomerDevice;
+  description: string;
+}) {
   usePopupWindowStore().open({
     component: WindowUpdateDeviceDescription,
     data: {
-      customer: data?.customer ?? null,
+      customer: data?.item ?? null,
       device: data?.device ?? null,
     },
   });
@@ -158,7 +164,7 @@ function clickUpdateItemDeviceDescription(data) {
       :title="$options.title"
       @click-refresh="() => invalidate()"
       @click-item-add="() => clickItemAdd()"
-      @click-item-remove="(param) => clickItemRemove(param.item)"
+      @click-item-remove="(customer) => clickItemRemove(customer)"
     />
 
     <PanelRight
@@ -166,13 +172,13 @@ function clickUpdateItemDeviceDescription(data) {
       titleEmpty="Select customer to view"
       :isShowing="!!currentCustomer"
       @click-collapse="() => clickClose()"
-      @on-isWide="(isWide) => (panelListened.isWide = isWide)"
+      @on-wide="(isWide) => (panelListened.isWide = isWide)"
     >
       <PanelCustomer
         class="PageCustomer-PanelCustomer transition"
         :item="drawerCustomer"
         @click-item-close="() => clickClose()"
-        @click-item-remove="(param) => clickItemRemove(param.item)"
+        @click-item-remove="(param) => clickItemRemove(param)"
         @click-item-customer-update="(param) => clickUpdateCustomer(param)"
         @click-item-description-update="(param) => clickUpdateDescription(param)"
         @click-item-device-add="(param) => clickAddItemDevice(param)"

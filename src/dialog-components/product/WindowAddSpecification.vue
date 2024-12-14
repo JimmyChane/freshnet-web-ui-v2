@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import WindowAction from '@/components/window/WindowAction.vue';
-import Selector from '@/components/selector/Selector.vue';
+import Selector, { type SelectorMenu } from '@/components/selector/Selector.vue';
 import { TypeKey } from '@/data/Specification';
 import Input from '@/components/input/Input.vue';
 import { computed, ref } from 'vue';
 import { useSpecificationStore } from '@/data-stores/specification.store';
 import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
-import type { SelectorMenu } from '@/components/selector/Selector';
 
 const props = withDefaults(
   defineProps<{

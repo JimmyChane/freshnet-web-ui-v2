@@ -2,9 +2,13 @@
 import Loading from '@/components/loading/Loading.vue';
 import PanelServices from '@/panel-components/service/PanelServices.vue';
 import PanelService, { type Action } from '@/panel-components/service/PanelService.vue';
-import WindowSearch from '@/dialog-components/service/WindowSearch.vue';
+import WindowSearch, {
+  type DataProps as SearchDataProps,
+} from '@/dialog-components/service/WindowSearch.vue';
 import WindowImportService from '@/dialog-components/service/WindowImportService.vue';
-import WindowAddService from '@/dialog-components/service/WindowAddService.vue';
+import WindowAddService, {
+  type DataProps as AddServiceDataProps,
+} from '@/dialog-components/service/WindowAddService.vue';
 import WindowUpdateDescription from '@/dialog-components/service/WindowUpdateDescription.vue';
 import WindowUpdateBelonging from '@/dialog-components/service/WindowUpdateBelonging.vue';
 import WindowUpdateCustomer from '@/dialog-components/service/WindowUpdateCustomer.vue';
@@ -38,7 +42,8 @@ const actions = ref<Action>({
         throw error;
       });
   },
-  onClickRemoveEvent: (data) => cllickRemoveServiceEvent(data.event),
+  onClickRemoveEvent: (data) =>
+    cllickRemoveServiceEvent({ service: data.service, event: data.event }),
   onClickRemoveImage: (image) => clickRemoveServiceImage(image),
   onClickUpdateCustomer: (customer) => clickEditServiceCustomer(customer),
   onClickUpdateDescription: (description) => clickEditServiceDescritpion(description),
@@ -111,7 +116,7 @@ function clickRefresh() {
   useServiceStore().refresh();
 }
 function clickAddService() {
-  usePopupWindowStore().open({
+  usePopupWindowStore().open<AddServiceDataProps>({
     component: WindowAddService,
     data: {
       onConfirm: async (accept, reject, data) => {
@@ -119,7 +124,7 @@ function clickAddService() {
           const result = await useServiceStore().addItem({ data });
 
           result ? accept() : reject();
-          clickService(result);
+          clickService(result ?? undefined);
         } catch (error) {
           useSnackbarStore().show('Failed to create a service');
           reject();
@@ -151,12 +156,14 @@ function clickService(service?: Service) {
   updateServiceUI(service);
 }
 function clickSearch() {
-  usePopupWindowStore().open({
+  if (items.value === undefined) return;
+
+  usePopupWindowStore().open<SearchDataProps>({
     component: WindowSearch,
     data: {
       items: items.value,
       clickItem: (service) => {
-        clickService(service);
+        if (service instanceof Service) clickService(service);
       },
     },
   });
@@ -316,7 +323,7 @@ onMounted(() => {
       titleEmpty="Select service to view"
       :isShowing="!!currentService"
       @click-collapse="() => useRouteStore().nextQuery({ query: { service: null } })"
-      @on-isWide="(isWide) => (panelListened.isWide = isWide)"
+      @on-wide="(isWide) => (panelListened.isWide = isWide)"
     >
       <PanelService class="PageService-PanelRight" :service="drawerService" :actions="actions" />
     </PanelRight>

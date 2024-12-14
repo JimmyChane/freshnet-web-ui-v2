@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import Tab from './PagePrint-Tabs-Tab.vue';
 import Arrow from './PagePrint-Tabs-Arrow.vue';
 import { computed, ref, watch } from 'vue';
+import type { Tab } from '../product-view/ViewerProduct-Tabs-Tab.vue';
 
-interface Item {
-  title: string;
-  isSelected: () => boolean;
-  click: () => void;
-}
+const emits = defineEmits<{ clickItem: [Tab] }>();
 
-const props = defineProps<{ items: Item[] }>();
+const props = defineProps<{ items: Tab[] }>();
 
 const scrollRef = ref<HTMLDivElement>();
 const scrollLeft = ref(0);
 
 const selectedItem = computed(() => {
-  return props.items.find((item) => item.isSelected());
+  return props.items.find((item) => item.isSelected?.());
 });
 
 watch(() => selectedItem.value, onItemChange);
@@ -28,7 +24,7 @@ function onItemChange() {
     if (xSelectedItem === selectedItem.value) scrollToItem(selectedItem.value);
   }, 300);
 }
-function scrollToItem(item: Item) {
+function scrollToItem(item: Tab) {
   if (!scrollRef.value) return;
 
   const element = scrollRef.value;
@@ -61,7 +57,7 @@ function scrollToIndex(index: number) {
   if (index <= 0) return;
 
   const item = props.items[index];
-  item.click();
+  item.click?.(item);
 }
 </script>
 
@@ -77,7 +73,7 @@ function scrollToIndex(index: number) {
         v-for="item of items"
         :key="item.title"
         :item="item"
-        @click="() => $emit('click-item', item)"
+        @click="() => emits('clickItem', item)"
       />
     </div>
 

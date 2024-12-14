@@ -9,19 +9,23 @@ import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import type { Product } from '@/data/Product';
 import { Brand } from '@/data/Brand';
 
-const props = defineProps<{
-  popupWindow: PopupWindow<{
-    product: Product;
-    title: string;
-    brandId: string;
-    onConfirm: (data: { product: Product; title: string; brandId: string }) => void;
-  }>;
-}>();
+export interface DataContent {
+  product: Product;
+  title: string;
+  brandId: string;
+}
+
+export interface DataProps {
+  input: DataContent;
+  onConfirm: (data: DataContent) => void;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const data = ref<{ title: string; brandId: string }>({ title: '', brandId: '' });
 
 const isShowing = computed(() => props.popupWindow.isShowing);
-const input = computed(() => props.popupWindow.data);
+const input = computed(() => props.popupWindow.data.input);
 const product = computed(() => input.value?.product);
 const title = computed(() => data.value?.title ?? '');
 const brandId = computed(() => data.value?.brandId ?? '');

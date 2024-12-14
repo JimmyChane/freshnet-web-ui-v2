@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const emits = defineEmits<{ click: [void] }>();
+</script>
+
 <template>
-  <button class="ButtonAddEvent transition" @click="$emit('click')">
+  <button class="ButtonAddEvent transition" @click="emits('click')">
     <img class="ButtonAddEvent-icon transition" src="@/assets/icon/add-gray.svg" />
   </button>
 </template>

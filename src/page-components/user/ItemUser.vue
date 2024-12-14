@@ -3,6 +3,8 @@ import MenuOption from '@/components/button/MenuOption.vue';
 import { User } from '@/data/User';
 import Row from './ItemUser-Row.vue';
 
+const emits = defineEmits<{ clickChangeUserType: [User]; clickRemove: [User] }>();
+
 withDefaults(
   defineProps<{
     item: User;
@@ -32,12 +34,12 @@ withDefaults(
         {
           key: 'changeUserType',
           title: 'Change User Type',
-          interact: () => $emit('click-changeUserType', item),
+          interact: () => emits('clickChangeUserType', item),
         },
         {
           key: 'removeUser',
           title: 'Remove User',
-          interact: () => $emit('click-remove', item),
+          interact: () => emits('clickRemove', item),
         },
       ]"
     />

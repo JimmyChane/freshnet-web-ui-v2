@@ -30,7 +30,7 @@ function _print(html: string, options?: PrintOption) {
   // Get markup to be printed
   let markup = _getMarkup(html, opts);
   let printWindow: HTMLIFrameElement | Window | null;
-  let printIframe: HTMLIFrameElement;
+  let printIframe: HTMLIFrameElement | null = null;
   let printDocument: Document | null;
   let printElementID: string;
 
@@ -54,26 +54,30 @@ function _print(html: string, options?: PrintOption) {
     const x = printIframe.contentWindow || printIframe.contentDocument;
     printDocument = x instanceof Window || x instanceof HTMLIFrameElement ? x.document : x;
 
-    printIframe = document.frames
-      ? document.frames[printElementID]
-      : document.getElementById(printElementID);
-    printWindow = printIframe.contentWindow || printIframe;
+    printIframe =
+      'frames' in document && typeof document.frames === 'object' && document.frames
+        ? (document.frames as Record<string, any>)[printElementID]
+        : document.getElementById(printElementID);
+    printWindow = printIframe?.contentWindow || printIframe;
   }
 
   focus();
-  printDocument.open();
+  printDocument?.open();
 
   // SetTimeout fixes Issue #9 (iframe printMode does not work in firefox)
   setTimeout(function () {
-    printDocument.write(markup);
-    printDocument.close();
+    printDocument?.write(markup);
+    printDocument?.close();
   });
 
-  _callPrint(printWindow, printIframe);
+  callPrint(printWindow, printIframe);
 }
 
-function _callPrint(printWindow: HTMLIFrameElement | Window | null, iframe: HTMLIFrameElement) {
-  if (printWindow && typeof printWindow.printPage === 'function') {
+function callPrint(
+  printWindow: HTMLIFrameElement | Window | null,
+  iframe: HTMLIFrameElement | null,
+) {
+  if (printWindow && 'printPage' in printWindow && typeof printWindow.printPage === 'function') {
     printWindow.printPage();
 
     if (iframe) {
@@ -82,7 +86,7 @@ function _callPrint(printWindow: HTMLIFrameElement | Window | null, iframe: HTML
     }
   } else {
     setTimeout(function () {
-      _callPrint(printWindow, iframe);
+      callPrint(printWindow, iframe);
     }, 50);
   }
 }

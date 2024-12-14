@@ -5,6 +5,10 @@ import Section from './ViewerProduct-Section.vue';
 import IconEdit from '@/assets/icon/edit-000000.svg';
 import type { Color } from 'chroma-js';
 
+const emits = defineEmits<{
+  clickEdit: [{ product: Product; title: string; brandId: string }];
+}>();
+
 const props = withDefaults(
   defineProps<{
     primaryColor?: Color;
@@ -26,7 +30,11 @@ const brandId = computed(() => props.product?.brandId ?? '');
     :menu="{
       title: 'Edit',
       icon: IconEdit,
-      click: () => $emit('click-edit', { product, title: title, brandId: brandId }),
+      click: () => {
+        if (product) {
+          emits('clickEdit', { product, title: title, brandId: brandId });
+        }
+      },
     }"
   >
     <div class="ViewerProduct-title">

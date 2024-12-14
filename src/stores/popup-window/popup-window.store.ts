@@ -1,8 +1,8 @@
 import { TimeNowGetter } from '@/data/TimeNowGetter';
 import { defineStore } from 'pinia';
 import { defineAsyncComponent, ref } from 'vue';
-import type { PopupWindow, PopupWindowOption, RemovePopupWindowOption } from './PopupWindow';
-import type { WindowRemoveOption } from '@/components/window/WindowRemove';
+import type { PopupWindow, PopupWindowOption } from './PopupWindow';
+import type { WindowRemoveOption } from '@/components/window/WindowRemove.vue';
 
 const WindowRemove = defineAsyncComponent(() => import('@/components/window/WindowRemove.vue'));
 
@@ -53,19 +53,17 @@ export const usePopupWindowStore = defineStore('popupWindow', () => {
     return popupWindow;
   }
 
-  function openWindowRemove(option: RemovePopupWindowOption) {
+  function openWindowRemove(option: WindowRemoveOption) {
     const popupWindow = open<WindowRemoveOption>({
       component: WindowRemove,
       data: {
         title: option.title,
         message: option.message,
         data: option.data,
-        onConfirm: () => {
-          option.onConfirm();
+        onConfirm: (accept, reject) => {
+          option.onConfirm(accept, reject);
         },
       },
-      onClosed: option.onClosed,
-      onOpened: option.onOpened,
     });
 
     return popupWindow;

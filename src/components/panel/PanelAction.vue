@@ -51,7 +51,7 @@ watch(
       class="WindowAction-header"
       :isScrollUp="`${scrollTop > 0}`"
       :title="title"
-      :leftMenus="{ icon: IconClose, click: () => $emit('click-dismiss') }"
+      :leftMenus="{ icon: IconClose, click: () => emits('clickDismiss') }"
     />
 
     <div class="WindowAction-main">
@@ -60,8 +60,8 @@ watch(
 
     <WindowBottom
       class="WindowAction-bottom"
-      @click-cancel="$emit('click-cancel')"
-      @click-ok="$emit('click-ok')"
+      @click-cancel="emits('clickCancel')"
+      @click-ok="emits('clickOk')"
     />
 
     <div :class="['transition', 'WindowAction-foreground']"></div>

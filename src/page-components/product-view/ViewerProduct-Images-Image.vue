@@ -3,9 +3,13 @@ import ImageView from '@/components/image-viewer/ImageView.vue';
 import type { Image } from '@/data/Image';
 import type { ServiceImage } from '@/data/ServiceImage';
 
+type ImageType = string | Image | ServiceImage;
+
+const emits = defineEmits<{ click: [ImageType] }>();
+
 withDefaults(
   defineProps<{
-    image?: string | Image | ServiceImage;
+    image?: ImageType;
     isSelected?: boolean;
   }>(),
   {
@@ -24,7 +28,13 @@ withDefaults(
   >
     <button
       :class="['LayoutProductViewerImage-item', 'transition']"
-      @click="() => $emit('click', image)"
+      @click="
+        () => {
+          if (image !== undefined) {
+            emits('click', image);
+          }
+        }
+      "
     >
       <ImageView class="LayoutProductViewerImage-item-img" :src="image" />
     </button>

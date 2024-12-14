@@ -13,7 +13,7 @@ import ItemCustomer from '@/page-components/customer/ItemCustomer.vue';
 const emits = defineEmits<{
   clickRefresh: [void];
   clickItemAdd: [void];
-  clickItemRemove: [void];
+  clickItemRemove: [Customer];
 }>();
 const props = withDefaults(
   defineProps<{
@@ -69,27 +69,27 @@ function onScroll(e: Event) {
       class="PanelCustomers-top"
       :title="title"
       :items="items"
-      @click-item-add="() => $emit('click-item-add')"
-      @click-refresh="() => $emit('click-refresh')"
+      @click-item-add="() => emits('clickItemAdd')"
+      @click-refresh="() => emits('clickRefresh')"
     />
 
     <DynamicScroller class="PanelCustomers-body" :items="myList" :min-item-size="90">
-      <template v-slot="{ item, index, active }">
-        <DynamicScrollerItem :item="item" :data-index="index" :active="active">
+      <template v-slot="slot: { item: Customer; index: number; active: boolean }">
+        <DynamicScrollerItem :item="slot.item" :data-index="slot.index" :active="slot.active">
           <div class="PanelCustomers-item-div">
             <router-link
               class="PanelCustomers-item"
               :to="{
                 query: {
-                  name: itemName(item.item),
-                  phoneNumber: itemPhoneNumberValue(item.item),
+                  name: itemName(slot.item),
+                  phoneNumber: itemPhoneNumberValue(slot.item),
                 },
               }"
             >
               <ItemCustomer
-                :item="item.item"
-                :selected="item.item === itemSelected"
-                @click-remove="(param) => $emit('click-item-remove', { item: item.item })"
+                :item="slot.item"
+                :selected="slot.item === itemSelected"
+                @click-remove="() => emits('clickItemRemove', slot.item)"
               />
             </router-link>
           </div>

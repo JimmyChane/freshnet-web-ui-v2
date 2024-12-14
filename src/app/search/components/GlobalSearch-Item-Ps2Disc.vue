@@ -6,6 +6,8 @@ import Labels from './GlobalSearch-Item-Labels.vue';
 import { Ps2Disc } from '@/data/Ps2Disc';
 import { serverCloudinary } from '@/data/Server';
 
+const emits = defineEmits<{ click: [void] }>();
+
 const props = defineProps<{ item: Ps2Disc }>();
 const thumbnail = computed(() => serverCloudinary({ url: `ps2/disc/${code.value}.jpg` }));
 const title = computed(() => props.item?.title ?? '');
@@ -16,7 +18,7 @@ const code = computed(() => props.item?.code ?? '');
   <ItemSearch
     class="ItemSearchPs2Disc"
     :to="{ path: '/ps2', query: { discCode: item.code } }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <div
       class="ItemSearchPs2Disc-image"

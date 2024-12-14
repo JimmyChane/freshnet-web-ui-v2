@@ -6,6 +6,8 @@ import Labels from './GlobalSearch-Item-Labels.vue';
 import { Service } from '@/data/Service';
 import { computed } from 'vue';
 
+const emits = defineEmits<{ (e: 'click'): void }>();
+
 const props = defineProps<{ item?: Service }>();
 
 const images = computed(() => {
@@ -31,7 +33,7 @@ const description = computed(() => {
   <ItemSearch
     class="ItemSearchService"
     :to="{ path: '/manage/service', query: { service: item?.id } }"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <div
       class="ItemSearchService-image"

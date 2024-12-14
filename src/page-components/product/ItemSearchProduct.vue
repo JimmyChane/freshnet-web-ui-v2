@@ -4,12 +4,14 @@ import ItemProduct from './ItemProduct.vue';
 import { computed } from 'vue';
 import { Mode } from './ItemProduct';
 
+const emits = defineEmits<{ click: [void] }>();
+
 defineProps<{ item: Product }>();
 const mode = computed(() => Mode.List);
 </script>
 
 <template>
-  <div @click="() => $emit('click')">
+  <div @click="() => emits('click')">
     <router-link
       :style="{
         border: 'none',

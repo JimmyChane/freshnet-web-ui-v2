@@ -6,12 +6,12 @@ import { Item } from '@/data/Item';
 import { Service } from '@/data/Service';
 import ItemService from './item-service/ItemService.vue';
 
-const props = defineProps<{
-  popupWindow: PopupWindow<{
-    items: Item[];
-    clickItem: (item: Item) => void;
-  }>;
-}>();
+export interface DataProps {
+  items: Item[];
+  clickItem: (item: Item) => void;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const search = ref('');
 const results = ref<Item[]>([]);

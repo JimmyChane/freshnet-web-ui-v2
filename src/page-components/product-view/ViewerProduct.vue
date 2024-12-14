@@ -23,14 +23,33 @@ import { isObjectOnly, optString, trimText } from '@/utils/U';
 import { useImageViewerStore } from '@/stores/image-viewer.store';
 import type { Menu } from '@/stores/popup-menu/PopupMenu';
 import type { Tab } from './ViewerProduct-Tabs-Tab.vue';
+import type { DataContent as RemoveImageDataContent } from '@/dialog-components/product/WindowRemoveImage.vue';
+import type { DataContent as UpdateDescriptionDataContent } from '@/dialog-components/product/WindowUpdateDescription.vue';
+import type { DataContent as UpdateCategoryDataContent } from '@/dialog-components/product/WindowUpdateCategory.vue';
+import type { DataContent as UpdateSpecificationsDataContent } from '@/dialog-components/product/WindowUpdateSpecifications.vue';
+import type { DataContent as UpdatePriceDataContent } from '@/dialog-components/product/WindowUpdatePrice.vue';
+import type { DataContent as UpdateTitleBrandDataContent } from '@/dialog-components/product/WindowUpdateTitleBrand.vue';
+import { Image } from '@/data/Image';
+
+enum ScrollKey {
+  image = 'image',
+  title = 'title',
+  specification = 'specification',
+  include = 'include',
+  description = 'description',
+  price = 'price',
+  stock = 'stock',
+  category = 'category',
+  playlist = 'playlist',
+}
 
 const emits = defineEmits<{
-  'click-product-imageRemove': [{ product: Product | undefined; image: any }];
-  'click-product-titleBrandUpdate': [void];
-  'click-product-priceUpdate': [void];
-  'click-product-descriptionUpdate': [void];
-  'click-product-categoryUpdate': [void];
-  'click-product-specificationsUpdate': [void];
+  clickProductImageRemove: [RemoveImageDataContent];
+  clickProductTitleBrandUpdate: [UpdateTitleBrandDataContent];
+  clickProductPriceUpdate: [UpdatePriceDataContent];
+  clickProductDescriptionUpdate: [UpdateDescriptionDataContent];
+  clickProductCategoryUpdate: [UpdateCategoryDataContent];
+  clickProductSpecificationsUpdate: [UpdateSpecificationsDataContent];
 }>();
 const props = withDefaults(
   defineProps<{
@@ -56,6 +75,16 @@ const props = withDefaults(
     rightMenus: () => [],
   },
 );
+
+const refKeyImage = ref();
+const refKeyTitle = ref();
+const refKeySpecification = ref();
+const refKeyInclude = ref();
+const refKeyDescription = ref();
+const refKeyPrice = ref();
+const refKeyStock = ref();
+const refKeyCategory = ref();
+const refKeyPlaylist = ref();
 
 const colorTransitionDuration = ref('0');
 const primaryColorHex = ref('inherit');
@@ -126,7 +155,7 @@ const price = computed(() => {
 const description = computed(() => props.product?.description ?? '');
 
 const specificationKeys = computed(() => {
-  return Object.keys(TypeKey).map((key) => TypeKey[key]);
+  return Object.keys(TypeKey).map((key) => (TypeKey as Record<string, string | undefined>)[key]);
 });
 const specifications = computed(() => {
   if (!props.product) return [];
@@ -207,7 +236,7 @@ async function invalidateProduct() {
   if (props.product) {
     scrollToTop(0);
   }
-  tabKeyNow.value = tabs.value.length ? tabs.value[0].key : '';
+  tabKeyNow.value = (tabs.value.length ? tabs.value[0].key : '') ?? '';
 
   if (props.product) {
     addArrowListener();
@@ -296,20 +325,41 @@ function scrollToTop(timeout = 300) {
   }
   selfRef.value.scrollTo({ top: 0, behavior: 'smooth' });
 }
-function scrollTo(key = '') {
-  const ref = this.$refs[`key${key}`];
-  if (!ref) {
-    return;
+function getScrollRef(key?: string | ScrollKey) {
+  switch (key) {
+    case 'image':
+      return refKeyImage.value;
+    case 'title':
+      return refKeyTitle.value;
+    case 'specification':
+      return refKeySpecification.value;
+    case 'include':
+      return refKeyInclude.value;
+    case 'description':
+      return refKeyDescription.value;
+    case 'price':
+      return refKeyPrice.value;
+    case 'stock':
+      return refKeyStock.value;
+    case 'category':
+      return refKeyCategory.value;
+    case 'playlist':
+      return refKeyPlaylist.value;
   }
+}
+function scrollTo(key?: string | ScrollKey) {
+  const ref = getScrollRef(key);
+  if (!ref) return;
+
   ref.$el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-function scrolling(event: UIEvent) {
+function scrolling() {
   invalidateBound();
 
   const pointHeight = 156; // 156px
 
   tabKeyNow.value = tabs.value.reduce((tabKeyNow, tab) => {
-    const ref = this.$refs[`key${tab.key}`];
+    const ref = getScrollRef(tab.key);
     if (!ref) {
       return tabKeyNow;
     }
@@ -322,12 +372,12 @@ function scrolling(event: UIEvent) {
 
     const start = bound.y;
     if (0 < start && start < pointHeight) {
-      return tab.key;
+      return tab.key ?? '';
     }
 
     const end = bound.y + bound.height;
     if (0 < end && end < pointHeight) {
-      return tab.key;
+      return tab.key ?? '';
     }
 
     return tabKeyNow;
@@ -356,7 +406,7 @@ onUnmounted(() => {
       '--actionbar-toolbar': isActionbarHidden ? '1.5rem' : '5.5rem',
     }"
     :isWide="`${isWide}`"
-    @scroll="(e) => scrolling(e)"
+    @scroll="(e) => scrolling()"
   >
     <div class="ViewerProduct-toolbar" :style="{ 'background-color': actionbarColor.toString() }">
       <Actionbar
@@ -384,7 +434,7 @@ onUnmounted(() => {
       <div class="ViewerProduct-preview" v-if="product">
         <ProductViewerImagePreview
           class="ViewerProduct-image"
-          ref="keyimage"
+          ref="refKeyImage"
           :primaryColor="backgroundColor"
           :allowEdit="isEditable"
           :product="product"
@@ -396,7 +446,13 @@ onUnmounted(() => {
           @click-image="(image) => useImageViewerStore().show({ image, thumbnails: images })"
           @click-previous="() => clickPreviousImage()"
           @click-next="() => clickNextImage()"
-          @click-remove="(image) => emits('click-product-imageRemove', { product, image })"
+          @click-remove="
+            (image) => {
+              if (product) {
+                emits('clickProductImageRemove', { product, image });
+              }
+            }
+          "
         />
         <ProductViewerImages
           class="ViewerProduct-thumbnails"
@@ -405,7 +461,11 @@ onUnmounted(() => {
           :indexAt="imagePreviewIndex"
           :isEditable="isEditable"
           :primaryColor="primaryColor"
-          @click-image="(image) => (imagePreviewIndex = images.indexOf(image))"
+          @click-image="
+            (image) => {
+              if (image instanceof Image) imagePreviewIndex = images.indexOf(image);
+            }
+          "
           @click-add-image-file="
             (files) => {
               if (product) useProductStore().addImageOfId({ id: product.id, files });
@@ -413,58 +473,69 @@ onUnmounted(() => {
           "
         />
         <Title
-          ref="keytitle"
+          ref="refKeyTitle"
           :primaryColor="primaryColor"
           :allowEdit="isEditable"
           :product="product"
-          @click-edit="(x) => emits('click-product-titleBrandUpdate', x)"
+          @click-edit="(x) => emits('clickProductTitleBrandUpdate', x)"
         />
       </div>
     </div>
 
     <div class="ViewerProduct-info">
       <SectionSpecification
-        ref="keyspecification"
+        ref="refKeySpecification"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"
-        @click-edit="(x) => emits('click-product-specificationsUpdate', x)"
+        @click-edit="(x) => emits('clickProductSpecificationsUpdate', x)"
       />
       <SectionInclude
-        ref="keyinclude"
+        ref="refKeyInclude"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"
       />
       <SectionDescription
-        ref="keydescription"
+        ref="refKeyDescription"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"
-        @click-edit="(x) => emits('click-product-descriptionUpdate', x)"
+        @click-edit="
+          (x) => {
+            if (x.product) {
+              emits('clickProductDescriptionUpdate', {
+                product: x.product,
+                description: x.description,
+              });
+            }
+          }
+        "
       />
       <SectionPrice
-        ref="keyprice"
+        ref="refKeyPrice"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"
-        @click-edit="(x) => emits('click-product-priceUpdate', x)"
+        @click-edit="
+          (x) => emits('clickProductPriceUpdate', { product: x.product, price: x.price })
+        "
       />
       <SectionStock
-        ref="keystock"
+        ref="refKeyStock"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"
       />
       <SectionCategory
-        ref="keycategory"
+        ref="refKeyCategory"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"
-        @click-edit="(x) => emits('click-product-categoryUpdate', x)"
+        @click-edit="(x) => emits('clickProductCategoryUpdate', x)"
       />
       <SectionPlaylist
-        ref="keyplaylist"
+        ref="refKeyPlaylist"
         :primaryColor="primaryColor"
         :allowEdit="isEditable"
         :product="product"

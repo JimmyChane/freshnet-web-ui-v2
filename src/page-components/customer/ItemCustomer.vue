@@ -9,7 +9,7 @@ import type { Group } from '@/data/Group';
 import type { CustomerDevice } from '@/data/CustomerDevice';
 import PanelItemsItemButton from '@/panel-components/manage/PanelItems-ItemButton.vue';
 
-const emits = defineEmits<{ click: [void]; clickRemove: [void] }>();
+const emits = defineEmits<{ click: [Customer]; clickRemove: [void] }>();
 const props = withDefaults(defineProps<{ item: Customer; selected?: boolean }>(), {
   selected: false,
 });
@@ -45,7 +45,7 @@ onMounted(() => invalidate());
   <PanelItemsItemButton
     class="ItemCustomer"
     :isSelected="selected"
-    @focus="$emit('click', { item })"
+    @focus="() => emits('click', item)"
   >
     <div class="ItemCustomer-body">
       <div class="ItemCustomer-header">
@@ -60,7 +60,7 @@ onMounted(() => invalidate());
         <LabelDevice
           v-for="group of itemDeviceGroups"
           :key="group.parent"
-          :categoryKey="group.parent"
+          :categoryKey="group.parent ?? ''"
           :count="group.items.length"
         />
         <Label v-if="services.length" :icon="IconService" :count="services.length" />

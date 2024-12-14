@@ -7,18 +7,22 @@ import { optArray } from '@/utils/U';
 import type { Product } from '@/data/Product';
 import SpecificationInputs from '@/page-components/customer/SpecificationInputs.vue';
 
-const props = defineProps<{
-  popupWindow: PopupWindow<{
-    product?: Product;
-    specifications?: Specification[];
-    onConfirm: (data: { product?: Product; specifications: Specification[] }) => void;
-  }>;
-}>();
+export interface DataContent {
+  product?: Product;
+  specifications?: Specification[];
+}
+
+export interface DataProps {
+  input: DataContent;
+  onConfirm: (data: DataContent) => void;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const data = ref<{ specifications: Specification[] }>({ specifications: [] });
 
 const isShowing = computed(() => props.popupWindow.isShowing);
-const input = computed(() => props.popupWindow.data);
+const input = computed(() => props.popupWindow.data.input);
 const product = computed(() => input.value?.product ?? undefined);
 const inputSpecifications = computed(() => {
   return optArray(input.value?.specifications);

@@ -13,19 +13,26 @@ import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
 import { usePopupWindowStore } from '@/stores/popup-window/popup-window.store';
 import type { Menu } from '@/stores/popup-menu/PopupMenu';
 import ViewerProduct from '@/page-components/product-view/ViewerProduct.vue';
+import type { DataContent as RemoveImageDataContent } from '@/dialog-components/product/WindowRemoveImage.vue';
+import type { DataContent as UpdateDescriptionDataContent } from '@/dialog-components/product/WindowUpdateDescription.vue';
+import type { DataContent as UpdateCategoryDataContent } from '@/dialog-components/product/WindowUpdateCategory.vue';
+import type { DataContent as UpdateSpecificationsDataContent } from '@/dialog-components/product/WindowUpdateSpecifications.vue';
+import type { DataContent as UpdatePriceDataContent } from '@/dialog-components/product/WindowUpdatePrice.vue';
+import type { DataContent as RemoveProductDataContent } from '@/dialog-components/product/WindowRemoveProduct.vue';
+import type { DataContent as UpdateTitleBrandDataContent } from '@/dialog-components/product/WindowUpdateTitleBrand.vue';
 
 const router = useRouter();
 
 const emits = defineEmits<{
   clickDismiss: [void];
   'click-dismiss': [void];
-  'click-productRemove': [{ product: Product }];
-  'click-product-imageRemove': [void];
-  'click-product-titleBrandUpdate': [void];
-  'click-product-priceUpdate': [void];
-  'click-product-descriptionUpdate': [void];
-  'click-product-categoryUpdate': [void];
-  'click-product-specificationsUpdate': [void];
+  'click-productRemove': [RemoveProductDataContent];
+  'click-product-imageRemove': [RemoveImageDataContent];
+  'click-product-titleBrandUpdate': [UpdateTitleBrandDataContent];
+  'click-product-priceUpdate': [UpdatePriceDataContent];
+  'click-product-descriptionUpdate': [UpdateDescriptionDataContent];
+  'click-product-categoryUpdate': [UpdateCategoryDataContent];
+  'click-product-specificationsUpdate': [UpdateSpecificationsDataContent];
 }>();
 const props = withDefaults(
   defineProps<{
@@ -94,7 +101,7 @@ const actionbarRightMenus = computed<Menu[]>(() => {
       icon: IconTrash,
       isHidden: true,
       click: (menu) => {
-        if (props.product) emits('click-productRemove', { product: props.product });
+        if (props.product) emits('click-productRemove', { product: props.product, title: '' });
       },
     });
   }
@@ -142,12 +149,12 @@ function clickView() {
       :product="product"
       :productPrevious="productPrevious"
       :productNext="productNext"
-      @click-product-imageRemove="(x) => $emit('click-product-imageRemove', x)"
-      @click-product-titleBrandUpdate="(x) => $emit('click-product-titleBrandUpdate', x)"
-      @click-product-priceUpdate="(x) => $emit('click-product-priceUpdate', x)"
-      @click-product-descriptionUpdate="(x) => $emit('click-product-descriptionUpdate', x)"
-      @click-product-categoryUpdate="(x) => $emit('click-product-categoryUpdate', x)"
-      @click-product-specificationsUpdate="(x) => $emit('click-product-specificationsUpdate', x)"
+      @click-product-imageRemove="(x) => emits('click-product-imageRemove', x)"
+      @click-product-titleBrandUpdate="(x) => emits('click-product-titleBrandUpdate', x)"
+      @click-product-priceUpdate="(x) => emits('click-product-priceUpdate', x)"
+      @click-product-descriptionUpdate="(x) => emits('click-product-descriptionUpdate', x)"
+      @click-product-categoryUpdate="(x) => emits('click-product-categoryUpdate', x)"
+      @click-product-specificationsUpdate="(x) => emits('click-product-specificationsUpdate', x)"
     />
   </div>
 </template>

@@ -9,6 +9,7 @@ import { useServiceStore } from '@/data-stores/service.store';
 import { Width, type Menu, Alignment } from '@/stores/popup-menu/PopupMenu';
 import { type ServiceEventData } from '@/data/ServiceEvent';
 import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
+import type { ServiceImageData } from '@/data/ServiceImage';
 
 const emits = defineEmits<{ clickSubmit: [ServiceEventData] }>();
 
@@ -22,18 +23,19 @@ const eventMethod = ref(QUOTATION.key);
 const eventDescription = ref('');
 const eventStatus = ref('');
 const eventAmount = ref(0);
-const eventImages = ref<
-  {
-    name: string;
-    // path: string;
-    // method: string;
-    // storageType: string;
+const eventImages = ref<ServiceImageData[]>([]);
+// const eventImages = ref<
+//   {
+//     name: string;
+//     // path: string;
+//     // method: string;
+//     // storageType: string;
 
-    timeout: number;
-    expiry: number;
-    file: File;
-  }[]
->([]);
+//     timeout: number;
+//     expiry: number;
+//     file: File;
+//   }[]
+// >([]);
 
 const primaryColor = computed(() =>
   methodMenu.value?.color ? chroma(methodMenu.value.color) : undefined,
@@ -153,7 +155,7 @@ function submit() {
 }
 
 async function onInputImageFile(event: Event) {
-  const { files } = event.target;
+  const files = event.target?.files;
   const imageFiles: File[] = [];
   for (const file of files as FileList) imageFiles.push(file);
   const tempImageContents = await useServiceStore().addImageTemp(imageFiles);
@@ -174,9 +176,9 @@ async function onInputImageFile(event: Event) {
 }
 async function invalidateEventImages() {
   const promises = eventImages.value.map((eventImage) => {
-    const { file } = eventImage;
-
     return new Promise((resolve) => {
+      const file = eventImage.file;
+
       const reader = new FileReader();
       reader.onload = (event) => {
         resolve(event.target?.result);

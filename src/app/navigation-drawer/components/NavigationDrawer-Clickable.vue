@@ -4,7 +4,10 @@ import LeftNavClickableBody from './NavigationDrawer-Clickable-Body.vue';
 import { computed } from 'vue';
 import type { NavigationParent, NavigationView } from '../NavigationDrawer';
 
-const emits = defineEmits<{ click: [void]; clickExpand: [void] }>();
+const emits = defineEmits<{
+  click: [NavigationParent | NavigationView];
+  clickExpand: [NavigationParent | NavigationView];
+}>();
 const props = withDefaults(
   defineProps<{
     item: NavigationParent | NavigationView;
@@ -44,7 +47,7 @@ const styleClass = computed(() => {
     :isExpand="`${isSelected && isExpand}`"
     :hasGroup2IsSelected="`${hasGroup2s && isSelected}`"
     :to="{ path: href }"
-    @click="() => $emit('click', item)"
+    @click="() => emits('click', item)"
   >
     <LeftNavClickableBody
       :item="item"
@@ -52,7 +55,7 @@ const styleClass = computed(() => {
       :isWide="isWide"
       :isExpand="isExpand"
       :hasChildren="hasChildren"
-      @click-open="(item) => $emit('click-open', item)"
+      @click-open="(item) => emits('clickExpand', item)"
     />
   </router-link>
 
@@ -62,7 +65,7 @@ const styleClass = computed(() => {
     :isSelectedIsExpanded="`${isSelected && isExpand}`"
     :hasGroup2IsSelected="`${hasGroup2s && isSelected}`"
     :isWide="`${isWide}`"
-    @click="() => $emit('click', item)"
+    @click="() => emits('click', item)"
   >
     <LeftNavClickableBody
       :item="item"
@@ -70,7 +73,7 @@ const styleClass = computed(() => {
       :isWide="isWide"
       :isExpand="isExpand"
       :hasChildren="hasChildren"
-      @click-open="(item) => $emit('click-open', item)"
+      @click-open="(item) => emits('clickExpand', item)"
     />
   </button>
 </template>

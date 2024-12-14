@@ -8,7 +8,7 @@ import { Specification } from '@/data/Specification';
 const emits = defineEmits<{
   inputContent: [string];
   changeContent: [string];
-  clickRemove: [void];
+  clickRemove: [Specification];
 }>();
 const props = defineProps<{ item: Specification }>();
 
@@ -64,7 +64,7 @@ function onChangeContent(e: Event) {
       class="ItemSpec-remove"
       :style="{ 'grid-area': 'remove' }"
       :src="IconClose"
-      @click="$emit('click-remove', item)"
+      @click="emits('clickRemove', item)"
     />
   </div>
 </template>

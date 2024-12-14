@@ -4,12 +4,22 @@ import type { Product } from '@/data/Product';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { computed } from 'vue';
 
+export interface DataContent {
+  product: Product;
+  title: string;
+}
+
+export interface DataProps {
+  input: DataContent;
+  onConfirm(content: DataContent): void;
+}
+
 const props = defineProps<{
-  popupWindow: PopupWindow<{ product: Product; title: string }>;
+  popupWindow: PopupWindow<DataProps>;
 }>();
 
 const isShowing = computed(() => props.popupWindow.isShowing);
-const input = computed(() => props.popupWindow.data);
+const input = computed(() => props.popupWindow.data.input);
 const product = computed(() => input.value?.product ?? undefined);
 const title = computed(() => product.value?.title ?? '');
 </script>
@@ -20,7 +30,7 @@ const title = computed(() => product.value?.title ?? '');
     :isShowing="isShowing"
     @click-dismiss="() => popupWindow.close()"
     @click-cancel="() => popupWindow.close()"
-    @click-ok="() => popupWindow.onConfirm({ productId: product.id })"
+    @click-ok="() => popupWindow.data.onConfirm({ product, title })"
   >
     <div>
       <div>

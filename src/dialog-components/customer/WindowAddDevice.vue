@@ -75,11 +75,10 @@ function clickOk() {
   data.value.description = data.value.description.trim();
   data.value.categoryKey = data.value.categoryKey.trim();
   data.value.serialNumber = data.value.serialNumber.trim();
-  data.value.specifications.map((specification) => {
-    specification.typeKey = specification.typeKey.trim();
+
+  for (const specification of data.value.specifications) {
     specification.content = specification.content.trim();
-    return specification;
-  });
+  }
 
   if (data.value.categoryKey === 'none') {
     useSnackbarStore().show('Category is Required');

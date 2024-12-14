@@ -3,7 +3,7 @@ import ImageView from '@/components/image-viewer/ImageView.vue';
 import MenuOption from '@/components/button/MenuOption.vue';
 
 const emits = defineEmits<{ click: [string]; clickRemove: [string] }>();
-withDefaults(defineProps<{ src: string }>(), { src: '' });
+const props = withDefaults(defineProps<{ src: string }>(), { src: '' });
 </script>
 
 <template>

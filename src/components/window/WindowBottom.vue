@@ -4,8 +4,8 @@ const emits = defineEmits<{ clickOk: [void]; clickCancel: [void] }>();
 
 <template>
   <div class="WindowBottom">
-    <button class="WindowBottom-action-ok transition" @click="$emit('click-ok')">OK</button>
-    <button class="WindowBottom-action-cancel transition" @click="$emit('click-cancel')">
+    <button class="WindowBottom-action-ok transition" @click="emits('clickOk')">OK</button>
+    <button class="WindowBottom-action-cancel transition" @click="emits('clickCancel')">
       Cancel
     </button>
   </div>

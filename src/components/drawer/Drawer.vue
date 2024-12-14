@@ -118,7 +118,7 @@ defineExpose({ onDragStart, onDragMove, onDragEnd });
   <div :class="['transition', 'Drawer', classEdge, ...classModes]" :style="style">
     <div class="Drawer-body" ref="refBody" :style="styleBody"><slot></slot></div>
 
-    <div class="Drawer-dismissableBox" v-if="isDrawer" @click="$emit('click-collapse')"></div>
+    <div class="Drawer-dismissableBox" v-if="isDrawer" @click="() => emits('clickCollapse')"></div>
 
     <div class="Drawer-background transition" v-if="isDrawer"></div>
   </div>

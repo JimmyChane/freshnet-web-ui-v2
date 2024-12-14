@@ -4,7 +4,16 @@ import Input from '@/components/input/Input.vue';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { computed, ref } from 'vue';
 
-const props = defineProps<{ popupWindow: PopupWindow }>();
+export type DataProps = {
+  onConfirm(data: {
+    username: string;
+    name: string;
+    passwordNew: string;
+    passwordRepeat: string;
+  }): void;
+};
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const isShowing = computed(() => props.popupWindow.isShowing);
 
@@ -14,7 +23,7 @@ const passwordNew = ref('');
 const passwordRepeat = ref('');
 
 function commit() {
-  props.popupWindow.onConfirm({
+  props.popupWindow.data.onConfirm({
     username: username.value,
     name: name.value,
     passwordNew: passwordNew.value,

@@ -59,7 +59,7 @@ onMounted(() => {
       class="PanelRight-Drawer"
       :edge="drawerEdge"
       :mode="drawerMode"
-      @click-collapse="() => $emit('click-collapse')"
+      @click-collapse="() => emits('clickCollapse')"
     >
       <slot></slot>
     </Drawer>
@@ -69,7 +69,7 @@ onMounted(() => {
     v-else
     class="PanelRight-Bottomsheet"
     :isShowing="isShowing"
-    @click-dismiss="() => $emit('click-collapse')"
+    @click-dismiss="() => emits('clickCollapse')"
   >
     <slot></slot>
   </BottomsheetWindow>

@@ -13,7 +13,7 @@ import { optArray } from '@/utils/U';
 import { ServicePrice } from '@/data/ServicePrice';
 import { Mode } from './ItemService';
 
-const emits = defineEmits<{ click: [void] }>();
+const emits = defineEmits<{ click: [Service] }>();
 const props = withDefaults(
   defineProps<{
     mode?: number;
@@ -146,7 +146,11 @@ function getPropertyByKey(key: string): { width: number } | undefined {
     :class="['ItemService', ...classes]"
     :style="{ '--primary-color': primaryColor }"
     :isSelected="isSelected"
-    @click="$emit('click', item)"
+    @click="
+      () => {
+        if (item) emits('click', item);
+      }
+    "
   >
     <div v-if="isGrid" :class="['transition', 'ItemService-body']">
       <div class="ItemService-top">

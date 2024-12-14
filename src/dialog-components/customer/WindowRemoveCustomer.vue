@@ -5,15 +5,14 @@ import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import { computed } from 'vue';
 import { useCustomerStore } from '@/data-stores/customer.store';
 
-const emits = defineEmits<{
-  clickDismiss: [void];
-  clickCancel: [void];
-  clickOk: [void];
-}>();
-const props = defineProps<{ popupWindow: PopupWindow<Customer> }>();
+export interface DataProps {
+  item: Customer;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const isShowing = computed(() => props.popupWindow.isShowing);
-const item = computed(() => props.popupWindow.data);
+const item = computed(() => props.popupWindow.data.item);
 const isLoading = computed(() => useCustomerStore().isLoading);
 const isClickable = computed(() => !useCustomerStore().isLoading);
 

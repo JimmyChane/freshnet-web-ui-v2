@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import FloatingButton from './BottomActionbar-FloatingButton.vue';
 
+const emits = defineEmits<{ click: [void] }>();
+
 withDefaults(defineProps<{ isHidden?: boolean }>(), { isHidden: false });
 </script>
 
@@ -8,7 +10,7 @@ withDefaults(defineProps<{ isHidden?: boolean }>(), { isHidden: false });
   <FloatingButton
     :class="['transition', 'ButtonTop']"
     :isHidden="`${isHidden}`"
-    @click="() => $emit('click')"
+    @click="() => emits('click')"
   >
     <img class="ButtonTop-icon" src="@/assets/icon/arrow-left-000000.svg" />
   </FloatingButton>

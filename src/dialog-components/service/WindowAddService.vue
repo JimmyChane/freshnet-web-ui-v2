@@ -13,7 +13,21 @@ import { useSnackbarStore } from '@/stores/snackbar/snackbar.store';
 import type { PopupWindow } from '@/stores/popup-window/PopupWindow';
 import LayoutFindCustomer from '@/page-components/service/LayoutFindCustomer.vue';
 
-const props = defineProps<{ popupWindow: PopupWindow }>();
+export interface DataProps {
+  onConfirm(accept: () => void, reject: () => void, data: DataContent): Promise<void>;
+}
+export interface DataContent {
+  customer: {
+    name: string;
+    phoneNumber: string;
+  };
+  description: string;
+  belongings: string[];
+
+  nameOfUser?: string;
+}
+
+const props = defineProps<{ popupWindow: PopupWindow<DataProps> }>();
 
 const nameOfUser = ref('unknown');
 const data = ref({
@@ -58,7 +72,7 @@ function onReset() {
   };
 }
 function onCreate() {
-  const xData: Record<string, any> = {
+  const xData: DataContent = {
     customer: {
       name: data.value.customerName.trim(),
       phoneNumber: data.value.customerPhoneNumber.trim(),

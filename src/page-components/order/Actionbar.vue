@@ -8,6 +8,8 @@ import IconRefresh from '@/assets/icon/refresh-000000.svg';
 import { ref } from 'vue';
 import type { Order } from '@/data/Order';
 
+const emits = defineEmits<{ clickItemAdd: [void]; clickRefresh: [void]; clickItem: [Order] }>();
+
 const props = defineProps<{ title?: string; items: Order[] }>();
 
 const results = ref<Order[]>([]);
@@ -25,13 +27,13 @@ function searchResults(str: string) {
         key: 'appendOrder',
         title: 'Append Order',
         icon: IconAdd,
-        click: () => $emit('click-item-add'),
+        click: () => emits('clickItemAdd'),
       },
       {
         key: 'refresh',
         title: 'Refresh',
         icon: IconRefresh,
-        click: () => $emit('click-refresh'),
+        click: () => emits('clickRefresh'),
       },
     ]"
   >
@@ -50,7 +52,7 @@ function searchResults(str: string) {
         @click="
           () => {
             collapse();
-            $emit('click-item', item);
+            emits('clickItem', item);
           }
         "
       >

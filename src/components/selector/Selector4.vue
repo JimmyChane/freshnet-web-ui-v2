@@ -3,7 +3,7 @@ import { optArray, optString } from '@/utils/U';
 import Item from './Selector4-Item.vue';
 import { computed, onMounted, watch } from 'vue';
 
-interface Menu {
+export interface Menu {
   key: string;
   title: string;
   icon: string;

@@ -4,6 +4,8 @@ import ItemObject from './ItemObject.vue';
 import IconMinus from '@/assets/icon/minus-black.svg';
 import IconPlus from '@/assets/icon/plus-black.svg';
 
+const emits = defineEmits<{ clickExpand: [void] }>();
+
 withDefaults(
   defineProps<{
     collection: {
@@ -26,7 +28,7 @@ withDefaults(
       <ButtonIconText
         :src="isExpand ? IconMinus : IconPlus"
         :text="isExpand ? 'Collapse' : 'Expand'"
-        @click="$emit('click-expand')"
+        @click="emits('clickExpand')"
       />
     </div>
 

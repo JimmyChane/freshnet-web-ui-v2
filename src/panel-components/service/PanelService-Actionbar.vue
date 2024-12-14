@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Actionbar from '@/components/actionbar/Actionbar.vue';
 import Selector from '@/components/selector/Selector.vue';
-import { LIST } from '@/data/ServiceState';
+import { LIST, ServiceStateId } from '@/data/ServiceState';
 import SectionVue from './PanelService-Info-Section.vue';
 import LabelVue from './PanelService-Info-Label.vue';
 import MenuIconVue from '@/components/menu/MenuIcon.vue';
@@ -45,7 +45,7 @@ const customer = computed(() => props.service?.customer ?? null);
 
 const labels = computed(() => props.service?.labels ?? []);
 const belongings = computed(() => props.service?.belongings.map((belonging) => belonging) ?? []);
-const state = computed(() => props.service?.state ?? '');
+const state = computed(() => props.service?.state);
 
 const phoneNumber = computed(() => customer.value?.phoneNumber ?? null);
 const phoneNumberStr = computed(() => phoneNumber.value?.toString() ?? '');
@@ -279,12 +279,20 @@ onMounted(() => invalidate());
                 :list="stateMenus"
                 :keySelected="state"
                 @callback-select="
-                  (state) => {
-                    if (!service) return;
-                    useServiceStore().updateStateOfId({
-                      serviceID: service.id,
-                      state,
-                    });
+                  (pState) => {
+                    if (service && pState) {
+                      switch (pState) {
+                        case ServiceStateId.PENDING:
+                        case ServiceStateId.WORKING:
+                        case ServiceStateId.WAITING:
+                        case ServiceStateId.COMPLETED:
+                        case ServiceStateId.REJECTED:
+                          useServiceStore().updateStateOfId({
+                            serviceID: service.id,
+                            state: pState,
+                          });
+                      }
+                    }
                   }
                 "
               />

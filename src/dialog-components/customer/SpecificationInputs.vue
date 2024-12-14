@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import ItemSpec from '@/page-components/customer/ItemSpecificationInput.vue';
-import Selector4 from '@/components/selector/Selector4.vue';
+import Selector4, { type Menu as Selector4Menu } from '@/components/selector/Selector4.vue';
 import { useSpecificationStore } from '@/data-stores/specification.store';
 import { Specification, TypeKey } from '@/data/Specification';
 import { computed, onMounted, ref, watch } from 'vue';
+import type { CustomerDeviceSpecificationData } from '@/data/CustomerDeviceSpecification';
 
-const props = withDefaults(defineProps<{ items: Specification[] }>(), { items: () => [] });
+const props = withDefaults(
+  defineProps<{ items: (Specification | CustomerDeviceSpecificationData)[] }>(),
+  { items: () => [] },
+);
 
 const specificationStore = useSpecificationStore();
 
@@ -13,17 +17,26 @@ const list = ref<Specification[]>([]);
 
 const KeyNone = computed(() => 'none');
 
-const SpecKeys = computed(() => [
-  KeyNone.value,
-  ...Object.keys(TypeKey).map((key) => TypeKey[key]),
-]);
-const SpecificationMenus = computed(() => {
-  return [{ key: KeyNone.value, title: 'None' }, ...specificationStore.items.map((item) => item)]
-    .map((item) => ({
-      key: item.key,
-      title: item.title,
-      icon: item.icon?.toUrl() ?? '',
-    }))
+const SpecKeys = computed<(string | undefined)[]>(() => {
+  return [
+    KeyNone.value,
+    ...Object.keys(TypeKey).map((key) => (TypeKey as Record<string, string | undefined>)[key]),
+  ];
+});
+const SpecificationMenus = computed<Selector4Menu[]>(() => {
+  const specifications = specificationStore.items;
+
+  return [
+    { key: KeyNone.value, icon: undefined, title: 'None' },
+    ...specifications.map((item) => item),
+  ]
+    .map((item) => {
+      return {
+        key: item.key ?? '',
+        title: item.title,
+        icon: item.icon?.toUrl() ?? '',
+      };
+    })
     .filter((menu) => {
       if (menu.key === 'none') return true;
 
@@ -37,10 +50,9 @@ const SpecificationMenus = computed(() => {
     });
 });
 
-watch(
-  () => props.items,
-  () => (list.value = props.items),
-);
+watch([() => props.items], () => {
+  list.value = props.items;
+});
 
 function addItem(item: Specification) {
   list.value.push(item);
@@ -67,7 +79,11 @@ onMounted(() => {
     </div>
     <Selector4
       :menus="SpecificationMenus"
-      @click-menu="(menu) => addItem({ content: '', typeKey: menu.key })"
+      @click-menu="
+        (menu) => {
+          addItem(new Specification({ content: '', key: menu.key }));
+        }
+      "
     />
   </div>
 </template>

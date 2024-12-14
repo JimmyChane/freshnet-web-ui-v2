@@ -110,19 +110,19 @@ defineExpose({ focus });
       @focus="
         (event) => {
           isFocused = true;
-          $emit('focus', input_value);
+          emits('focus', input_value);
         }
       "
       @blur="
         (event) => {
           isFocused = false;
-          $emit('blur', input_value);
+          emits('blur', input_value);
         }
       "
       @input="onInput"
       @change="
         (event) => {
-          $emit('change', input_value);
+          emits('change', input_value);
         }
       "
       v-bind:value="input_value"

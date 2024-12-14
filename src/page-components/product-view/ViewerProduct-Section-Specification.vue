@@ -28,8 +28,8 @@ const specifications = computed(() => {
   return props.product.specifications
     .filter((spec) => spec && spec.type && spec.content)
     .sort((spec1, spec2) => {
-      const key1 = obtainKeyOfSpecificationType(spec1.type);
-      const key2 = obtainKeyOfSpecificationType(spec2.type);
+      const key1 = obtainKeyOfSpecificationType(spec1.type) ?? '';
+      const key2 = obtainKeyOfSpecificationType(spec2.type) ?? '';
 
       let index1 = keys.value.indexOf(key1);
       let index2 = keys.value.indexOf(key2);
@@ -53,10 +53,9 @@ const menu = computed(() => {
   };
 });
 
-function obtainKeyOfSpecificationType(type?: Type): TypeKey {
+function obtainKeyOfSpecificationType(type?: Type): TypeKey | undefined {
   if (typeof type === 'object') return type.key;
   if (typeof type === 'string') return type;
-  return '';
 }
 </script>
 

@@ -144,15 +144,17 @@ function invalidateState() {
 }
 
 onMounted(() => {
-  stateMenus.value = LIST.map((state) => {
+  stateMenus.value = LIST.map((state, index) => {
     return {
-      key: state.key,
-      title: state.title,
-      icon: state.icon.color,
-      iconSelected: state.icon.white,
-      primaryColor: state.primaryColor,
-      isPrimaryColorBright: true,
+      state,
       list: [],
+      iconSelected: state.icon.white,
+      isSelected: () => {
+        return stateMenuIndex.value === index;
+      },
+      click: () => {
+        stateMenuIndex.value = index;
+      },
     };
   });
 
