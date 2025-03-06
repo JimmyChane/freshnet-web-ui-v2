@@ -125,27 +125,6 @@ export const HOME_ROUTES: RouteRecordRaw[] = [
     component: () => import('@/pages/PageHome.vue'),
   },
 ];
-// export const LOGIN_ROUTES: RouteRecordRaw[] = [
-//   {
-//     path: '/login',
-//     name: 'login',
-//     component: () => import('@/pages/PageLogin.vue'),
-//   },
-// ];
-// export const PRINT_ROUTES: RouteRecordRaw[] = [
-//   {
-//     path: '/print',
-//     name: 'print',
-//     component: () => import('@/pages/PagePrint.vue'),
-//   },
-// ];
-// export const ERROR_ROUTES: RouteRecordRaw[] = [
-//   {
-//     path: '/error/404',
-//     name: 'error/404',
-//     component: () => import('@/pages/Page404.vue'),
-//   },
-// ];
 
 export const router = createRouter({
   history: createWebHistory(),

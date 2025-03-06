@@ -5,7 +5,7 @@
     <div class="App-background" style="z-index: 0"></div>
 
     <div class="App-body" :style="{ 'z-index': '1' }">
-      <router-view class="App-routerView" :style="{ 'grid-area': 'body' }" ref="AppRouterView" />
+      <RouterView class="App-routerView" :style="{ 'grid-area': 'body' }" ref="AppRouterView" />
     </div>
   </div>
 </template>
