@@ -1,49 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HomePage from '@/pages/home/Home.page.vue';
+</script>
 
 <template>
   <div class="App">
     <div class="App-background" style="z-index: 0"></div>
 
     <div class="App-body" :style="{ 'z-index': '1' }">
-      <RouterView class="App-routerView" :style="{ 'grid-area': 'body' }" ref="AppRouterView" />
+      <HomePage class="App-routerView" style="grid-area: body" />
     </div>
   </div>
 </template>
 
 <style lang="scss">
 // initiate
-:root {
-  font-size: 16px;
-}
-@media (max-width: 320px) {
-  :root {
-    font-size: 14px;
-  }
-}
-*,
-*::before,
-*::after {
-  line-height: 1;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  font-family: system-ui, sans-serif;
-  word-break: break-word;
-}
-html {
-  overscroll-behavior-x: none;
-}
-body {
-  width: 100dvw;
-  height: 100dvh;
-  overscroll-behavior-x: none;
-  overscroll-behavior-y: none;
-}
-p {
-  white-space: pre-line;
-}
 
 .scrollbar {
   --scrollbar-size: 0;
@@ -82,7 +52,8 @@ p {
   --transition-duration: 200ms;
   --transition-delay: 0;
   --transition-timing: linear;
-  transition: var(--transition-target) var(--transition-duration) var(--transition-timing);
+  transition: var(--transition-target) var(--transition-duration)
+    var(--transition-timing);
   transition-delay: var(--transition-delay);
 }
 
@@ -117,7 +88,11 @@ p {
     bottom: 0;
     left: 0;
     right: 0;
-    background-image: linear-gradient(120deg, hsl(202, 61%, 33%) 4%, hsl(236, 66%, 24%) 95%);
+    background-image: linear-gradient(
+      120deg,
+      hsl(202, 61%, 33%) 4%,
+      hsl(236, 66%, 24%) 95%
+    );
     display: none;
   }
   .App-body {
@@ -132,7 +107,10 @@ p {
     grid-template-areas:
       'left body'
       'bottom bottom';
-    grid-template-rows: minmax(calc(100% - var(--navigation-bottom-height)), 1fr);
+    grid-template-rows: minmax(
+      calc(100% - var(--navigation-bottom-height)),
+      1fr
+    );
     grid-template-columns: max-content 1fr;
 
     .App-routerView {

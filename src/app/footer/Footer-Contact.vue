@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { Contact } from '@/data/Contact';
 
-const props = defineProps<{ contact: Contact }>();
+import type { ContactModel } from '@/model/Contact.model';
+
+const props = defineProps<{ contact: ContactModel }>();
 
 const title = computed(() => props.contact.title);
 const subtitle = computed(() => props.contact.subtitle);
@@ -35,6 +36,7 @@ const primaryLink = computed(() => {
       >
         <span class="Footer-Contact-subtitle">{{ subtitle }}</span>
       </a>
+
       <span class="Footer-Contact-subtitle" v-else>{{ subtitle }}</span>
     </div>
 

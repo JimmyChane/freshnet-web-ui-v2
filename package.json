@@ -14,15 +14,12 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.11.0",
-    "chroma-js": "^2.4.2",
     "date-fns": "^3.6.0",
-    "pinia": "^2.1.7",
-    "socket.io-client": "^4.7.5",
-    "vue": "^3.4.29",
-    "vue-router": "^4.3.3"
+    "vue": "^3.4.29"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@tsconfig/node20": "^20.1.4",
     "@types/chroma-js": "^2.4.4",
     "@types/node": "^20.14.5",
@@ -33,11 +30,11 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "npm-run-all2": "^6.2.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.5.3",
     "sass": "^1.77.6",
     "typescript": "~5.4.0",
-    "vite": "^5.3.1",
-    "vite-plugin-pwa": "^0.20.0",
+    "vite": "^6.2.0",
+    "vite-plugin-pwa": "^0.21.1",
     "vue-tsc": "^2.0.21"
   }
 }

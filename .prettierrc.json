@@ -1,9 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/prettierrc",
+  "htmlWhitespaceSensitivity": "ignore",
+  "objectWrap": "collapse",
+  "printWidth": 80,
   "semi": true,
-  "tabWidth": 2,
   "singleQuote": true,
-  "printWidth": 100,
+  "tabWidth": 2,
   "trailingComma": "all",
-  "htmlWhitespaceSensitivity": "ignore"
+  "vueIndentScriptAndStyle": false,
+
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^(?!.*\\.vue$)@/(.*)$",
+    "^[./](?!.*\\.vue$)",
+    "^@/.*\\.vue$",
+    "^[./].*\\.vue$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+
+import { ContactModel } from '@/model/Contact.model';
+
 import ContactVue from './Footer-Contact.vue';
-import { Contact } from '@/data/Contact';
 
 const contacts = ref([
-  new Contact({
+  new ContactModel({
     title: 'Beh Aik Keong',
     links: [
       { category: 'call', id: '0167959444' },
       { category: 'whatsapp', id: '0167959444' },
     ],
   }),
-  new Contact({
+  new ContactModel({
     title: 'Office (Mobile)',
     links: [
       { category: 'call', id: '0146315353' },
@@ -19,7 +21,7 @@ const contacts = ref([
       { category: 'telegram', id: 'FreshnetEnterprise' },
     ],
   }),
-  new Contact({
+  new ContactModel({
     title: 'Office',
     links: [{ category: 'telephone', id: '0332897297' }],
   }),
@@ -33,22 +35,29 @@ const contacts = ref([
         <div class="Footer-columns">
           <div class="Footer-section">
             <span class="Footer-section-title">Service</span>
-            <router-link class="Footer-section-item" :to="{ path: '/print' }">
+
+            <span class="Footer-section-item" :to="{ path: '/print' }">
               Photostat &amp; Printing
-            </router-link>
+            </span>
           </div>
         </div>
 
         <div class="Footer-columns">
           <div class="Footer-section">
             <span class="Footer-section-title">Contacts</span>
-            <ContactVue v-for="contact of contacts" :key="contact.subtitle" :contact="contact" />
+
+            <ContactVue
+              v-for="contact of contacts"
+              :key="contact.subtitle"
+              :contact="contact"
+            />
           </div>
         </div>
 
         <div class="Footer-columns">
           <div class="Footer-section">
             <span class="Footer-section-title">Location</span>
+
             <a
               :class="['Footer-section-item', 'Footer-section-item-link']"
               href="https://www.google.com/maps/dir//No.+14,+Ground+Floor,+Freshnet+Enterprise,+Jalan+Melati+3%2F3,+Bandar+Melawati,+45000+Kuala+Selangor,+Selangor/@3.329664,101.256548,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x31ccf49e980c2d07:0xadf4850c7c433d0a!2m2!1d101.2565481!2d3.3296638"
