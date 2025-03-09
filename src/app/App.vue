@@ -13,8 +13,6 @@ import HomePage from '@/pages/home/Home.page.vue';
 </template>
 
 <style lang="scss">
-// initiate
-
 .scrollbar {
   --scrollbar-size: 0;
 
